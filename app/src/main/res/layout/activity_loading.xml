@@ -5,10 +5,5 @@
     android:layout_height="match_parent"
     android:layout_centerInParent="true"
     android:gravity="center_vertical|center_horizontal"
-    android:background="#f6f5fc">
-
-    <ImageView
-        android:layout_width="250dp"
-        android:layout_height="300dp"
-        android:src="@drawable/withstudy_load" />
+    android:background="@drawable/loading">
 </LinearLayout>
