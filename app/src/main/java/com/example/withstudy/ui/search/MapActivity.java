@@ -1,4 +1,4 @@
-package com.example.withstudy;
+package com.example.withstudy.ui.search;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.ViewGroup;
+
+import com.example.withstudy.R;
 
 import net.daum.mf.map.api.MapView;
 
