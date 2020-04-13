@@ -24,7 +24,7 @@ public class MapActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        /* 디버깅 키 해시 뽑기
+
         try {
             PackageInfo info = getPackageManager().getPackageInfo("com.example.withstudy", PackageManager.GET_SIGNATURES);
 
@@ -38,7 +38,7 @@ public class MapActivity extends AppCompatActivity {
         } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        */
+
 
         createMapView();
     }
