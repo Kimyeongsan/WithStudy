@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "31232209195",
+    "firebase_url": "https://withstudy-f183d.firebaseio.com",
+    "project_id": "withstudy-f183d",
+    "storage_bucket": "withstudy-f183d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31232209195:android:a94832bc72046ec6f4156e",
+        "android_client_info": {
+          "package_name": "com.example.withstudy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "31232209195-7p4s6o3f0ktb9rah975764bt0628rmbi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.withstudy",
+            "certificate_hash": "defb3a679e053c2da97da20ba034ee5cd61f68e7"
+          }
+        },
+        {
+          "client_id": "31232209195-m1qdgpm8ppc82ndjp7ljna2g2qb3du16.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlQDNqsWhn_9bkUUAT-1dZ5QLJ-adJRs4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "31232209195-m1qdgpm8ppc82ndjp7ljna2g2qb3du16.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
