@@ -1,4 +1,4 @@
-package com.example.withstudy.main;
+package com.example.withstudy.main.search;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,14 +19,12 @@ import com.example.withstudy.R;
  */
 public class SearchFragment extends Fragment {
 
-    private static final String ARG_SECTION_NUMBER = "section_number";
-
-    private PageViewModel pageViewModel;
+    private SearchViewModel searchViewModel;
 
     public static SearchFragment newInstance(int index) {
         SearchFragment fragment = new SearchFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(ARG_SECTION_NUMBER, index);
+//        bundle.putInt(ARG_SECTION_NUMBER, index);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -34,26 +32,22 @@ public class SearchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        pageViewModel = ViewModelProviders.of(this).get(PageViewModel.class);
-        int index = 1;
-        if (getArguments() != null) {
-            index = getArguments().getInt(ARG_SECTION_NUMBER);
-        }
-        pageViewModel.setIndex(index);
+        searchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
+
     }
 
     @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_main, container, false);
-        final TextView textView = root.findViewById(R.id.section_label);
-        pageViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        View root = inflater.inflate(R.layout.fragment_search, container, false);
+//        final TextView textView = root.findViewById(R.id.section_search);
+//        searchViewModel.getText().observe(this, new Observer<String>() {
+//            @Override
+//            public void onChanged(@Nullable String s) {
+//                textView.setText(s);
+//            }
+//        });
         return root;
     }
 }

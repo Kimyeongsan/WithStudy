@@ -10,7 +10,11 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.example.withstudy.R;
 
+import java.util.ArrayList;
+
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+    private ArrayList<Fragment> fragments = new ArrayList<>();
 
     @StringRes
     private static final int[] TAB_TITLES = new int[]{R.string.Home, R.string.Search, R.string.Chatting, R.string.Notice, R.string.Menu};
@@ -23,7 +27,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return MainFragment.newInstance(position + 1);
+        return fragments.get(position);
     }
 
     @Nullable
@@ -34,6 +38,10 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 5;
+        return fragments.size();
+    }
+
+    public void addFrag(Fragment fragment) {
+        fragments.add(fragment);
     }
 }
