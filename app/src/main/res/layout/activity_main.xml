@@ -12,31 +12,24 @@
         android:background="#f6f5fc"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-            <ImageView
-                android:id="@+id/title"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:minHeight="?actionBarSize"
-                android:padding="5dp"
-                android:src="@drawable/mark"
-                android:text="@string/app_name"
-                />
-
-<!--        <TextView-->
-<!--            android:id="@+id/title"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:gravity="center"-->
-<!--            android:minHeight="?actionBarSize"-->
-<!--            android:padding="@dimen/appbar_padding"-->
-<!--            android:text="@string/app_name"-->
-<!--            android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />-->
+        <ImageView
+            android:id="@+id/title"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:minHeight="?actionBarSize"
+            android:padding="5dp"
+            android:src="@drawable/mark"
+            android:text="@string/app_name" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="?attr/colorPrimary" />
+            android:background="#f6f5fc"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            app:tabSelectedTextColor="@color/cardview_dark_background" />
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager

@@ -19,11 +19,7 @@
         android:theme="@style/AppTheme.NoActionBar">>
 
         <activity android:name=".ui.search.MapActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ui.studyroom.curriculum.CurriculumMainActivity"
@@ -35,7 +31,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity android:name=".LoadingActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
 

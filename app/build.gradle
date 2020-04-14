@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'  // FireBase 사용
+import org.apache.tools.ant.taskdefs.condition.Os
 
 android {
     compileSdkVersion 29
@@ -11,6 +12,13 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        sourceSets {
+            main {
+                jni.srcDirs = []
+                jniLibs.srcDirs 'libs'
+            }
+        }
     }
     buildTypes {
         release {
