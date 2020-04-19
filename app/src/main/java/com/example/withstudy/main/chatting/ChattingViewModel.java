@@ -11,7 +11,7 @@ public class ChattingViewModel extends ViewModel {
 
     public ChattingViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is Home fragment");
+        mText.setValue("This is Chatting fragment");
     }
 
     public LiveData<String> getText() {
