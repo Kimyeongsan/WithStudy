@@ -108,4 +108,21 @@
     <string name="Chatting">Chat</string>
     <string name="Notice">Notice</string>
     <string name="Menu">Menu</string>
+
+    <!-- Init Study Activity -->
+    <string name="InitStudyText">어떤 모임을 시작하시겠어요?</string>
+    <string name="InputStudyNameText"><u>모임명을 입력해주세요</u></string>
+
+    <!-- Make Study Activity -->
+    <string name="MakeStudyText1">몇 명의 멤버와 함께 공부를 시작할까요?</string>
+    <string name="MakeStudyText2">최소 인원</string>
+    <string name="MakeStudyText3">최소 인원 모집 전까지는 \'모집 중\' 상태가 되고,\n인원이 모이면 모임이 시작됩니다.</string>
+    <string name="MakeStudyText4">가입 조건 설정</string>
+    <string name="MakeStudyText5">성별 제한없음, 나이 제한없음</string>
+    <string name="MakeStudyText6">모임 지속 기간과 모임 빈도</string>
+    <string name="MakeStudyText7">모임 지속기간</string>
+    <string name="MakeStudyText8">모임 빈도</string>
+    <string name="MakeStudyText9">모임 시작 시 공개타입을 설정하세요.</string>
+    <string name="MakeStudyText10">공개 모임</string>
+    <string name="MakeStudyText11">누구나 모임을 검색해 찾을 수 있고,\n게시물을 볼 수 있습니다.</string>
 </resources>
