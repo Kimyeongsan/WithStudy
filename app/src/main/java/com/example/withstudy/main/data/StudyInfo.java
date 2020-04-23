@@ -2,10 +2,11 @@ package com.example.withstudy.main.data;
 
 // 스터디 방의 정보를 가지는 클래스
 public class StudyInfo {
-    private short minMember;    // 최소 인원
-    private char limitGender;   // 성별 제한
-    private short minAge;       // 나이 제한
-    private boolean visible;  // 공개 여부
+    private short minMember;            // 최소 인원
+    private char limitGender;           // 성별 제한
+    private short minAge;               // 나이 제한
+    private boolean visible;            // 공개 여부
+    private ChatRoomData    chatRoom;   // 채팅방
 
     // 생성자
     StudyInfo(short minMember, char limitGender, short minAge, boolean visible) {
