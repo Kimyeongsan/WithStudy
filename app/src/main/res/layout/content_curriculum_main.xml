@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/studyGoalBtn"
         android:layout_width="369dp"
         android:layout_height="368dp"
         android:layout_marginStart="40dp"
@@ -39,7 +39,7 @@
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/studyGoalBtn" />
 
     <HorizontalScrollView
         android:layout_width="wrap_content"
@@ -64,6 +64,21 @@
             <ImageView
                 android:layout_width="150dp"
                 android:layout_height="200dp"
+                android:layout_marginRight="30dp"
+                android:src="@drawable/curriculum_goal_button">
+            </ImageView>
+
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="200dp"
+                android:layout_marginRight="30dp"
+                android:src="@drawable/curriculum_goal_button">
+            </ImageView>
+
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="200dp"
+                android:layout_marginRight="30dp"
                 android:src="@drawable/curriculum_goal_button">
             </ImageView>
 

@@ -2,13 +2,14 @@ package com.example.withstudy.main.home;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.withstudy.R;
-import com.example.withstudy.main.data.StudyInfo;
+import com.example.withstudy.main.data.StudyData;
 
 public class MakeStudyActivity extends AppCompatActivity implements View.OnClickListener{
     short minMember, minAge;    // 최소 인원, 최소 나이
@@ -43,36 +44,63 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
         setVisibleMeetingText.setOnClickListener(this);
     }
 
+    // 최소 인원 설정 다이얼로그 띄우기
+    private void showMinMemberDialog() {
+
+    }
+
+    // 
+
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
-            case R.id.backFromMakeStudyBtn:     // 뒤로가기 버튼
+            case R.id.backFromMakeStudyBtn:         // 뒤로가기 버튼
                 onBackPressed();
 
                 break;
 
-            case R.id.setMinMemberBtn:          // 최소인원 설정 버튼
+            case R.id.completeFromMakeStudyText:    // 완료 텍스트
+                makeStudy();
+
                 break;
 
-            case R.id.setJoinConditionBtn:      // 가입조건 설정 버튼
+            case R.id.setMinMemberBtn:              // 최소인원 설정 버튼
                 break;
 
-            case R.id.setMeetingDurationBtn:    // 모임 지속기간 설정 버튼
+            case R.id.setJoinConditionBtn:          // 가입조건 설정 버튼
+                Intent intent;
+
+                // activity_join_condition 레이아웃으로 변경하기 위한 intent 설정
+                intent = new Intent(MakeStudyActivity.this, JoinConditionActivity.class);
+
+                startActivity(intent);
+
                 break;
 
-            case R.id.setMeetingFrequencyBtn:   // 모임 빈도 설정 버튼
+            case R.id.setMeetingDurationBtn:        // 모임 지속기간 설정 버튼
                 break;
 
-            case R.id.setVisibleMeetingText:    // 공개 모임 설정 텍스트
+            case R.id.setMeetingFrequencyBtn:       // 모임 빈도 설정 버튼
+                break;
+
+            case R.id.setVisibleMeetingText:        // 공개 모임 설정 텍스트
                 break;
         }
     }
 
     // 스터디 방 생성
     private void makeStudy() {
-        StudyInfo studyRoom;
+        Intent intent;
+        StudyData studyRoom;
+        String studyName;
+
+        // 데이터 수신
+        intent = getIntent();
+
+        studyName = intent.getExtras().getString("studyName");
 
         // 옵션 설정한거에 맞게 스터디 방 생성
-        //studyRoom = new StudyInfo(...)
+        // 생성한 스터디 방은 즉시 데이터베이스에 추가되어야 한다.
+        //studyRoom = new StudyData()
     }
 }
