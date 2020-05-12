@@ -1,4 +1,4 @@
-package com.example.withstudy.main.data;
+package com.example.withstudy.main.chatting;
 
 import java.util.ArrayList;
 

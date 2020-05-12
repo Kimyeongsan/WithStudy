@@ -4,39 +4,46 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.withstudy.R;
+
+import java.util.ArrayList;
 
 
 public class ChattingFragment extends Fragment {
 
-    private ChattingViewModel chattingViewModel;
+    private RecyclerView recyclerChatRoom;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        chattingViewModel = new ViewModelProvider(this).get(ChattingViewModel.class);
     }
 
     @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+
         View root = inflater.inflate(R.layout.fragment_chatting, container, false);
-        final TextView textView = root.findViewById(R.id.section_chatting);
-        chattingViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+
+        recyclerChatRoom = root.findViewById(R.id.recycler_chat_room);
+        recyclerChatRoom.setHasFixedSize(true);
+        recyclerChatRoom.setLayoutManager(new LinearLayoutManager(root.getContext()));
+
+        ArrayList<String> testData = new ArrayList<>();  // chatting room 임시 data
+        testData.add("Chatting Test 1");
+        testData.add("Chatting Test 2");
+        testData.add("Chatting Test 3");
+        testData.add("Chatting Test 4");
+        testData.add("Chatting Test 5");
+
+        recyclerChatRoom.setAdapter(new ChatRoomAdapter(testData));
+
         return root;
     }
 }

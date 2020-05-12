@@ -12,7 +12,7 @@ public class StudyData {
     private char                        visible;        // 공개 여부
     private String                      goal;           // 스터디 목표
     private LinkedList<CurriculumData>  curriculums;    // 커리큘럼 데이터
-    private ChatRoomData                chatRoom;       // 채팅방
+//    private ChatRoomData                chatRoom;       // 채팅방
 
     // 생성자
     StudyData(String studyName, short minMember, char limitGender, short minAge, char visible) {
@@ -28,7 +28,7 @@ public class StudyData {
     // 스터디 방 처음 생성시 초기화
     private void initialize() {
         curriculums = new LinkedList<CurriculumData>();
-        chatRoom = new ChatRoomData();
+//        chatRoom = new ChatRoomData();
     }
 
     // 스터디 이름 설정

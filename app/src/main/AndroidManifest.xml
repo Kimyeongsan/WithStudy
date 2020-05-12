@@ -21,6 +21,8 @@
         <activity android:name=".main.home.MakeStudyActivity" />
         <activity android:name=".main.home.InitStudyActivity" />
         <activity android:name=".ui.search.MapActivity" />
+
+        <activity android:name=".main.chatting.ChatRoomActivity"/>
         <activity
             android:name=".ui.studyroom.curriculum.CurriculumMainActivity"
             android:label="@string/title_activity_curriculum_main"
@@ -29,6 +31,7 @@
             android:name=".ui.studyroom.StudyRoomMainActivity"
             android:label="@string/title_activity_study_room_main"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".LoadingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,7 +39,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" /> <!-- Kakao Map API 사용 -->
+
+        <activity android:name=".MainActivity" />
+        <activity android:name=".SignInActivity" />
+
+        <!-- Kakao Map API 사용 -->
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="d63aae8019a77e3a15b350bda76bc561" />

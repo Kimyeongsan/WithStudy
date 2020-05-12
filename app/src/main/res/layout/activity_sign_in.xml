@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/sign_in_layout"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:gravity="center"
+             android:orientation="vertical"
+             android:background="@drawable/loading">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="550dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="#f6f5fc" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:gravity="center"
+            android:text="휴대폰 번호 또는 이메일로 가입"
+            android:textSize="20dp"
+            />
+
+        <button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="610dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="#f6f5fc" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:gravity="center"
+            android:text="휴대폰 번호 또는 이메일로 가입"
+            android:textSize="20dp" />
+
+        <button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null" />
+    </RelativeLayout>
+
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="visible"
+        android:layout_gravity="center"/>
+
+</FrameLayout>
