@@ -31,7 +31,7 @@
                 android:layout_weight="8"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="로그인"
+                android:text="회원가입"
                 android:textColor="#000"
                 android:textSize="22dp" />
 
@@ -75,6 +75,24 @@
             android:textColor="#a8a8a8"
             android:textSize="22dp"
             android:hint="비밀번호"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textColor="#a8a8a8"
+            android:textSize="22dp"
+            android:hint="이름"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textColor="#a8a8a8"
+            android:textSize="22dp"
+            android:hint="생년월일"/>
 
     </LinearLayout>
 

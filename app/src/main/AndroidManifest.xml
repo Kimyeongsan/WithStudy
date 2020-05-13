@@ -17,6 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+
         <activity android:name=".main.home.JoinConditionActivity"></activity>
         <activity android:name=".main.home.MakeStudyActivity" />
         <activity android:name=".main.home.InitStudyActivity" />
@@ -40,8 +41,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivity" />
         <activity android:name=".SignInActivity" />
+        <activity android:name=".MainActivity" />
 
         <!-- Kakao Map API 사용 -->
         <meta-data

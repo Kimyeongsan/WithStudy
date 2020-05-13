@@ -9,6 +9,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -26,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.withstudy.R;
+import com.example.withstudy.SignInActivity;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
@@ -44,8 +48,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
-import org.w3c.dom.Text;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -79,7 +81,7 @@ public class ChatRoomActivity extends AppCompatActivity
         private String mPhotoUrl;
         private SharedPreferences mSharedPreferences;
         private GoogleApiClient mGoogleApiClient;
-        private static final String MESSAGE_URL = "http://friendlychat.firebase.google.com/message/";
+        private static final String MESSAGE_URL = "http://withstudy.firebase.google.com/message/";   /// 이거 의심됨.
 
         private Button mSendButton;
         private RecyclerView mMessageRecyclerView;
@@ -172,28 +174,28 @@ public class ChatRoomActivity extends AppCompatActivity
         // Initialize Firebase Auth
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
-//        if (mFirebaseUser == null) {
-//            // Not signed in, launch the Sign In activity
-//            startActivity(new Intent(this, SignInActivity.class));
-//            finish();
-//            return;
-//        } else {
-//            mUsername = mFirebaseUser.getDisplayName();
-//            if (mFirebaseUser.getPhotoUrl() != null) {
-//                mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
-//            }
-//        }
+        if (mFirebaseUser == null) {
+            // Not signed in, launch the Sign In activity
+            startActivity(new Intent(this, SignInActivity.class));
+            finish();
+            return;
+        } else {
+            mUsername = mFirebaseUser.getDisplayName();
+            if (mFirebaseUser.getPhotoUrl() != null) {
+                mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
+            }
+        }
 
         // New child entries
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
         SnapshotParser<ChatData> parser = new SnapshotParser<ChatData>() {
             @Override
             public ChatData parseSnapshot(DataSnapshot dataSnapshot) {
-                ChatData friendlyMessage = dataSnapshot.getValue(ChatData.class);
-                if (friendlyMessage != null) {
-                    friendlyMessage.setId(dataSnapshot.getKey());
+                ChatData chatData = dataSnapshot.getValue(ChatData.class);
+                if (chatData != null) {
+                    chatData.setId(dataSnapshot.getKey());
                 }
-                return friendlyMessage;
+                return chatData;
             }
         };
 
@@ -253,7 +255,7 @@ public class ChatRoomActivity extends AppCompatActivity
                     viewHolder.messengerImageView.setImageDrawable(ContextCompat.getDrawable(ChatRoomActivity.this,
                             R.drawable.ic_account_circle_black_36dp));
                 } else {
-//                    Glide.with(ChatRoomFragment.this)
+//                    Glide.with(ChatRoomActivity.this)                /// 오류 수정 중
 //                            .load(ChatData.getPhotoUrl())
 //                            .into(viewHolder.messengerImageView);
                 }
@@ -265,14 +267,14 @@ public class ChatRoomActivity extends AppCompatActivity
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
                 super.onItemRangeInserted(positionStart, itemCount);
-                int friendlyMessageCount = mFirebaseAdapter.getItemCount();
+                int chatDataCount = mFirebaseAdapter.getItemCount();
                 int lastVisiblePosition =
                         mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
                 // If the recycler view is initially being loaded or the
                 // user is at the bottom of the list, scroll to the bottom
                 // of the list to show the newly added message.
                 if (lastVisiblePosition == -1 ||
-                        (positionStart >= (friendlyMessageCount - 1) &&
+                        (positionStart >= (chatDataCount - 1) &&
                                 lastVisiblePosition == (positionStart - 1))) {
                     mMessageRecyclerView.scrollToPosition(positionStart);
                 }
@@ -308,27 +310,27 @@ public class ChatRoomActivity extends AppCompatActivity
 
 
 // 로그아웃 설정 바
-//        @Override
-//        public boolean onCreateOptionsMenu (Menu menu){
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.main_menu, menu);
-//        return true;
-//    }
+        @Override
+        public boolean onCreateOptionsMenu (Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.chat_menu, menu);
+        return true;
+    }
 
-//        @Override
-//        public boolean onOptionsItemSelected (MenuItem item){
-//        switch (item.getItemId()) {
-//            case R.id.sign_out_menu:
-//                mFirebaseAuth.signOut();
-//                Auth.GoogleSignInApi.signOut(mGoogleApiClient);
-//                mUsername = ANONYMOUS;
-//                startActivity(new Intent(this, SignInActivity.class));
-//                finish();
-//                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
+        @Override
+        public boolean onOptionsItemSelected (MenuItem item){
+        switch (item.getItemId()) {
+            case R.id.sign_out_menu:
+                mFirebaseAuth.signOut();
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                mUsername = ANONYMOUS;
+                startActivity(new Intent(this, SignInActivity.class));
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
         @Override
         public void onConnectionFailed (@NonNull ConnectionResult connectionResult){
