@@ -24,11 +24,11 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void initialize() {
-        Button backFromMakeMeetingBtn;
+        Button backFromMakeStudyBtn;
         Button setMinMemberBtn, setJoinConditionBtn, setMeetingDurationBtn, setMeetingFrequencyBtn;
         TextView setVisibleMeetingText;
 
-        backFromMakeMeetingBtn = (Button)findViewById(R.id.backFromMakeStudyBtn);
+        backFromMakeStudyBtn = (Button)findViewById(R.id.backFromMakeStudyBtn);
         setMinMemberBtn = (Button)findViewById(R.id.setMinMemberBtn);
         setJoinConditionBtn = (Button)findViewById(R.id.setJoinConditionBtn);
         setMeetingDurationBtn = (Button)findViewById(R.id.setMeetingDurationBtn);
@@ -36,7 +36,7 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
         setVisibleMeetingText = (TextView)findViewById(R.id.setVisibleMeetingText);
 
         // Click Listener 추가
-        backFromMakeMeetingBtn.setOnClickListener(this);
+        backFromMakeStudyBtn.setOnClickListener(this);
         setMinMemberBtn.setOnClickListener(this);
         setJoinConditionBtn.setOnClickListener(this);
         setMeetingDurationBtn.setOnClickListener(this);
