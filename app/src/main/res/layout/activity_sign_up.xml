@@ -15,15 +15,15 @@
             android:layout_width="match_parent"
             android:layout_height="56dp">
 
-            <Button
+            <ImageButton
                 android:id="@null"
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@null"
                 android:textSize="14sp"
                 android:textColor="#6224ee"
-                ads:srcCompat="@drawable/ic_close_black_24dp"/>
+                ads:srcCompat="@drawable/ic_close_black_24dp"/>>
 
             <TextView
                 android:layout_width="match_parent"

@@ -50,7 +50,5 @@ public class MainActivity extends AppCompatActivity {
         sectionsPagerAdapter.addFrag(new MenuFragment());
 
         viewPager.setAdapter(sectionsPagerAdapter);
-
     }
-
 }
