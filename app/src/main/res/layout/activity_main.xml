@@ -9,7 +9,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#f6f5fc"
+        android:background="#ffffff"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <ImageView
@@ -25,7 +25,7 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="#f6f5fc"
+            android:background="#ffffff"
             android:textSize="17dp"
             android:textStyle="bold"
             app:tabSelectedTextColor="@color/cardview_dark_background" />

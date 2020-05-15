@@ -69,7 +69,7 @@ public class SignInActivity extends AppCompatActivity implements
         sign_up.setOnClickListener(
                 new Button.OnClickListener(){
                     public void onClick(View view){
-                        Intent intent=new Intent(getApplicationContext(), SingupAcitivity.class);
+                        Intent intent=new Intent(getApplicationContext(), SignUpActivity.class);
                         startActivity(intent);
                     }
                 }

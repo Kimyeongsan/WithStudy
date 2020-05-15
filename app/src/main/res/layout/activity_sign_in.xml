@@ -35,16 +35,16 @@
                 android:textColor="#000"
                 android:textSize="22dp" />
 
-            <Button
-                android:id="@null"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="right"
-                android:background="@null"
-                android:layout_weight="1"
-                android:text="다음"
-                android:textSize="19sp"
-                android:textColor="#6224ee" />
+<!--            <Button-->
+<!--                android:id="@null"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_gravity="right"-->
+<!--                android:background="@null"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="다음"-->
+<!--                android:textSize="19sp"-->
+<!--                android:textColor="#6224ee" />-->
         </FrameLayout>
 
         <TextView
@@ -59,6 +59,7 @@
             android:textSize="19dp" />
 
         <EditText
+            android:id="@+id/main_email"
             android:layout_width="match_parent"
             android:layout_height="53dp"
             android:layout_marginLeft="20dp"
@@ -68,6 +69,7 @@
             android:hint="+82"/>
 
         <EditText
+            android:id="@+id/main_pwd"
             android:layout_width="match_parent"
             android:layout_height="53dp"
             android:layout_marginLeft="20dp"
@@ -79,7 +81,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@null"
+        android:id="@+id/main_login_btn"
         android:layout_width="match_parent"
         android:layout_height="57dp"
         android:layout_weight="0"

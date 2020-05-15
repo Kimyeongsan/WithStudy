@@ -44,7 +44,7 @@
         <activity android:name=".SignInActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".SingupAcitivity"/>
+        <activity android:name=".SignUpActivity"/>
 
         <!-- Kakao Map API 사용 -->
         <meta-data
