@@ -17,12 +17,10 @@ import com.example.withstudy.R;
 
 public class MenuFragment extends Fragment {
 
-    private MenuViewModel menuViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        menuViewModel = new ViewModelProvider(this).get(MenuViewModel.class);
     }
 
     @Override
@@ -30,13 +28,7 @@ public class MenuFragment extends Fragment {
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_menu, container, false);
-        final TextView textView = root.findViewById(R.id.section_menu);
-        menuViewModel.getText().observe(getViewLifecycleOwner(),new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+
         return root;
     }
 }

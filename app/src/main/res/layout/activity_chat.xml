@@ -25,12 +25,12 @@
             android:layout_margin="12dp" />
     </FrameLayout>
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/messageRecyclerView"
+        android:layout_marginTop="60dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/layout_chat_name"/>
+        android:layout_above="@id/linearLayout"/>
 
     <LinearLayout
         android:id="@+id/linearLayout"

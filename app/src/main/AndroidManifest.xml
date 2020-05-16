@@ -24,6 +24,8 @@
         <activity android:name=".ui.search.MapActivity" />
 
         <activity android:name=".main.chatting.ChatRoomActivity"/>
+<!--            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>-->
+
         <activity
             android:name=".ui.studyroom.curriculum.CurriculumMainActivity"
             android:label="@string/title_activity_curriculum_main"
@@ -41,10 +43,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".SignInActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".SignInActivity"/>
         <activity android:name=".LoginActivity" />
         <activity android:name=".SignUpActivity"/>
+        <activity android:name=".MainActivity" />
+
+        <activity android:name=".main.menu.UserActivity" />
 
         <!-- Kakao Map API 사용 -->
         <meta-data

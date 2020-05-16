@@ -19,10 +19,6 @@ public class ChatData {
         this.imageUrl = imageUrl;
     }
 
-    public String getId() {
-        return id;
-    }
-
     public void setId(String id) {
         this.id = id;
     }
