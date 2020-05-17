@@ -30,8 +30,11 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/studyName"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:background="@null"
+            android:singleLine="true"
             android:text="@string/InputStudyNameText"
             android:textColor="#707070"
             android:textSize="28dp" />

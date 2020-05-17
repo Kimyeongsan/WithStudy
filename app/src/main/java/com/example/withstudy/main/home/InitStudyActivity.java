@@ -45,8 +45,8 @@ public class InitStudyActivity extends AppCompatActivity implements View.OnClick
                 // 모임명을 입력했는지 확인
                 studyNameText = (TextInputEditText)findViewById(R.id.studyName);
 
-                // 기본 입력 메세지나 첫글자가 공백이면 다시 입력하게 하기
-                if(studyNameText.getText().equals(R.string.InputStudyNameText) || studyNameText.getText().charAt(0) == ' ') {
+                // 비어있거나 기본 입력 메세지나 첫글자가 공백이면 다시 입력하게 하기
+                if(studyNameText.getText().length() == 0 || studyNameText.getText().toString().equals(getString(R.string.InputStudyNameText)) || studyNameText.getText().charAt(0) == ' ') {
                     Toast.makeText(getApplicationContext(), "모임명을 입력해주세요", Toast.LENGTH_LONG).show();
 
                     break;

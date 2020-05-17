@@ -6,20 +6,22 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import com.example.withstudy.R;
 import com.example.withstudy.main.data.Constant;
-import com.example.withstudy.main.data.JoinConditionData;
+import com.example.withstudy.main.data.BasicItemData;
+import com.example.withstudy.main.data.DetailItemData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class JoinConditionActivity extends AppCompatActivity implements View.OnClickListener{
-    private JoinConditionRVAdapter rvAdapter;
+    private ItemRVAdapter rvAdapter;
     private AlertDialog.Builder builder;
     private int birthYear;
     private char gender;
@@ -40,6 +42,12 @@ public class JoinConditionActivity extends AppCompatActivity implements View.OnC
         Button backFromJoinConditionBtn;
 
         //////////////////////////////////////////////////
+        // 나이와 성별 값 초기화
+        gender = Constant.ALLGENDER;
+        birthYear = Constant.ALLAGE;
+        //////////////////////////////////////////////////
+
+        //////////////////////////////////////////////////
         // AlertDialog Builder 초기화
         builder = new AlertDialog.Builder(this);
         //////////////////////////////////////////////////
@@ -51,10 +59,10 @@ public class JoinConditionActivity extends AppCompatActivity implements View.OnC
         linearLayoutManager = new LinearLayoutManager(this);
         rv.setLayoutManager(linearLayoutManager);
 
-        rvAdapter = new JoinConditionRVAdapter();
+        rvAdapter = new ItemRVAdapter(Constant.BASIC_ITEM);
 
         // RecyclerView Item Click Listener추가
-        rvAdapter.setOnItemClickListener(new JoinConditionRVAdapter.OnItemClickListener() {
+        rvAdapter.setOnItemClickListener(new ItemRVAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
                 AlertDialog alertDialog;
@@ -80,16 +88,16 @@ public class JoinConditionActivity extends AppCompatActivity implements View.OnC
                         builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int pos) {
-                                JoinConditionData data;
+                                BasicItemData data;
 
                                 data = rvAdapter.getItem(0);
-                                data.setContent(selectedItem.get(0));
+                                data.setResult(selectedItem.get(0));
 
                                 // 변경된 값 표시
                                 rvAdapter.notifyDataSetChanged();
 
                                 // gender 값 변경
-                                switch(data.getContent()) {
+                                switch(data.getResult()) {
                                     case "제한없음":
                                         gender = Constant.ALLGENDER;
 
@@ -143,20 +151,21 @@ public class JoinConditionActivity extends AppCompatActivity implements View.OnC
                         builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int pos) {
-                                JoinConditionData data;
+                                BasicItemData data;
 
                                 data = rvAdapter.getItem(1);
-                                data.setContent(selectedItem.get(0));
+                                data.setResult(selectedItem.get(0));
 
                                 // 변경된 값 표시
                                 rvAdapter.notifyDataSetChanged();
 
                                 // birthYear 값 변경
-                                if(data.getContent().equals("제한없음")) {
-                                    birthYear = 0;
+                                if(data.getResult().equals("제한없음")) {
+                                    birthYear = Constant.ALLAGE;
                                 }
                                 else {
-                                    birthYear = Integer.parseInt(data.getContent());
+                                    birthYear = Integer.parseInt(data.getResult());
+
                                 }
                             }
                         });
@@ -194,22 +203,22 @@ public class JoinConditionActivity extends AppCompatActivity implements View.OnC
     // RecyclerView의 Item 항목 설정
     private void setData() {
         List<String> titles;
-        List<String> contents;
+        List<String> results;
 
         titles = Arrays.asList("성별", "나이");
-        contents = Arrays.asList("제한없음", "제한없음");
+        results = Arrays.asList("제한없음", "제한없음");
 
         // List의 값들을 JoinConditionData 객체에 설정
         for(int i = 0; i < titles.size(); i++) {
-            JoinConditionData data;
+            BasicItemData data;
 
-            data = new JoinConditionData();
+            data = new DetailItemData();
 
             data.setTitle(titles.get(i));
-            data.setContent(contents.get(i));
+            data.setResult(results.get(i));
 
             // Adapter에 추가
-            rvAdapter.addItem(data);
+            rvAdapter.addItem((DetailItemData)data);
         }
 
         // Adapter의 값이 변경됨을 알려줌으로써 변경된 값 표시
@@ -220,11 +229,16 @@ public class JoinConditionActivity extends AppCompatActivity implements View.OnC
     public void onClick(View view) {
         switch(view.getId()) {
             case R.id.backFromJoinConditionBtn:         // 뒤로가기 버튼
+                Intent intent;
                 String str;
 
-                str = "성별: " + gender + ", 나이: " + birthYear + "년생 이후";
+                intent = new Intent();
 
-                // 가입조건 설정 텍스트 변경
+                intent.putExtra("gender", gender);
+                intent.putExtra("birthYear", birthYear);
+
+                setResult(RESULT_OK, intent);
+
                 onBackPressed();
 
                 break;

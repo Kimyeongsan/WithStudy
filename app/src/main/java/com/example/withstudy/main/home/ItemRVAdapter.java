@@ -9,13 +9,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.withstudy.R;
-import com.example.withstudy.main.data.JoinConditionData;
+import com.example.withstudy.main.data.Constant;
+import com.example.withstudy.main.data.DetailItemData;
 
 import java.util.ArrayList;
 
-public class JoinConditionRVAdapter extends RecyclerView.Adapter<JoinConditionRVAdapter.ItemViewHolder> {
-    private ArrayList<JoinConditionData> listData = new ArrayList<>(); // adapter에 들어갈 list
-    private OnItemClickListener mListener = null;                       // listener 객체
+public class ItemRVAdapter extends RecyclerView.Adapter<ItemRVAdapter.ItemViewHolder> {
+    private ArrayList<DetailItemData> listData = new ArrayList<>(); // adapter에 들어갈 list
+    private OnItemClickListener mListener = null;                  // listener 객체
+    private int option; // 어떤 액티비티인지 명시
+
+    ItemRVAdapter(int option) {
+        this.option = option;
+    }
 
     // listener interface
     public interface OnItemClickListener {
@@ -31,8 +37,15 @@ public class JoinConditionRVAdapter extends RecyclerView.Adapter<JoinConditionRV
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
 
-        // LayoutInflater를 이용하여 join_condition_item.xml을 inflate
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.join_condition_item, parent, false);
+        view = null;
+
+        // LayoutInflater를 이용하여 item.xml을 inflate
+        if(option == Constant.DETAIL_ITEM) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_item, parent, false);
+        }
+        else if(option == Constant.BASIC_ITEM) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.basic_item, parent, false);
+        }
 
         return new ItemViewHolder(view);
     }
@@ -50,17 +63,18 @@ public class JoinConditionRVAdapter extends RecyclerView.Adapter<JoinConditionRV
     }
 
     // 외부에서 item 항목 추가
-    public void addItem(JoinConditionData data) {
+    public void addItem(DetailItemData data) {
         listData.add(data);
     }
 
     // item 항목 가져오기
-    public JoinConditionData getItem(int pos) { return listData.get(pos); }
+    public DetailItemData getItem(int pos) { return listData.get(pos); }
 
     // subView 셋팅
     class ItemViewHolder extends RecyclerView.ViewHolder {
         private TextView textView1;
         private TextView textView2;
+        private TextView textView3;
 
         ItemViewHolder(View itemView) {
             super(itemView);
@@ -80,13 +94,23 @@ public class JoinConditionRVAdapter extends RecyclerView.Adapter<JoinConditionRV
                 }
             });
 
-            textView1 = (TextView)itemView.findViewById(R.id.joinConditionTitleText);
-            textView2 = (TextView)itemView.findViewById(R.id.joinConditionContentText);
+            if(option == Constant.BASIC_ITEM) {
+                textView1 = (TextView) itemView.findViewById(R.id.basicTitleText);
+                textView2 = (TextView) itemView.findViewById(R.id.basicResultText);
+            } else if(option == Constant.DETAIL_ITEM) {
+                textView1 = (TextView) itemView.findViewById(R.id.detailTitleText);
+                textView2 = (TextView) itemView.findViewById(R.id.detailResultText);
+                textView3 = (TextView) itemView.findViewById(R.id.detailContentText);
+            }
         }
 
-        void onBind(JoinConditionData data) {
+        void onBind(DetailItemData data) {
             textView1.setText(data.getTitle());
-            textView2.setText(data.getContent());
+            textView2.setText(data.getResult());
+
+            if(option == Constant.DETAIL_ITEM) {
+                textView3.setText(data.getContent());
+            }
         }
     }
 }
