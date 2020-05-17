@@ -9,7 +9,12 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.withstudy.R;
+import com.example.withstudy.main.data.Constant;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class InitStudyActivity extends AppCompatActivity implements View.OnClickListener {
     @Override
@@ -40,7 +45,7 @@ public class InitStudyActivity extends AppCompatActivity implements View.OnClick
                 break;
 
             case R.id.makeStudyBtn: // 시작하기 버튼
-                TextInputEditText studyNameText;
+                final TextInputEditText studyNameText;
 
                 // 모임명을 입력했는지 확인
                 studyNameText = (TextInputEditText)findViewById(R.id.studyName);
@@ -52,13 +57,35 @@ public class InitStudyActivity extends AppCompatActivity implements View.OnClick
                     break;
                 }
 
-                // activity_make_study 레이아웃으로 변경하기 위한 intent 설정
-                Intent intent = new Intent(InitStudyActivity.this, MakeStudyActivity.class);
+                // 스터디명 중복명 체크
+                FirebaseDatabase.getInstance().getReference().child(Constant.DB_CHILD_STUDYROOM).addListenerForSingleValueEvent(
+                        new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for(DataSnapshot data : dataSnapshot.getChildren()) {
+                                    // 중복이면 못만들게 하기
+                                    if(data.getKey().toString().equals(studyNameText.getText().toString())) {
+                                        Toast.makeText(getApplicationContext(), "중복된 모임명입니다", Toast.LENGTH_SHORT).show();
 
-                // 모임명 전달
-                intent.putExtra("studyName", studyNameText.getText());
+                                        return;
+                                    }
+                                }
 
-                startActivity(intent);
+                                // activity_make_study 레이아웃으로 변경하기 위한 intent 설정
+                                Intent intent = new Intent(InitStudyActivity.this, MakeStudyActivity.class);
+
+                                // 모임명 전달
+                                intent.putExtra("studyName", studyNameText.getText().toString());
+
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        }
+                );
 
                 break;
         }
