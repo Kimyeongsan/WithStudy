@@ -15,9 +15,9 @@
             android:layout_width="match_parent"
             android:layout_height="56dp">
 
-            <Button
+            <ImageButton
                 android:id="@null"
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@null"
@@ -35,23 +35,23 @@
                 android:textColor="#000"
                 android:textSize="22dp" />
 
-            <Button
-                android:id="@null"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="right"
-                android:background="@null"
-                android:layout_weight="1"
-                android:text="다음"
-                android:textSize="19sp"
-                android:textColor="#6224ee" />
+<!--            <Button-->
+<!--                android:id="@null"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_gravity="right"-->
+<!--                android:background="@null"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="다음"-->
+<!--                android:textSize="19sp"-->
+<!--                android:textColor="#6224ee" />-->
         </FrameLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="휴대폰번호"
+            android:text="E_mail"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
@@ -59,27 +59,29 @@
             android:textSize="19dp" />
 
         <EditText
+            android:id="@+id/main_email"
             android:layout_width="match_parent"
             android:layout_height="53dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:textColor="#000"
             android:textSize="23dp"
-            android:hint="+82"/>
+            android:hint="e_mail"/>
 
         <EditText
+            android:id="@+id/main_pwd"
             android:layout_width="match_parent"
             android:layout_height="53dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
+            android:hint="비밀번호"
             android:textColor="#a8a8a8"
-            android:textSize="22dp"
-            android:hint="비밀번호"/>
+            android:textSize="22dp" />
 
     </LinearLayout>
 
     <Button
-        android:id="@null"
+        android:id="@+id/main_login_btn"
         android:layout_width="match_parent"
         android:layout_height="57dp"
         android:layout_weight="0"

@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setTabIcons() {
         tabs.getTabAt(0).setIcon(R.drawable.ic_home_black_24dp);
-        tabs.getTabAt(1).setIcon(R.drawable.ic_searched);
+        tabs.getTabAt(1).setIcon(R.drawable.ic_search);
         tabs.getTabAt(2).setIcon(R.drawable.ic_chatting);
         tabs.getTabAt(3).setIcon(R.drawable.ic_notifications);
         tabs.getTabAt(4).setIcon(R.drawable.ic_menu);
@@ -50,7 +50,5 @@ public class MainActivity extends AppCompatActivity {
         sectionsPagerAdapter.addFrag(new MenuFragment());
 
         viewPager.setAdapter(sectionsPagerAdapter);
-
     }
-
 }

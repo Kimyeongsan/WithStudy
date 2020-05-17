@@ -71,6 +71,7 @@ public class JoinConditionActivity extends AppCompatActivity implements View.OnC
 
                 switch(pos) {
                     case 0: // 성별
+
                         items = getResources().getStringArray(R.array.GENDER_CONDITION);
                         selectedItem = new ArrayList<String>();
                         selectedItem.add(items[0]);

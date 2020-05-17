@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -62,6 +63,40 @@ public class SignInActivity extends AppCompatActivity implements
         // Set click listeners
         mSignInButton.setOnClickListener(this);
 
+
+
+        Button sign_up =findViewById(R.id.sign_up_button);
+        sign_up.setOnClickListener(
+                new Button.OnClickListener(){
+                    public void onClick(View view){
+                        Intent intent=new Intent(getApplicationContext(), SignUpActivity.class);
+                        startActivity(intent);
+                    }
+                }
+        );
+
+        Button d_sign_in =findViewById(R.id.d_sign_in);
+        d_sign_in.setOnClickListener(
+                new Button.OnClickListener(){
+                    public void onClick(View view){
+                        Intent intent=new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                    }
+                }
+        );
+
+
+        Button sign_in =findViewById(R.id.login_button);
+        sign_in.setOnClickListener(
+                new Button.OnClickListener(){
+                    public void onClick(View view){
+                        Intent intent=new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
+                    }
+                }
+        );
+
+
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -75,6 +110,7 @@ public class SignInActivity extends AppCompatActivity implements
 
         // Initialize FirebaseAuth
         mFirebaseAuth = FirebaseAuth.getInstance();
+
     }
 
     private void signIn() {
@@ -100,7 +136,7 @@ public class SignInActivity extends AppCompatActivity implements
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.d(TAG, "firebaseAuthWithGooogle:" + acct.getId());
+        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mFirebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {

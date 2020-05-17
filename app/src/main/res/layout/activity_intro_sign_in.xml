@@ -28,6 +28,7 @@
             android:textColor="#585858" />
 
         <Button
+            android:id="@+id/sign_up_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@null" />
@@ -52,21 +53,45 @@
             android:textColor="#585858"/>
 
         <Button
+            android:id="@+id/d_sign_in"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@null" />
     </RelativeLayout>
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_gravity="bottom"
-        android:background="@null"
         android:gravity="center"
-        android:layout_marginBottom="75dp"
-        android:text="이미 가입하셨나요? 로그인하기"
-        android:textSize="17dp"
-        android:textColor="#ffffff"/>
+        android:layout_marginBottom="70dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="bottom"
+            android:background="@null"
+            android:gravity="center"
+            android:text="이미 가입하셨나요?"
+            android:textSize="17dp"
+            android:textColor="#ffffff"/>
+
+        <Button
+            android:id="@+id/login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="bottom"
+            android:layout_toRightOf="@+id/text1"
+            android:background="@null"
+            android:gravity="center"
+            android:text="로그인하기"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            android:textColor="#ffffff"/>
+    </RelativeLayout>
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
