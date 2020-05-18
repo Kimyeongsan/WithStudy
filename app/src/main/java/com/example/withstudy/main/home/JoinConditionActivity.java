@@ -24,7 +24,7 @@ public class JoinConditionActivity extends AppCompatActivity implements View.OnC
     private ItemRVAdapter rvAdapter;
     private AlertDialog.Builder builder;
     private int birthYear;
-    private char gender;
+    private int gender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

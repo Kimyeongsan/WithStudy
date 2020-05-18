@@ -6,21 +6,25 @@ import java.util.LinkedList;
 public class StudyData {
     private int                         studyId;        // 스터디 고유 번호(스터디 구별용)
     private String                      studyName;      // 스터디 이름
-    private short                       minMember;      // 최소 인원
-    private char                        limitGender;    // 성별 제한
-    private short                       minAge;         // 나이 제한
-    private char                        visible;        // 공개 여부
+    private int                         minMember;      // 최소 인원
+    private int                         limitGender;    // 성별 제한
+    private int                         minAge;         // 나이 제한
+    private int                         visible;        // 공개 여부
+    private int                         duration;       // 모임 지속기간
+    private String                      frequency;      // 모임 빈도
     private String                      goal;           // 스터디 목표
     private LinkedList<CurriculumData>  curriculums;    // 커리큘럼 데이터
 //    private ChatRoomData                chatRoom;       // 채팅방
 
     // 생성자
-    StudyData(String studyName, short minMember, char limitGender, short minAge, char visible) {
+    public StudyData(String studyName, int minMember, int limitGender, int minAge, int visible, int duration, String frequency) {
         this.studyName = studyName;
         this.minMember = minMember;
         this.limitGender = limitGender;
         this.minAge = minAge;
         this.visible = visible;
+        this.duration = duration;
+        this.frequency = frequency;
 
         initialize();
     }
@@ -42,42 +46,42 @@ public class StudyData {
     }
 
     // 최소 인원 설정
-    public void setMinMember(short minMember) {
+    public void setMinMember(int minMember) {
         this.minMember = minMember;
     }
 
     // 최소 인원 가져오기
-    public short getMinMember() {
+    public int getMinMember() {
         return minMember;
     }
 
     // 성별 제한 설정
-    public void setLimitGender(char limitGender) {
+    public void setLimitGender(int limitGender) {
         this.limitGender = limitGender;
     }
 
     // 성별 제한 가져오기
-    public char getLimitGender() {
+    public int getLimitGender() {
         return limitGender;
     }
 
     // 나이 제한 설정
-    public void setMinAge(short minAge) {
+    public void setMinAge(int minAge) {
         this.minAge = minAge;
     }
 
     // 나이 제한 가져오기
-    public short getMinAge() {
+    public int getMinAge() {
         return minAge;
     }
 
     // 공개 여부 설정
-    public void setVisible(char visible) {
+    public void setVisible(int visible) {
         this.visible = visible;
     }
 
     // 공개 여부 반환
-    public char isVisible() {
+    public int isVisible() {
         return visible;
     }
 }

@@ -19,6 +19,8 @@ import com.example.withstudy.main.data.BasicItemData;
 import com.example.withstudy.main.data.Constant;
 import com.example.withstudy.main.data.DetailItemData;
 import com.example.withstudy.main.data.StudyData;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,14 +33,12 @@ import java.util.Locale;
 public class MakeStudyActivity extends AppCompatActivity implements View.OnClickListener{
     private int REQUEST_JOIN = 1;
     private ItemRVAdapter joinItemRVAdapter, studyItemRVAdapter, etcItemRVAdapter;
-    //private AlertDialog.Builder builder;
-    private short minMember;        // 최소 인원
-    private char limitGender;       // 성별 제한
+    private int minMember;          // 최소 인원
+    private int limitGender;       // 성별 제한
     private int minAge;             // 최소 나이
     private int studyDuration;      // 모임 지속기간
     private String studyFrequency;  // 모임빈도
-    private char studyVisible;           // 공개여부
-
+    private int studyVisible;      // 공개여부
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +50,7 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
 
     private void initialize() {
         Button backFromMakeStudyBtn;
+        TextView completeFromMakeStudyText;
 
         //////////////////////////////////////////////////
         // Study Data 기본값으로 초기화
@@ -71,9 +72,11 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
         //////////////////////////////////////////////////
 
         backFromMakeStudyBtn = (Button)findViewById(R.id.backFromMakeStudyBtn);
+        completeFromMakeStudyText = (TextView)findViewById(R.id.completeFromMakeStudyText);
 
         // Click Listener 추가
         backFromMakeStudyBtn.setOnClickListener(this);
+        completeFromMakeStudyText.setOnClickListener(this);
     }
 
     // 모든 RecyclerView 및 adapter 초기화, click listener 추가
@@ -459,7 +462,7 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
                 yearFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
                 year = yearFormat.format(currentTime);
 
-                limitGender = data.getCharExtra("gender", Constant.ALLGENDER);
+                limitGender = data.getIntExtra("gender", Constant.ALLGENDER);
                 minAge      = data.getIntExtra("birthYear", Constant.ALLAGE);
 
                 // minAge를 년도가 아닌 실제 나이로 환산
@@ -501,6 +504,7 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
 
     // 스터디 방 생성
     private void makeStudy() {
+        DatabaseReference ref;
         Intent intent;
         StudyData studyRoom;
         String studyName;
@@ -512,6 +516,17 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
 
         // 옵션 설정한거에 맞게 스터디 방 생성
         // 생성한 스터디 방은 즉시 데이터베이스에 추가되어야 한다.
-        //studyRoom = new StudyData()
+        studyRoom = new StudyData(studyName, minMember, limitGender, minAge, studyVisible, studyDuration, studyFrequency);
+
+        // 데이터베이스에 스터디방 생성
+        ref = FirebaseDatabase.getInstance().getReference();
+
+        ref.child(Constant.DB_CHILD_STUDYROOM).child(studyName);
+        ref.child(Constant.DB_CHILD_STUDYROOM).child(studyName).child("minMember").setValue(minMember);
+        ref.child(Constant.DB_CHILD_STUDYROOM).child(studyName).child("ligitGender").setValue(limitGender);
+        ref.child(Constant.DB_CHILD_STUDYROOM).child(studyName).child("minAge").setValue(minAge);
+        ref.child(Constant.DB_CHILD_STUDYROOM).child(studyName).child("visible").setValue(studyVisible);
+        ref.child(Constant.DB_CHILD_STUDYROOM).child(studyName).child("duration").setValue(studyDuration);
+        ref.child(Constant.DB_CHILD_STUDYROOM).child(studyName).child("frequency").setValue(studyFrequency);
     }
 }
