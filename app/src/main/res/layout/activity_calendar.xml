@@ -40,7 +40,7 @@
         android:layout_marginLeft="20dp"
         android:textColor="#ffffff"
         android:textStyle="bold"
-        android:textSize="22sp" />
+        android:textSize="23sp" />
 
     <TextView
         android:id="@+id/tv_year"
