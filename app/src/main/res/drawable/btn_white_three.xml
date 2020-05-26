@@ -8,7 +8,7 @@
             </solid>
             <corners android:radius="10dp">
 
-            </corners>
+            </corners >
         </shape>
     </item>
     <item android:state_pressed="true">
