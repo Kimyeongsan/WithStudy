@@ -508,7 +508,7 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
         Intent intent;
         StudyData studyRoom;
         String studyName;
-
+//
         // 데이터 수신
         intent = getIntent();
 
