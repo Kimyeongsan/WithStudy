@@ -34,8 +34,9 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:background="@null"
+            android:gravity="center"
             android:singleLine="true"
-            android:text="@string/InputStudyNameText"
+            android:hint="@string/InputStudyNameText"
             android:textColor="#707070"
             android:textSize="28dp" />
     </com.google.android.material.textfield.TextInputLayout>
