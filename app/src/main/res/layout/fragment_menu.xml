@@ -4,16 +4,118 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#f2f2f2"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <Button
-        android:id="@+id/btnLogOut"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@drawable/btn_white_three"
-        android:text="Log out"
-        android:gravity="center"
-        android:layout_gravity="right">
-    </Button>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:background="#ffffff">
+
+        <ImageView
+            android:id="@+id/img_notice_main"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_account_circle_black_36dp"
+            android:tint="#FF9999"
+            android:layout_margin="6dp"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <TextView
+                android:id="@null"
+                android:layout_width="match_parent"
+                android:layout_height="29dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="KimYeongSan"
+                android:textSize="18dp"
+                android:textColor="#000"
+                android:padding="3dp" />
+
+            <TextView
+                android:id="@null"
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
+                android:layout_marginTop="26dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="참여모임 : 5개"
+                android:textSize="11dp"
+                android:textColor="#000"
+                android:padding="3dp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:visibility="gone"
+            android:layout_width="50dp"
+            android:layout_height="50dp">
+            <ImageView
+                android:padding="6dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_brightness_1_black_24dp"
+                android:tint="#BFFF0000"/>
+            <TextView
+                android:id="@+id/text_room_unread"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:textColor="#FFFEFF"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:text="12"/>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center|left"
+        android:layout_marginLeft="10dp"
+        android:text="내정보"
+        android:textStyle="bold">
+    </TextView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+
+        android:background="#ffffff">
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btnLogOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="110dp"
+            android:background="@drawable/btn_white_three"
+            android:text="로그아웃"
+            android:gravity="center"
+            android:layout_gravity="right">
+        </Button>
+
+        <Button
+            android:id="@+id/btnSignOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/btn_white_three"
+            android:text="회원탈퇴"
+            android:gravity="center"
+            android:layout_gravity="right">
+        </Button>
+    </FrameLayout>
 </LinearLayout>
