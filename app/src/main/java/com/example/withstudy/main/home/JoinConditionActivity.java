@@ -209,7 +209,7 @@ public class JoinConditionActivity extends AppCompatActivity implements View.OnC
         titles = Arrays.asList("성별", "나이");
         results = Arrays.asList("제한없음", "제한없음");
 
-        // List의 값들을 JoinConditionData 객체에 설정
+        // List의 값들을 DetailItemData 객체에 설정
         for(int i = 0; i < titles.size(); i++) {
             BasicItemData data;
 

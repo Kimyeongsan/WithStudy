@@ -24,7 +24,6 @@
         android:textStyle="bold"
         android:src="@drawable/ic_search2"
         android:background="@null"
-        android:text="음식검색"
         android:textSize="24sp" />
 
     <EditText
