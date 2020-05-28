@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.example.withstudy.R;
 import com.example.withstudy.main.data.Constant;
+import com.example.withstudy.main.data.StudyData;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -17,6 +18,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class InitStudyActivity extends AppCompatActivity implements View.OnClickListener {
+    private int checkFlag = 0; // 중복명 검사 플래그(중복명이 아니었을 때 화면이 넘어가는데 시작하기 버튼을 여러번 누르면 여러개 생성 방지)
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +50,10 @@ public class InitStudyActivity extends AppCompatActivity implements View.OnClick
             case R.id.makeStudyBtn: // 시작하기 버튼
                 final TextInputEditText studyNameText;
 
+                // 이미 화면을 띄웠으면 나가기
+                if(checkFlag == 1)
+                    return;
+
                 // 모임명을 입력했는지 확인
                 studyNameText = (TextInputEditText)findViewById(R.id.studyName);
 
@@ -57,6 +64,8 @@ public class InitStudyActivity extends AppCompatActivity implements View.OnClick
                     break;
                 }
 
+                checkFlag = 1;
+
                 // 스터디명 중복명 체크
                 FirebaseDatabase.getInstance().getReference().child(Constant.DB_CHILD_STUDYROOM).addListenerForSingleValueEvent(
                         new ValueEventListener() {
@@ -64,8 +73,10 @@ public class InitStudyActivity extends AppCompatActivity implements View.OnClick
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 for(DataSnapshot data : dataSnapshot.getChildren()) {
                                     // 중복이면 못만들게 하기
-                                    if(data.getKey().toString().equals(studyNameText.getText().toString())) {
+                                    if(data.getValue(StudyData.class).getStudyName().equals(studyNameText.getText().toString())) {
                                         Toast.makeText(getApplicationContext(), "중복된 모임명입니다", Toast.LENGTH_SHORT).show();
+
+                                        checkFlag = 0;
 
                                         return;
                                     }
@@ -78,6 +89,8 @@ public class InitStudyActivity extends AppCompatActivity implements View.OnClick
                                 intent.putExtra("studyName", studyNameText.getText().toString());
 
                                 startActivity(intent);
+
+                                checkFlag = 0;
                             }
 
                             @Override

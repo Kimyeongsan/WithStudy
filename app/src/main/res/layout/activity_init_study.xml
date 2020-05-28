@@ -36,7 +36,7 @@
             android:background="@null"
             android:gravity="center"
             android:singleLine="true"
-            android:hint="@string/InputStudyNameText"
+            android:text="@string/InputStudyNameText"
             android:textColor="#707070"
             android:textSize="28dp" />
     </com.google.android.material.textfield.TextInputLayout>
