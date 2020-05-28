@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class StudyRoomMain extends AppCompatActivity implements View.OnClickListener {
+    private int REQUEST_POST = 1;
     private PostItemRVAdapter postRVAdapter;
     private StudyData studyData;
     private String studyName;
@@ -172,6 +173,16 @@ public class StudyRoomMain extends AppCompatActivity implements View.OnClickList
 
             // 글쓰기
             case R.id.writePostBtn:
+                Intent intent;
+
+                // activity_post_write 레이아웃으로 변경하기 위한 intent 설정
+                intent = new Intent(StudyRoomMain.this, PostWriteActivity.class);
+
+                // 모임명 전달
+                intent.putExtra("studyName", studyName);
+
+                startActivityForResult(intent, REQUEST_POST);
+
                 break;
         }
     }
