@@ -18,16 +18,16 @@
             android:layout_height="56dp">
 
             <ImageButton
-                android:id="@null"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
+                android:id="@+id/backFromStudyRoomMain"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@null"
-                android:textSize="14sp"
-                android:textColor="#6224ee"
-                ads:srcCompat="@drawable/ic_close_black_24dp"/>
+                android:background="@drawable/arrowback"
+                android:backgroundTint="#ffffff"/>
 
             <Button
+                android:id="@+id/writePostBtn"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="8"
@@ -40,6 +40,7 @@
         </FrameLayout>
 
         <TextView
+            android:id="@+id/studyRoom_studyNameTV"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -55,7 +56,7 @@
             android:layout_marginRight="150dp">
 
             <TextView
-                android:id="@null"
+                android:id="@+id/studyRoom_visibleTV"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -67,7 +68,7 @@
                 android:textSize="15dp" />
 
             <TextView
-                android:id="@null"
+                android:id="@+id/studyRoom_memberCountTV"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
                 android:layout_gravity="right|center"
@@ -82,12 +83,12 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="220dp"
         android:gravity="center"
         android:layout_marginBottom="20dp">
 
         <FrameLayout
-            android:layout_width="300dp"
+            android:layout_width="340dp"
             android:layout_height="200dp"
             android:background="@drawable/main_board_color"
             android:elevation="10dp">
@@ -131,12 +132,13 @@
             </TextView>
 
             <Button
+                android:id="@+id/studyRoom_curriculumBtn"
                 android:layout_width="110dp"
                 android:layout_height="40dp"
                 android:layout_gravity="bottom|center"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/round_people"
-                android:text="쿼리큘럼"
+                android:text="커리큘럼"
                 android:textSize="15dp"
                 android:textColor="#ffffff">
 
@@ -145,8 +147,8 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/study_main_recycle"
-        android:layout_width="300dp"
+        android:id="@+id/studyRoom_PostRV"
+        android:layout_width="340dp"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:scrollbars="horizontal"
