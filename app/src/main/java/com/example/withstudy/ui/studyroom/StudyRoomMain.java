@@ -2,6 +2,8 @@ package com.example.withstudy.ui.studyroom;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.withstudy.R;
 import com.example.withstudy.main.data.Constant;
+import com.example.withstudy.main.data.PostItemData;
 import com.example.withstudy.main.data.StudyData;
 
 import com.google.firebase.database.DataSnapshot;
@@ -18,7 +21,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class StudyRoomMain extends AppCompatActivity implements View.OnClickListener {
+    private PostItemRVAdapter postRVAdapter;
     private StudyData studyData;
     private String studyName;
 
@@ -34,6 +41,16 @@ public class StudyRoomMain extends AppCompatActivity implements View.OnClickList
         DatabaseReference db;
         Intent intent;
         TextView studyNameTV, visibleTV, memberCountTV;
+
+        //////////////////////////////////////////////////
+        // Item 항목을 둘 RecyclerView 및 LinearLayout 설정
+        initAllRecyclerView();
+        //////////////////////////////////////////////////
+
+        //////////////////////////////////////////////////
+        // Item 항목 설정
+        setData();
+        //////////////////////////////////////////////////
 
         ///////////////////////////////////
         // TextView 가져오기
@@ -85,7 +102,7 @@ public class StudyRoomMain extends AppCompatActivity implements View.OnClickList
                     }
 
                     visibleTV.setText(visible);
-                    memberCountTV.setText(Integer.toString(studyData.getMemberCount()));
+                    memberCountTV.setText("멤버 " + Integer.toString(studyData.getMemberCount()));
                 }
             }
 
@@ -94,6 +111,56 @@ public class StudyRoomMain extends AppCompatActivity implements View.OnClickList
 
             }
         });
+    }
+
+    // 모든 RecyclerView 및 adapter 초기화, click listener 추가
+    private void initAllRecyclerView() {
+        RecyclerView postRV;
+
+        postRV = findViewById(R.id.studyRoom_PostRV);
+
+        postRVAdapter   = new PostItemRVAdapter();
+
+        postRV.setLayoutManager(new LinearLayoutManager(this));
+
+        initPostRVAdapter();
+
+        postRV.setAdapter(postRVAdapter);
+    }
+
+    private void initPostRVAdapter() {
+        postRVAdapter.setOnItemClickListener(new PostItemRVAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int pos) {
+                System.out.println("Post 클릭");
+            }
+        });
+    }
+
+    // RecyclerView의 Item 항목 설정
+    private void setData() {
+        List<String> postWriters, postDates, postContents;
+
+        postWriters = Arrays.asList("작성자1", "작성자2");
+        postDates = Arrays.asList("작성일1", "작성일2");
+        postContents = Arrays.asList("내용1", "내용2");
+
+        // List의 값들을 PostItemData 객체에 설정
+        for(int i = 0; i < postWriters.size(); i++) {
+            PostItemData data;
+
+            data = new PostItemData();
+
+            data.setWriter(postWriters.get(i));
+            data.setDate(postDates.get(i));
+            data.setContent(postContents.get(i));
+
+            // Adapter에 추가
+            postRVAdapter.addItem(data);
+        }
+
+        // Adapter의 값이 변경됨을 알려줌으로써 변경된 값 표시
+        postRVAdapter.notifyDataSetChanged();
     }
 
     @Override

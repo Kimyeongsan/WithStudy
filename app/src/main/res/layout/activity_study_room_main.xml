@@ -83,12 +83,12 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="220dp"
         android:gravity="center"
         android:layout_marginBottom="20dp">
 
         <FrameLayout
-            android:layout_width="300dp"
+            android:layout_width="340dp"
             android:layout_height="200dp"
             android:background="@drawable/main_board_color"
             android:elevation="10dp">
@@ -148,7 +148,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/studyRoom_PostRV"
-        android:layout_width="300dp"
+        android:layout_width="340dp"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:scrollbars="horizontal"
