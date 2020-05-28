@@ -14,7 +14,7 @@
         <FrameLayout
             android:layout_width="300dp"
             android:layout_height="match_parent"
-            android:background="@drawable/main_board_color2">
+            android:background="@drawable/rectangle_round">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -27,6 +27,7 @@
             </ImageView>
 
             <TextView
+                android:id="@+id/postWriter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center|top"
@@ -37,6 +38,7 @@
                 android:textSize="17dp"/>
 
             <TextView
+                android:id="@+id/postDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center|top"
@@ -46,27 +48,41 @@
                 android:text="2020년도 05월 28일"/>
 
             <TextView
+                android:id="@+id/postContent"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:text="We Study Together">
             </TextView>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/stroke_rectangle_round">
+                <EditText
+                    android:layout_width="230dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@null"
+                    android:hint="댓글입력"
+                    android:textSize="10dp">
+                </EditText>
+
+                <Button
+                    android:id="@+id/writeComment"
+                    android:layout_width="30dp"
+                    android:layout_height="20dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/rectangle_round"
+                    android:backgroundTint="#7964e3"
+                    android:text="등록"
+                    android:textSize="8dp"
+                    android:textColor="#FFFFFF" />
+            </LinearLayout>
         </FrameLayout>
-
     </LinearLayout>
-
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center">
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="댓글달기"
-            android:background="@null"
-            android:textSize="14dp">
-        </Button>
-    </FrameLayout>
 </LinearLayout>

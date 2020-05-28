@@ -12,6 +12,7 @@ public class StudyData {
     private int                         visible;        // 공개 여부
     private int                         duration;       // 모임 지속기간
     private String                      frequency;      // 모임 빈도
+    private int                         memberCount;    // 멤버수
 //    private String                      goal;           // 스터디 목표
 //    private LinkedList<CurriculumData>  curriculums;    // 커리큘럼 데이터
 //    private ChatRoomData                chatRoom;       // 채팅방
@@ -25,6 +26,7 @@ public class StudyData {
         this.visible = visible;
         this.duration = duration;
         this.frequency = frequency;
+        this.memberCount = 1;
 
         initialize();
     }
@@ -99,4 +101,10 @@ public class StudyData {
 
     // 모임 빈도 반환
     public String getFrequency() { return frequency; }
+
+    // 멤버 수 설정
+    public void setMemberCount(int memberCount) { this.memberCount = memberCount; }
+
+    // 멤버 수 반환
+    public int getMemberCount() { return memberCount; }
 }
