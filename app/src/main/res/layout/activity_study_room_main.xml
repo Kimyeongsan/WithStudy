@@ -1,20 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@drawable/main_board"
     tools:context=".ui.studyroom.StudyRoomMain">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"/>
-    </ScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="56dp">
+
+            <ImageButton
+                android:id="@null"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:textSize="14sp"
+                android:textColor="#6224ee"
+                ads:srcCompat="@drawable/ic_close_black_24dp"/>
+
+            <Button
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:layout_gravity="right"
+                android:background="@null"
+                android:gravity="center"
+                android:text="글쓰기"
+                android:textColor="#ffffff"
+                android:textSize="15dp" />
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="We Study Together"
+            android:textSize="20dp"
+            android:textColor="#ffffff">
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginLeft="150dp"
+            android:layout_marginRight="150dp">
+
+            <TextView
+                android:id="@null"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="center"
+                android:layout_gravity="left|center"
+                android:text="공개"
+                android:textColor="#ffffff"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@null"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="right|center"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="@null"
+                android:text="맴버 15"
+                android:textColor="#ffffff"
+                android:textSize="15dp" />
+        </LinearLayout>'
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:gravity="center"
+        android:layout_marginBottom="20dp">
+
+        <FrameLayout
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:background="@drawable/main_board_color"
+            android:elevation="10dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|left"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/ic_account_circle_black_36dp">
+
+            </ImageView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center|top"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="50dp"
+                android:text="KimyeongSan님이 만든 규칙"
+                android:textColor="#000000"
+                android:textSize="17dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center|top"
+                android:layout_marginTop="40dp"
+                android:layout_marginLeft="50dp"
+                android:textSize="10dp"
+                android:text="2020년도 05월 28일"/>
+
+            <TextView
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textColor="#000000"
+                android:text="We Study Together">
+            </TextView>
+
+            <Button
+                android:layout_width="110dp"
+                android:layout_height="40dp"
+                android:layout_gravity="bottom|center"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/round_people"
+                android:text="쿼리큘럼"
+                android:textSize="15dp"
+                android:textColor="#ffffff">
+
+            </Button>
+        </FrameLayout>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/study_main_recycle"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:scrollbars="horizontal"
+        android:layout_marginBottom="20dp">
+    </androidx.recyclerview.widget.RecyclerView>
+</LinearLayout>
