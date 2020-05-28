@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 // 스터디 방의 정보를 가지는 클래스
 public class StudyData {
-    private int                         studyId;        // 스터디 고유 번호(스터디 구별용)
+//    private int                         studyId;        // 스터디 고유 번호(스터디 구별용)
     private String                      studyName;      // 스터디 이름
     private int                         minMember;      // 최소 인원
     private int                         limitGender;    // 성별 제한
@@ -12,8 +12,8 @@ public class StudyData {
     private int                         visible;        // 공개 여부
     private int                         duration;       // 모임 지속기간
     private String                      frequency;      // 모임 빈도
-    private String                      goal;           // 스터디 목표
-    private LinkedList<CurriculumData>  curriculums;    // 커리큘럼 데이터
+//    private String                      goal;           // 스터디 목표
+//    private LinkedList<CurriculumData>  curriculums;    // 커리큘럼 데이터
 //    private ChatRoomData                chatRoom;       // 채팅방
 
     // 생성자
@@ -29,9 +29,12 @@ public class StudyData {
         initialize();
     }
 
+    public StudyData() {
+    }
+
     // 스터디 방 처음 생성시 초기화
     private void initialize() {
-        curriculums = new LinkedList<CurriculumData>();
+//        curriculums = new LinkedList<CurriculumData>();
 //        chatRoom = new ChatRoomData();
     }
 
@@ -84,4 +87,16 @@ public class StudyData {
     public int isVisible() {
         return visible;
     }
+
+    // 모임 지속기간 설정
+    public void setDuration(int duration) { this.duration = duration; }
+
+    // 모임 지속기간 반환
+    public int getDuration() { return duration; }
+
+    // 모임 빈도 설정
+    public void setFrequency(String frequency) { this.frequency = frequency; }
+
+    // 모임 빈도 반환
+    public String getFrequency() { return frequency; }
 }

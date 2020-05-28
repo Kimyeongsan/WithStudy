@@ -19,6 +19,7 @@ import com.example.withstudy.main.data.BasicItemData;
 import com.example.withstudy.main.data.Constant;
 import com.example.withstudy.main.data.DetailItemData;
 import com.example.withstudy.main.data.StudyData;
+import com.example.withstudy.ui.studyroom.StudyRoomMain;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -112,10 +113,9 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
         joinItemRVAdapter.setOnItemClickListener(new ItemRVAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
-                AlertDialog alertDialog;
-
                 switch(pos) {
                     case 0: // 최소 인원
+                        AlertDialog alertDialog;
                         View dialogView;
                         final EditText minMemberET;
 
@@ -157,6 +157,9 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
                             }
                         });
 
+                        alertDialog = builder.create();
+                        alertDialog.show();
+
                         break;
 
                     case 1: // 가입 조건 설정
@@ -169,9 +172,6 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
 
                         break;
                 }
-
-                alertDialog = builder.create();
-                alertDialog.show();
             }
         });
     }
@@ -508,7 +508,7 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
         Intent intent;
         StudyData studyRoom;
         String studyName;
-//
+
         // 데이터 수신
         intent = getIntent();
 
@@ -521,12 +521,13 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
         // 데이터베이스에 스터디방 생성
         ref = FirebaseDatabase.getInstance().getReference();
 
-        ref.child(Constant.DB_CHILD_STUDYROOM).child(studyName);
-        ref.child(Constant.DB_CHILD_STUDYROOM).child(studyName).child("minMember").setValue(minMember);
-        ref.child(Constant.DB_CHILD_STUDYROOM).child(studyName).child("ligitGender").setValue(limitGender);
-        ref.child(Constant.DB_CHILD_STUDYROOM).child(studyName).child("minAge").setValue(minAge);
-        ref.child(Constant.DB_CHILD_STUDYROOM).child(studyName).child("visible").setValue(studyVisible);
-        ref.child(Constant.DB_CHILD_STUDYROOM).child(studyName).child("duration").setValue(studyDuration);
-        ref.child(Constant.DB_CHILD_STUDYROOM).child(studyName).child("frequency").setValue(studyFrequency);
+        ref.child(Constant.DB_CHILD_STUDYROOM).push().setValue(studyRoom);
+
+        // activity_join_condition 레이아웃으로 변경하기 위한 intent 설정
+        intent = new Intent(MakeStudyActivity.this, StudyRoomMain.class);
+
+        intent.putExtra("studyName", studyName);
+
+        startActivity(intent);
     }
 }
