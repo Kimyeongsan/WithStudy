@@ -4,38 +4,43 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.example.withstudy.R;
+
+import java.util.ArrayList;
 
 public class NoticeFragment extends Fragment {
 
-    private NoticeViewModel noticeViewModel;
+    private RecyclerView recyclerNotice;
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        noticeViewModel = new ViewModelProvider(this).get(NoticeViewModel.class);
     }
-
 
     @Override
     public View onCreateView(
-            @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            @NonNull LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_notice, container, false);
-        final TextView textView = root.findViewById(R.id.section_notice);
-        noticeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+
+        recyclerNotice = root.findViewById(R.id.recycler_notice);
+        recyclerNotice.setHasFixedSize(true);
+        recyclerNotice.setLayoutManager(new LinearLayoutManager(root.getContext()));
+
+        ArrayList<String> testData = new ArrayList<>();  // Notice 임시 data
+        testData.add("With Study Together");
+        testData.add("With Study Together");
+        testData.add("With Study Together");
+        testData.add("With Study Together");
+        testData.add("With Study Together");
+
+        recyclerNotice.setAdapter(new NoticeAdapter(testData));
+
         return root;
     }
 }
