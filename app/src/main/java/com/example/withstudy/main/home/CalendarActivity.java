@@ -22,7 +22,7 @@ import android.widget.TextView;
 
 import com.example.withstudy.R;
 
-    public class CalendarActivity extends Activity {
+public class CalendarActivity extends Activity {
         /**
          * 연/월 텍스트뷰
          */
