@@ -51,7 +51,38 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="E_mail"
+            android:text="개인 정보"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textColor="#535353"
+            android:textSize="19dp" />
+
+        <EditText
+            android:id="@+id/sign_up_id"
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textColor="#a8a8a8"
+            android:textSize="22dp"
+            android:hint="ID (별명)"/>
+
+        <EditText
+            android:id="@+id/sign_up_name"
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textColor="#a8a8a8"
+            android:textSize="22dp"
+            android:hint="이름"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Login 계정"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
@@ -78,15 +109,6 @@
             android:textSize="22dp"
             android:hint="비밀번호"/>
 
-<!--        <EditText-->
-<!--            android:id="@+id/sign_up_name"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="53dp"-->
-<!--            android:layout_marginLeft="20dp"-->
-<!--            android:layout_marginRight="20dp"-->
-<!--            android:textColor="#a8a8a8"-->
-<!--            android:textSize="22dp"-->
-<!--            android:hint="이름"/>-->
 
 <!--        <EditText-->
 <!--            android:id="@+id/sign_up_date"-->

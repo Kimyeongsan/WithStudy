@@ -51,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String userEmail = loginEmailId.getText().toString();
                 String userPaswd = logInpasswd.getText().toString();
+
                 if (userEmail.isEmpty()) {
                     loginEmailId.setError("Provide your Email first!");
                     loginEmailId.requestFocus();
@@ -78,9 +79,18 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+
     @Override
     protected void onStart() {
         super.onStart();
         firebaseAuth.addAuthStateListener(authStateListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (authStateListener != null) {
+            firebaseAuth.removeAuthStateListener(authStateListener);
+        }
     }
 }
