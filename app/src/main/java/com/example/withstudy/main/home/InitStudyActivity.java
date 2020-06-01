@@ -102,9 +102,11 @@ public class InitStudyActivity extends AppCompatActivity implements View.OnClick
                                 // activity_make_study 레이아웃으로 변경하기 위한 intent 설정
                                 Intent intent = new Intent(InitStudyActivity.this, MakeStudyActivity.class);
 
-                                // 모임명 및 이미지Uri 전달
+                                // 모임명 및 이미지를 선택 했을 시 이미지 Uri 전달
                                 intent.putExtra("studyName", studyNameText.getText().toString());
-                                intent.putExtra("iconUri", selectedImageUri.toString());
+
+                                if(selectedImageUri != null)
+                                    intent.putExtra("iconUri", selectedImageUri.toString());
 
                                 startActivity(intent);
 

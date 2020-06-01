@@ -1,5 +1,6 @@
 package com.example.withstudy.main.home;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,8 +8,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,12 +26,17 @@ import com.example.withstudy.main.data.Constant;
 import com.example.withstudy.main.data.DetailItemData;
 import com.example.withstudy.main.data.StudyData;
 import com.example.withstudy.ui.studyroom.StudyRoomMain;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -506,16 +516,92 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    // DB에 스터디방 저장
+    private void insertStudyRoomToDatabase(DatabaseReference studyRoomRef, StudyData studyRoom) {
+        Intent intent;
+
+        // 데이터베이스에 스터디방 생성
+        studyRoomRef.setValue(studyRoom);
+
+        // activity_study_room_main 레이아웃으로 변경하기 위한 intent 설정
+        intent = new Intent(MakeStudyActivity.this, StudyRoomMain.class);
+
+        intent.putExtra("studyName", studyRoom.getStudyName());
+
+        startActivity(intent);
+    }
+
     // icon Uri를 바탕으로 이미지를 Storage에 저장
-    private void uploadFirebaseStorage(String path, String iconUri) {
-        StorageReference studyRoomRef;
+    private void uploadFirebaseStorage(DatabaseReference studyRoomRef, String iconUri, StudyData studyRoom) {
+        StorageReference studyRoomIconRef;
         ByteArrayOutputStream baos;
+        Bitmap bitmap;
+
+        // 만약 설정한 스터디 아이콘이 없으면 그냥 스터디방 생성
+        if(iconUri == null) {
+            studyRoom.setIconUri("");
+
+            insertStudyRoomToDatabase(studyRoomRef, studyRoom);
+
+            return;
+        }
 
         // 스터디 레퍼런스
-        studyRoomRef = FirebaseStorage.getInstance().getReference().child("studyRooms").child(path);
+        studyRoomIconRef = FirebaseStorage.getInstance().getReference().child("studyRooms").child(studyRoomRef.getKey()).child("icon");
 
         baos = new ByteArrayOutputStream();
-        
+
+        try {
+            byte[] datas;
+            UploadTask uploadTask;
+            Task<Uri> uriTask;
+
+            // Uri로 부터 비트맵 추출후 압축
+            bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), Uri.parse(iconUri));
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+
+            // Byte배열로 변환
+            datas = baos.toByteArray();
+
+            uploadTask = studyRoomIconRef.putBytes(datas);
+
+            uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    // 작업 실패 시 예외 발생시키기
+                    if(!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+
+                    // download Url 얻어서 반환
+                    return studyRoomIconRef.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    // 작업 성공시
+                    if(task.isSuccessful()) {
+                        Uri downloadUri;    // 실제 스토리지에 저장된 Uri
+                        Intent intent;
+
+                        downloadUri = task.getResult();
+
+                        Log.d("DownloadUri", downloadUri.toString());
+
+                        // 실제 다운로드 Uri를 설정
+                        studyRoom.setIconUri(downloadUri.toString());
+
+                        // 데이터베이스에 스터디방 생성
+                        insertStudyRoomToDatabase(studyRoomRef, studyRoom);
+                    } else {
+                        // 작업 실패
+                        Toast.makeText(MakeStudyActivity.this, "이미지 업로드 및 스터디방 생성 실패", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // 스터디 방 생성
@@ -534,22 +620,12 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
 
         // 옵션 설정한거에 맞게 스터디 방 생성
         // 생성한 스터디 방은 즉시 데이터베이스에 추가되어야 한다.
-        studyRoom = new StudyData(studyName, minMember, limitGender, minAge, studyVisible, studyDuration, studyFrequency, iconUri);
+        studyRoom = new StudyData(studyName, minMember, limitGender, minAge, studyVisible, studyDuration, studyFrequency);
 
         // 생성 위치 결정
         ref = FirebaseDatabase.getInstance().getReference().child(Constant.DB_CHILD_STUDYROOM).push();
 
-        // 스터디방 생성 위치 고유값으로 이미지 업로드
-        uploadFirebaseStorage(ref.getKey(), iconUri);
-
-        // 데이터베이스에 스터디방 생성
-        ref.setValue(studyRoom);
-
-        // activity_join_condition 레이아웃으로 변경하기 위한 intent 설정
-        intent = new Intent(MakeStudyActivity.this, StudyRoomMain.class);
-
-        intent.putExtra("studyName", studyName);
-
-        startActivity(intent);
+        // 스터디방 생성 위치 고유값으로 스토리지에 이미지 업로드 및 데이터베이스에 스터디방 저장
+        uploadFirebaseStorage(ref, iconUri, studyRoom);
     }
 }
