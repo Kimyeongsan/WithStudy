@@ -69,9 +69,9 @@ public class SignUpActivity extends AppCompatActivity {
                 String userID = id.getText().toString();
                 String userName = name.getText().toString();
 
-                if(!emailId.equals("") && !passwd.equals("") && !userID.equals("") && !userName.equals("")){
+                if(!userID.equals("") && !userName.equals("") && !emailId.equals("") && !passwd.equals("")){
 
-                    UserData userInfor = new UserData(emailID, paswd, userID, userName);
+                    UserData userInfor = new UserData(userID, userName, emailID, paswd);
                     myRef.child("users").child(userID).setValue(userInfor);
                     toastMessage("New Information has been saved.");
 
