@@ -58,7 +58,7 @@ public class InitStudyActivity extends AppCompatActivity implements View.OnClick
                 break;
 
             // 사진 추가 버튼
-            case R.id.initStudy_studyImageIV:
+
             case R.id.addPictureBtn:
                 pickFromAlbum();
 
