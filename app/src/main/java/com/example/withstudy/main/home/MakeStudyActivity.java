@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,7 +23,10 @@ import com.example.withstudy.main.data.StudyData;
 import com.example.withstudy.ui.studyroom.StudyRoomMain;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -502,26 +506,44 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    // icon Uri를 바탕으로 이미지를 Storage에 저장
+    private void uploadFirebaseStorage(String path, String iconUri) {
+        StorageReference studyRoomRef;
+        ByteArrayOutputStream baos;
+
+        // 스터디 레퍼런스
+        studyRoomRef = FirebaseStorage.getInstance().getReference().child("studyRooms").child(path);
+
+        baos = new ByteArrayOutputStream();
+        
+    }
+
     // 스터디 방 생성
     private void makeStudy() {
         DatabaseReference ref;
         Intent intent;
         StudyData studyRoom;
         String studyName;
+        String iconUri;
 
         // 데이터 수신
         intent = getIntent();
 
         studyName = intent.getExtras().getString("studyName");
+        iconUri = intent.getExtras().getString("iconUri");
 
         // 옵션 설정한거에 맞게 스터디 방 생성
         // 생성한 스터디 방은 즉시 데이터베이스에 추가되어야 한다.
-        studyRoom = new StudyData(studyName, minMember, limitGender, minAge, studyVisible, studyDuration, studyFrequency);
+        studyRoom = new StudyData(studyName, minMember, limitGender, minAge, studyVisible, studyDuration, studyFrequency, iconUri);
+
+        // 생성 위치 결정
+        ref = FirebaseDatabase.getInstance().getReference().child(Constant.DB_CHILD_STUDYROOM).push();
+
+        // 스터디방 생성 위치 고유값으로 이미지 업로드
+        uploadFirebaseStorage(ref.getKey(), iconUri);
 
         // 데이터베이스에 스터디방 생성
-        ref = FirebaseDatabase.getInstance().getReference();
-
-        ref.child(Constant.DB_CHILD_STUDYROOM).push().setValue(studyRoom);
+        ref.setValue(studyRoom);
 
         // activity_join_condition 레이아웃으로 변경하기 위한 intent 설정
         intent = new Intent(MakeStudyActivity.this, StudyRoomMain.class);

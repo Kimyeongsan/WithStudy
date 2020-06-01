@@ -3,9 +3,12 @@ package com.example.withstudy.main.home;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.withstudy.R;
@@ -18,6 +21,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class InitStudyActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final int REQUEST_ALBUM   = 1;
+    private Uri selectedImageUri;
     private int checkFlag = 0; // 중복명 검사 플래그(중복명이 아니었을 때 화면이 넘어가는데 시작하기 버튼을 여러번 누르면 여러개 생성 방지)
 
     @Override
@@ -29,14 +34,19 @@ public class InitStudyActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void initialize() {
-        Button backFromInitStudyBtn, makeStudyBtn;
+        Button backFromInitStudyBtn, makeStudyBtn, addPictureBtn;
+        ImageView studyImageIV;
 
         backFromInitStudyBtn = (Button)findViewById(R.id.backFromInitStudyBtn);
         makeStudyBtn = (Button)findViewById(R.id.makeStudyBtn);
+        addPictureBtn = (Button)findViewById(R.id.addPictureBtn);
+        studyImageIV = (ImageView)findViewById(R.id.initStudy_studyImageIV);
 
         // Click Listener 추가
         backFromInitStudyBtn.setOnClickListener(this);
         makeStudyBtn.setOnClickListener(this);
+        addPictureBtn.setOnClickListener(this);
+        studyImageIV.setOnClickListener(this);
     }
 
     @Override
@@ -44,6 +54,13 @@ public class InitStudyActivity extends AppCompatActivity implements View.OnClick
         switch(view.getId()) {
             case R.id.backFromInitStudyBtn: // 뒤로가기 버튼
                 onBackPressed();
+
+                break;
+
+            // 사진 추가 버튼
+            case R.id.initStudy_studyImageIV:
+            case R.id.addPictureBtn:
+                pickFromAlbum();
 
                 break;
 
@@ -85,8 +102,9 @@ public class InitStudyActivity extends AppCompatActivity implements View.OnClick
                                 // activity_make_study 레이아웃으로 변경하기 위한 intent 설정
                                 Intent intent = new Intent(InitStudyActivity.this, MakeStudyActivity.class);
 
-                                // 모임명 전달
+                                // 모임명 및 이미지Uri 전달
                                 intent.putExtra("studyName", studyNameText.getText().toString());
+                                intent.putExtra("iconUri", selectedImageUri.toString());
 
                                 startActivity(intent);
 
@@ -102,5 +120,40 @@ public class InitStudyActivity extends AppCompatActivity implements View.OnClick
 
                 break;
         }
+    }
+
+    // 앨범에 사진 가져오기
+    private void pickFromAlbum() {
+        Intent intent;
+
+        intent = new Intent(Intent.ACTION_PICK);
+        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+
+        startActivityForResult(intent, REQUEST_ALBUM);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        ImageView studyImageIV;
+        Button addPictureBtn;
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode != RESULT_OK)
+            return;
+
+        selectedImageUri = null;
+
+        // 앨범에서 이미지 선택한 경우
+        if (requestCode == REQUEST_ALBUM) {
+            selectedImageUri = data.getData();
+        }
+
+        // 이미지 표시 및 버튼 숨기기
+        studyImageIV = (ImageView)findViewById(R.id.initStudy_studyImageIV);
+        studyImageIV.setImageURI(selectedImageUri);
+
+        addPictureBtn = (Button) findViewById(R.id.addPictureBtn);
+        addPictureBtn.setVisibility(View.INVISIBLE);
     }
 }
