@@ -24,7 +24,9 @@ import com.example.withstudy.R;
 import com.example.withstudy.main.data.BasicItemData;
 import com.example.withstudy.main.data.Constant;
 import com.example.withstudy.main.data.DetailItemData;
+import com.example.withstudy.main.data.ManagementData;
 import com.example.withstudy.main.data.StudyData;
+import com.example.withstudy.main.data.UserData;
 import com.example.withstudy.ui.studyroom.StudyRoomMain;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -519,9 +521,22 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
     // DB에 스터디방 저장
     private void insertStudyRoomToDatabase(DatabaseReference studyRoomRef, StudyData studyRoom) {
         Intent intent;
+        UserData userData;
+        DatabaseReference userRef;
 
-        // 데이터베이스에 스터디방 생성
+        userData = ManagementData.getInstance().getUserData();
+
+        // 데이터베이스에 스터디방 생성 및 멤버 추가
         studyRoomRef.setValue(studyRoom);
+        studyRoomRef.child("members").child(userData.getUser_Id()).setValue(userData);
+
+        // 유저 데이터에 가입한 스터디 추가
+        userRef = FirebaseDatabase.getInstance().getReference();
+        userRef.child(Constant.DB_CHILD_USER)
+                .child(userData.getUser_Id())
+                .child(Constant.DB_CHILD_JOINSTUDY)
+                .child(studyRoomRef.getKey())
+                .setValue(studyRoom);
 
         // activity_study_room_main 레이아웃으로 변경하기 위한 intent 설정
         intent = new Intent(MakeStudyActivity.this, StudyRoomMain.class);
