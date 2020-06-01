@@ -29,7 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.withstudy.R;
-import com.example.withstudy.SignInActivity;
+import com.example.withstudy.SignInUpActivity;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
@@ -175,7 +175,7 @@ public class ChatRoomActivity extends AppCompatActivity
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         if (mFirebaseUser == null) {
             // Not signed in, launch the Sign In activity
-            startActivity(new Intent(this, SignInActivity.class));
+            startActivity(new Intent(this, SignInUpActivity.class));
             finish();
             return;
         } else {
@@ -321,7 +321,7 @@ public class ChatRoomActivity extends AppCompatActivity
                 mFirebaseAuth.signOut();
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient);
                 mUsername = ANONYMOUS;
-                startActivity(new Intent(this, SignInActivity.class));
+                startActivity(new Intent(this, SignInUpActivity.class));
                 finish();
                 return true;
             default:

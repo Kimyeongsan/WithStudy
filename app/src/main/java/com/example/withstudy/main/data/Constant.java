@@ -5,6 +5,7 @@ public interface Constant {
     /////////////////////////////
     // database child 설정
     String DB_CHILD_STUDYROOM    = "studyRooms";
+    String DB_CHILD_USER         = "users";
     /////////////////////////////
 
     /////////////////////////////

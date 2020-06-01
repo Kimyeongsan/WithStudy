@@ -7,7 +7,7 @@
     android:gravity="center"
     android:orientation="vertical"
     android:background="@drawable/loading"
-    tools:context=".SignInActivity">
+    tools:context=".SignInUpActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,19 +18,13 @@
         android:layout_marginBottom="170dp"
         android:background="@drawable/btn_white" >
 
-        <TextView
+        <Button
+            android:id="@+id/signUpBtn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@null"
-            android:gravity="center"
             android:text="휴대폰 번호 또는 이메일로 가입"
             android:textSize="17dp"
-            android:textColor="#585858" />
-
-        <Button
-            android:id="@+id/sign_up_button"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:textColor="#585858"
             android:background="@null" />
     </RelativeLayout>
 
@@ -43,19 +37,13 @@
         android:layout_marginRight="20dp"
         android:background="@drawable/btn_white" >
 
-        <TextView
+        <Button
+            android:id="@+id/nonMemberBtn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@null"
-            android:gravity="center"
             android:text="비회원으로 둘러보기"
             android:textSize="17dp"
-            android:textColor="#585858"/>
-
-        <Button
-            android:id="@+id/d_sign_in"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:textColor="#585858"
             android:background="@null" />
     </RelativeLayout>
 
@@ -80,7 +68,7 @@
             android:textColor="#ffffff"/>
 
         <Button
-            android:id="@+id/login_button"
+            android:id="@+id/signInBtn"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_gravity="bottom"
@@ -94,7 +82,7 @@
     </RelativeLayout>
 
     <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_button"
+        android:id="@+id/googleSignInBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom"
