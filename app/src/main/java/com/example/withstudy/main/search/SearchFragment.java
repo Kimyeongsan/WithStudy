@@ -1,5 +1,6 @@
 package com.example.withstudy.main.search;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.withstudy.R;
 import com.example.withstudy.main.data.StudyItemData;
 import com.example.withstudy.ui.studyroom.StudyItemRVAdapter;
+import com.example.withstudy.ui.studyroom.StudyRoomMain;
 
 import java.util.Arrays;
 import java.util.List;
@@ -58,27 +60,29 @@ public class SearchFragment extends Fragment {
         myAroundStudyRV.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, true));
         popularStudyRV.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, true));
 
-        initMyAroundStudyRVAdapter();
-        initPopularStudyRVAdapter();
+        initStudyRVAdapter(myAroundStudyRVAdapter);
+        initStudyRVAdapter(popularStudyRVAdapter);
 
         myAroundStudyRV.setAdapter(myAroundStudyRVAdapter);
         popularStudyRV.setAdapter(popularStudyRVAdapter);
     }
 
-    private void initMyAroundStudyRVAdapter() {
-        myAroundStudyRVAdapter.setOnItemClickListener(new StudyItemRVAdapter.OnItemClickListener() {
+    private void initStudyRVAdapter(StudyItemRVAdapter studyItemRVAdapter) {
+        studyItemRVAdapter.setOnItemClickListener(new StudyItemRVAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
-                System.out.println("내주변 스터디 클릭");
-            }
-        });
-    }
+                StudyItemData studyItem;
+                Intent intent;
 
-    private void initPopularStudyRVAdapter() {
-        popularStudyRVAdapter.setOnItemClickListener(new StudyItemRVAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int pos) {
-                System.out.println("인기있는 스터디 클릭");
+                // 클릭한 스터디 항목 가져오기
+                studyItem = studyItemRVAdapter.getItem(pos);
+
+                // 클릭한 스터디 화면으로 이동해야함
+                intent = new Intent(getActivity(), StudyRoomMain.class);
+
+                intent.putExtra("studyName", studyItem.getTitle());
+
+                startActivity(intent);
             }
         });
     }

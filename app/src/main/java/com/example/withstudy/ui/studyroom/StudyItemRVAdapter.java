@@ -1,21 +1,27 @@
 package com.example.withstudy.ui.studyroom;
 
+import android.content.Context;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.withstudy.R;
+
 import com.example.withstudy.main.data.StudyItemData;
+import com.example.withstudy.ui.studyroom.curriculum.GlideApp;
 
 import java.util.ArrayList;
 
 public class StudyItemRVAdapter extends RecyclerView.Adapter<StudyItemRVAdapter.ItemViewHolder> {
     private ArrayList<StudyItemData> listData = new ArrayList<>(); // adapter에 들어갈 list
     private OnItemClickListener mListener = null;                  // listener 객체
+    private Context context;
 
     // listener interface
     public interface OnItemClickListener {
@@ -25,6 +31,11 @@ public class StudyItemRVAdapter extends RecyclerView.Adapter<StudyItemRVAdapter.
     // OnItemClickListener 객체 설정
     public void setOnItemClickListener(OnItemClickListener listener) {
         mListener = listener;
+    }
+
+    // context 설정
+    public void setContext(Context context) {
+        this.context = context;
     }
 
     @Override
@@ -63,6 +74,7 @@ public class StudyItemRVAdapter extends RecyclerView.Adapter<StudyItemRVAdapter.
     class ItemViewHolder extends RecyclerView.ViewHolder {
         private TextView textView1;
         private TextView textView2;
+        private ImageView imageView;
 
         ItemViewHolder(View itemView) {
             super(itemView);
@@ -82,13 +94,21 @@ public class StudyItemRVAdapter extends RecyclerView.Adapter<StudyItemRVAdapter.
                 }
             });
 
-            textView1 = (TextView) itemView.findViewById(R.id.studyTitleText);
-            textView2 = (TextView) itemView.findViewById(R.id.studyLocationText);
+            textView1 = (TextView)itemView.findViewById(R.id.studyTitleText);
+            textView2 = (TextView)itemView.findViewById(R.id.studyLocationText);
+            imageView = (ImageView)itemView.findViewById(R.id.studyIconIV);
         }
 
         void onBind(StudyItemData data) {
             textView1.setText(data.getTitle());
             textView2.setText(data.getLocation());
+
+            // 등록한 이미지가 존재할 때만
+            if (!data.getIconUri().equals("")) {
+                GlideApp.with(context)
+                        .load(data.getRef())
+                        .into(imageView);
+            }
         }
     }
 }

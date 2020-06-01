@@ -14,11 +14,10 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/testImage"
+            android:id="@+id/studyIconIV"
             android:layout_width="match_parent"
             android:layout_height="120dp"
-            android:background="@drawable/ic_search">
-        </ImageView>
+            android:src="@drawable/ic_search"/>
 
         <TextView
             android:id="@+id/studyTitleText"

@@ -501,7 +501,6 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
                         break;
                 }
 
-
                 // 가입 조건 텍스트 변경
                 dData = joinItemRVAdapter.getItem(1);
                 dData.setContent("성별 " + gender);
