@@ -9,7 +9,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.withstudy.R;
-import com.example.withstudy.SignInActivity;
+import com.example.withstudy.SignInUpActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class UserActivity extends AppCompatActivity implements View.OnClickListener {
@@ -46,7 +46,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btnLogOut:
                 logOut();
                 Intent intent = new Intent(
-                        getApplication(),SignInActivity.class);
+                        getApplication(), SignInUpActivity.class);
                 startActivity(intent);
                 break;
 

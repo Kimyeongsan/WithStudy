@@ -40,8 +40,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".SignInUpActivity" />
         <activity android:name=".SignInActivity" />
-        <activity android:name=".LoginActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".main.menu.UserActivity" /> <!-- Kakao Map API 사용 -->

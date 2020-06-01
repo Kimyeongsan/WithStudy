@@ -34,7 +34,7 @@ public class LoadingActivity extends AppCompatActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        startActivity(new Intent(LoadingActivity.this,SignInActivity.class));
+                        startActivity(new Intent(LoadingActivity.this, SignInUpActivity.class));
                         finish();
                     }
                 }, 2000);
@@ -58,7 +58,7 @@ public class LoadingActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(LoadingActivity.this,SignInActivity.class));
+                startActivity(new Intent(LoadingActivity.this, SignInUpActivity.class));
                 finish();
             }
         }, 2000);
