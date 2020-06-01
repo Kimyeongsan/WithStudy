@@ -119,18 +119,6 @@ public class SignInActivity extends AppCompatActivity implements
         switch (v.getId()) {
             case R.id.sign_in_button:
 
-//                String emailID = emailId;
-//                String paswd = passwd;
-//                String userID = id;
-//                String userName = name;
-//
-//                if (!userID.equals("") && !userName.equals("") && !emailId.equals("") && !passwd.equals("")) {
-//
-//                    UserData userInfor = new UserData(userID, userName, emailID, paswd);
-//                    myRef.child("users").child(userID).setValue(userInfor);
-//                    toastMessage("New Information has been saved.");
-//
-//                }
                 signIn();
                 break;
         }
@@ -151,10 +139,6 @@ public class SignInActivity extends AppCompatActivity implements
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        //만약 users에 구글 이메일과 같은 아이디가 없다면? --> 여기서 유저 닉네임이 아니라 유저 이메일이 uid가 되는게
-                        //원착상 맞겠죠?
-
-                        //isSuccessful 일 때 파이어베이스 데이터베이스에 해당 값들을 이메일 로그인하고 똑같은 콯드를 넣어주면 되겠지?
 
                             if (!task.isSuccessful()) {
                                 Log.w(TAG, "signInWithCredential", task.getException());
