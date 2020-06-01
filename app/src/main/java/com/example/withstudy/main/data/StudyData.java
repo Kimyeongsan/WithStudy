@@ -1,9 +1,5 @@
 package com.example.withstudy.main.data;
 
-import android.net.Uri;
-
-import java.util.LinkedList;
-
 // 스터디 방의 정보를 가지는 클래스
 public class StudyData {
 //    private int                         studyId;        // 스터디 고유 번호(스터디 구별용)
@@ -16,6 +12,7 @@ public class StudyData {
     private String                      frequency;      // 모임 빈도
     private int                         memberCount;    // 멤버수
     private String                      iconUri;        // 아이콘 uri
+    //private String                      members;        // 가입 멤버들
 //    private String                      goal;           // 스터디 목표
 //    private LinkedList<CurriculumData>  curriculums;    // 커리큘럼 데이터
 //    private ChatRoomData                chatRoom;       // 채팅방
@@ -29,7 +26,9 @@ public class StudyData {
         this.visible = visible;
         this.duration = duration;
         this.frequency = frequency;
-        this.memberCount = 1;
+
+        memberCount = 1;
+        //members = "";
 
         initialize();
     }

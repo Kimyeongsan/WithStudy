@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.withstudy.main.data.Constant;
+import com.example.withstudy.main.data.ManagementData;
 import com.example.withstudy.main.data.StudyData;
 import com.example.withstudy.main.data.UserData;
 import com.example.withstudy.main.home.InitStudyActivity;
@@ -144,7 +145,7 @@ public class SignInUpActivity extends AppCompatActivity implements View.OnClickL
     private void insertUserToDatabase() {
         DatabaseReference userRef;
 
-        userRef = FirebaseDatabase.getInstance().getReference().child(Constant.DB_CHILD_USER).push();
+        userRef = FirebaseDatabase.getInstance().getReference().child(Constant.DB_CHILD_USER).child(userData.getUser_Id());
 
         // 디비에 유저 생성
         userRef.setValue(userData);
@@ -162,9 +163,14 @@ public class SignInUpActivity extends AppCompatActivity implements View.OnClickL
                 // 성공적으로 등록 했으면
                 if(task.isSuccessful()) {
                     FirebaseUser user;
+                    ManagementData mData;   // 싱글톤 객체(앱상에서 전반적인 데이터 관리)
 
                     // 현재 User 가져오기
                     user = firebaseAuth.getCurrentUser();
+
+                    // 싱글톤 객체에 유저 정보 등록
+                    mData = ManagementData.getInstance();
+                    mData.setUserData(new UserData(user.getUid(), user.getDisplayName(), user.getEmail(), null));
 
                     // 이미 DB에 존재하는 유저면 화면만 넘기기
                     FirebaseDatabase.getInstance().getReference().child(Constant.DB_CHILD_USER).addListenerForSingleValueEvent(new ValueEventListener() {
