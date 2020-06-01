@@ -21,7 +21,7 @@ public class StudyData {
 //    private ChatRoomData                chatRoom;       // 채팅방
 
     // 생성자
-    public StudyData(String studyName, int minMember, int limitGender, int minAge, int visible, int duration, String frequency, String iconUri) {
+    public StudyData(String studyName, int minMember, int limitGender, int minAge, int visible, int duration, String frequency) {
         this.studyName = studyName;
         this.minMember = minMember;
         this.limitGender = limitGender;
@@ -30,7 +30,6 @@ public class StudyData {
         this.duration = duration;
         this.frequency = frequency;
         this.memberCount = 1;
-        this.iconUri = iconUri;
 
         initialize();
     }
