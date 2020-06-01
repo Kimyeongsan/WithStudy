@@ -24,10 +24,13 @@ import com.example.withstudy.main.data.StudyData;
 import com.example.withstudy.main.data.StudyItemData;
 import com.example.withstudy.main.data.UserData;
 import com.example.withstudy.ui.studyroom.StudyItemRVAdapter;
+import com.example.withstudy.ui.studyroom.StudyRoomMain;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +44,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
@@ -65,7 +69,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         joinStudyRVAdapter.setOnItemClickListener(new StudyItemRVAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
-                System.out.println("가입 스터디 클릭");
+                StudyItemData studyItem;
+                Intent intent;
+
+                // 클릭한 가입한 스터디 항목 가져오기
+                studyItem = joinStudyRVAdapter.getItem(pos);
+
+                // 클릭한 스터디 화면으로 이동해야함
+                intent = new Intent(getActivity(), StudyRoomMain.class);
+
+                intent.putExtra("studyName", studyItem.getTitle());
+
+                startActivity(intent);
             }
         });
 
@@ -96,16 +111,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     // 가입한 스터디 목록 생성
     private void setData() {
         UserData userData;
-        List<String> joinStudyTitles;
-        List<String> joinStudyLocations;
 
         // 유저 정보 가져오기
         userData = ManagementData.getInstance().getUserData();
-
-        joinStudyTitles = new ArrayList<String>();
-        //joinStudyLocations = new ArrayList<String>();
-
-        joinStudyLocations = Arrays.asList("테스트1", "테스트2");
 
         // 가입한 목록 받아와서 띄워주기
         FirebaseDatabase.getInstance().getReference()
@@ -117,26 +125,30 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     for(DataSnapshot data : dataSnapshot.getChildren()) {
                         StudyData studyData;
+                        StudyItemData studyItemData;
+                        StorageReference studyIconRef;
 
+                        // 디비에서 가입한 스터디 가져오기
                         studyData = data.getValue(StudyData.class);
 
-                        // 가입한 스터디 이름과 위치 추가
-                        joinStudyTitles.add(studyData.getStudyName());
+                        studyItemData = new StudyItemData();
+
+                        studyItemData.setTitle(studyData.getStudyName());
+                        studyItemData.setLocation("테스트");
+                        studyItemData.setIconUri(studyData.getIconUri());
+
+                        if(!studyItemData.getIconUri().equals("")) {
+                            studyIconRef = FirebaseStorage.getInstance().getReferenceFromUrl(studyItemData.getIconUri());
+
+                            studyItemData.setRef(studyIconRef);
+                            joinStudyRVAdapter.setContext(getContext());
+                        }
+
+                        // 리싸이클러 뷰에 추가
+                        joinStudyRVAdapter.addItem(studyItemData);
                     }
 
-                    // 리싸이클러 뷰에 띄워주기
-                    for(int i = 0; i < joinStudyTitles.size(); i++) {
-                        StudyItemData data;
-
-                        data = new StudyItemData();
-
-                        data.setTitle(joinStudyTitles.get(i));
-                        data.setLocation(joinStudyLocations.get(i));
-
-                        // Adapter에 추가
-                        joinStudyRVAdapter.addItem(data);
-                    }
-
+                    // 변경된 값 표시
                     joinStudyRVAdapter.notifyDataSetChanged();
                 }
 
