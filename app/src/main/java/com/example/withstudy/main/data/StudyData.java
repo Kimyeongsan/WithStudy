@@ -1,5 +1,7 @@
 package com.example.withstudy.main.data;
 
+import android.net.Uri;
+
 import java.util.LinkedList;
 
 // 스터디 방의 정보를 가지는 클래스
@@ -13,12 +15,13 @@ public class StudyData {
     private int                         duration;       // 모임 지속기간
     private String                      frequency;      // 모임 빈도
     private int                         memberCount;    // 멤버수
+    private String                      iconUri;        // 아이콘 uri
 //    private String                      goal;           // 스터디 목표
 //    private LinkedList<CurriculumData>  curriculums;    // 커리큘럼 데이터
 //    private ChatRoomData                chatRoom;       // 채팅방
 
     // 생성자
-    public StudyData(String studyName, int minMember, int limitGender, int minAge, int visible, int duration, String frequency) {
+    public StudyData(String studyName, int minMember, int limitGender, int minAge, int visible, int duration, String frequency, String iconUri) {
         this.studyName = studyName;
         this.minMember = minMember;
         this.limitGender = limitGender;
@@ -27,6 +30,7 @@ public class StudyData {
         this.duration = duration;
         this.frequency = frequency;
         this.memberCount = 1;
+        this.iconUri = iconUri;
 
         initialize();
     }
@@ -107,4 +111,10 @@ public class StudyData {
 
     // 멤버 수 반환
     public int getMemberCount() { return memberCount; }
+
+    // 아이콘 Uri 설정
+    public void setIconUri(String iconUri) { this.iconUri = iconUri; }
+
+    // 아이콘 Uri 반환
+    public String getIconUri() { return iconUri; }
 }
