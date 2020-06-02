@@ -47,7 +47,7 @@
         <activity android:name=".SignInActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".main.menu.UserActivity" /> <!-- Kakao Map API 사용 -->
+        <!-- Kakao Map API 사용 -->
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="d63aae8019a77e3a15b350bda76bc561" />
