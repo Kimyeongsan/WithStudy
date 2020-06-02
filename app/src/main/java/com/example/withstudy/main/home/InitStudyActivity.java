@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -14,11 +15,15 @@ import android.widget.Toast;
 import com.example.withstudy.R;
 import com.example.withstudy.main.data.Constant;
 import com.example.withstudy.main.data.StudyData;
+import com.example.withstudy.ui.studyroom.MapActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import net.daum.mf.map.api.MapPoint;
+import net.daum.mf.map.api.MapView;
 
 public class InitStudyActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int REQUEST_ALBUM   = 1;
@@ -35,6 +40,7 @@ public class InitStudyActivity extends AppCompatActivity implements View.OnClick
 
     private void initialize() {
         Button backFromInitStudyBtn, makeStudyBtn, addPictureBtn;
+        Button test;
         ImageView studyImageIV;
 
         backFromInitStudyBtn = (Button)findViewById(R.id.backFromInitStudyBtn);
@@ -47,11 +53,22 @@ public class InitStudyActivity extends AppCompatActivity implements View.OnClick
         makeStudyBtn.setOnClickListener(this);
         addPictureBtn.setOnClickListener(this);
         studyImageIV.setOnClickListener(this);
+
+        test = (Button)findViewById(R.id.test);
+        test.setOnClickListener(this);
+
     }
 
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
+            case R.id.test:
+                Intent intent;
+
+                intent = new Intent(InitStudyActivity.this, MapActivity.class);
+
+                startActivity(intent);
+                break;
             case R.id.backFromInitStudyBtn: // 뒤로가기 버튼
                 onBackPressed();
 

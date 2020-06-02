@@ -11,7 +11,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera"
+
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="true" />
 
     <application
@@ -22,12 +24,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".ui.studyroom.PostWriteActivity"></activity>
+        <activity android:name=".ui.studyroom.MapActivity"></activity>
+        <activity android:name=".ui.studyroom.PostWriteActivity" />
         <activity android:name=".ui.studyroom.StudyRoomMain" />
         <activity android:name=".main.home.JoinConditionActivity" />
         <activity android:name=".main.home.MakeStudyActivity" />
         <activity android:name=".main.home.InitStudyActivity" />
-        <activity android:name=".ui.search.MapActivity" />
         <activity android:name=".main.chatting.ChatRoomActivity" /> <!-- android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/> -->
         <activity
             android:name=".ui.studyroom.curriculum.CurriculumMainActivity"

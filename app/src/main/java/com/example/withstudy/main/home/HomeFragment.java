@@ -135,10 +135,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
                         studyItemData.setTitle(studyData.getStudyName());
                         studyItemData.setLocation("테스트");
-                        studyItemData.setIconUri(studyData.getIconUri());
 
-                        if(!studyItemData.getIconUri().equals("")) {
-                            studyIconRef = FirebaseStorage.getInstance().getReferenceFromUrl(studyItemData.getIconUri());
+                        if(!studyData.getIconUri().equals("")) {
+                            studyIconRef = FirebaseStorage.getInstance().getReferenceFromUrl(studyData.getIconUri());
 
                             studyItemData.setRef(studyIconRef);
                             joinStudyRVAdapter.setContext(getContext());

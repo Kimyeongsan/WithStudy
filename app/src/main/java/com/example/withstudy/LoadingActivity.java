@@ -27,7 +27,8 @@ public class LoadingActivity extends AppCompatActivity {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if(checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
                     && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                    && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                    && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 Log.d("권한 설정", "이미 권한 설정 완료");
 
                 Handler handler = new Handler();
@@ -44,7 +45,8 @@ public class LoadingActivity extends AppCompatActivity {
                 ActivityCompat.requestPermissions(LoadingActivity.this,
                         new String[]{Manifest.permission.CAMERA
                                 , Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                , Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                                , Manifest.permission.READ_EXTERNAL_STORAGE
+                                , Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             }
         }
     }

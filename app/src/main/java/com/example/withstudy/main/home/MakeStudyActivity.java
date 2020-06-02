@@ -600,8 +600,6 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
 
                         downloadUri = task.getResult();
 
-                        Log.d("DownloadUri", downloadUri.toString());
-
                         // 실제 다운로드 Uri를 설정
                         studyRoom.setIconUri(downloadUri.toString());
 

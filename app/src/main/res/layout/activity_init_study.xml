@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".main.home.InitStudyActivity">
 
+    <Button
+        android:id="@+id/backFromInitStudyBtn"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/back"
+        android:backgroundTint="#707070"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
@@ -67,16 +78,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
 
-    <Button
-        android:id="@+id/backFromInitStudyBtn"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/back"
-        android:backgroundTint="#707070"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/makeStudyBtn"
@@ -88,6 +89,19 @@
         android:text="시작하기"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/rectangle_round"
+        android:backgroundTint="#7964e3"
+        android:text="위치 설정"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toTopOf="@+id/makeStudyBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

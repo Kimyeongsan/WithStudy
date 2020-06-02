@@ -104,7 +104,7 @@ public class StudyItemRVAdapter extends RecyclerView.Adapter<StudyItemRVAdapter.
             textView2.setText(data.getLocation());
 
             // 등록한 이미지가 존재할 때만
-            if (!data.getIconUri().equals("")) {
+            if (data.getRef() != null) {
                 GlideApp.with(context)
                         .load(data.getRef())
                         .into(imageView);
