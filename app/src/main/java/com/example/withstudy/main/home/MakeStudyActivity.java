@@ -9,11 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,9 +35,13 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import net.daum.mf.map.api.MapPoint;
+import net.daum.mf.map.api.MapReverseGeoCoder;
+
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+
 import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -47,7 +49,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class MakeStudyActivity extends AppCompatActivity implements View.OnClickListener{
+public class MakeStudyActivity extends AppCompatActivity implements View.OnClickListener, MapReverseGeoCoder.ReverseGeoCodingResultListener {
     private int REQUEST_JOIN = 1;
     private ItemRVAdapter joinItemRVAdapter, studyItemRVAdapter, etcItemRVAdapter;
     private int minMember;          // 최소 인원
@@ -56,6 +58,8 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
     private int studyDuration;      // 모임 지속기간
     private String studyFrequency;  // 모임빈도
     private int studyVisible;      // 공개여부
+    private double latitude, longitude; // 위도, 경도
+    private String address;         // 주소
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,7 +140,7 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
                         final EditText minMemberET;
 
                         dialogView = getLayoutInflater().inflate(R.layout.input_dialog, null);
-                        minMemberET = (EditText)dialogView.findViewById(R.id.minMember);
+                        minMemberET = (EditText)dialogView.findViewById(R.id.dialog_ET);
 
                         builder.setView(dialogView);
                         builder.setTitle("최소 인원");
@@ -452,6 +456,13 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
                 break;
 
             case R.id.completeFromMakeStudyText:    // 완료 텍스트
+                Intent intent;
+
+                intent = getIntent();
+
+                latitude = intent.getExtras().getDouble("latitude");
+                longitude = intent.getExtras().getDouble("longitude");
+
                 makeStudy();
 
                 break;
@@ -543,6 +554,7 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
         intent.putExtra("studyName", studyRoom.getStudyName());
 
         startActivity(intent);
+        finish();
     }
 
     // icon Uri를 바탕으로 이미지를 Storage에 저장
@@ -616,28 +628,53 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    // 스터디 방 생성
-    private void makeStudy() {
-        DatabaseReference ref;
+    // 위도, 경도로 주소 설정 및 스터디 방 생성 및 데이터베이스 업로드
+    public void makeStudy() {
+        MapReverseGeoCoder reverseGeoCoder;
+        MapPoint mapPoint;
+
+        // 위도, 경도로 MapPoint 변환
+        mapPoint = MapPoint.mapPointWithGeoCoord(latitude, longitude);
+
+        reverseGeoCoder = new MapReverseGeoCoder("d63aae8019a77e3a15b350bda76bc561", mapPoint
+                , this, this);
+
+        reverseGeoCoder.startFindingAddress();
+    }
+
+    // 주소를 찾은 경우
+    @Override
+    public void onReverseGeoCoderFoundAddress(MapReverseGeoCoder mapReverseGeoCoder, String s) {
         Intent intent;
+        DatabaseReference ref;
         StudyData studyRoom;
-        String studyName;
-        String iconUri;
+        String studyName, iconUri, category;
 
         // 데이터 수신
         intent = getIntent();
 
+        // 이름, 아이콘, 분야 가져오기 및 주소 설정
         studyName = intent.getExtras().getString("studyName");
         iconUri = intent.getExtras().getString("iconUri");
+        category = intent.getExtras().getString("category");
+
+        address = s;
 
         // 옵션 설정한거에 맞게 스터디 방 생성
         // 생성한 스터디 방은 즉시 데이터베이스에 추가되어야 한다.
-        studyRoom = new StudyData(studyName, minMember, limitGender, minAge, studyVisible, studyDuration, studyFrequency);
+        studyRoom = new StudyData(studyName, minMember, limitGender, minAge, studyVisible, studyDuration, studyFrequency
+                , latitude, longitude, address, category);
 
         // 생성 위치 결정
         ref = FirebaseDatabase.getInstance().getReference().child(Constant.DB_CHILD_STUDYROOM).push();
 
         // 스터디방 생성 위치 고유값으로 스토리지에 이미지 업로드 및 데이터베이스에 스터디방 저장
         uploadFirebaseStorage(ref, iconUri, studyRoom);
+    }
+
+    // 주소를 못찾은 경우
+    @Override
+    public void onReverseGeoCoderFailedToFindAddress(MapReverseGeoCoder mapReverseGeoCoder) {
+
     }
 }

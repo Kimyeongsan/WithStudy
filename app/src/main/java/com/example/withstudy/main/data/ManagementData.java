@@ -26,8 +26,16 @@ public class ManagementData {
         return userData;
     }
 
-    // 유저가 가입한 스터디 추가
+    // 유저가 가입한 스터디 추가(이미 존재하면 추가하면 안됨)
     public void addJoinStudy(StudyData studyData) {
+        // 이미 존재하는지 찾기
+        for(StudyData data : joinStudys) {
+            // 이미 존재
+            if(data.getStudyName().equals(studyData.getStudyName())) {
+                return;
+            }
+        }
+
         joinStudys.add(studyData);
     }
 

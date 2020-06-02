@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".main.home.StudyCategoryActivity">
+
+    <ImageView
+        android:id="@+id/backFromStudyCategory"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/arrowback"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/studyCategory_selectedCategoryTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="모임의 종류를 선택하세요."
+        android:textColor="#000000"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backFromStudyCategory" />
+
+    <Button
+        android:id="@+id/studyCategory_Btn1"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/rectangle_round"
+        android:backgroundTint="#f5f5f5"
+        android:text="토익"
+        android:textColor="#707070"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/studyCategory_selectedCategoryTV" />
+
+    <Button
+        android:id="@+id/studyCategory_Btn2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/rectangle_round"
+        android:backgroundTint="#f5f5f5"
+        android:text="영어회화"
+        android:textColor="#707070"
+        android:textSize="18dp"
+        app:layout_constraintStart_toEndOf="@+id/studyCategory_Btn1"
+        app:layout_constraintTop_toBottomOf="@+id/studyCategory_selectedCategoryTV" />
+
+    <Button
+        android:id="@+id/studyCategory_Btn3"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/rectangle_round"
+        android:backgroundTint="#f5f5f5"
+        android:text="공무원"
+        android:textColor="#707070"
+        android:textSize="18dp"
+        app:layout_constraintStart_toEndOf="@+id/studyCategory_Btn2"
+        app:layout_constraintTop_toBottomOf="@+id/studyCategory_selectedCategoryTV" />
+
+    <Button
+        android:id="@+id/studyCategory_Btn4"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rectangle_round"
+        android:backgroundTint="#f5f5f5"
+        android:text="정보처리기사"
+        android:textColor="#707070"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="@+id/studyCategory_Btn1"
+        app:layout_constraintTop_toBottomOf="@+id/studyCategory_Btn1" />
+
+    <Button
+        android:id="@+id/studyCategory_Btn5"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rectangle_round"
+        android:backgroundTint="#f5f5f5"
+        android:text="편입"
+        android:textColor="#707070"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="@+id/studyCategory_Btn2"
+        app:layout_constraintTop_toBottomOf="@+id/studyCategory_Btn2" />
+
+    <Button
+        android:id="@+id/studyCategory_Btn6"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rectangle_round"
+        android:backgroundTint="#f5f5f5"
+        android:text="코딩"
+        android:textColor="#707070"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="@+id/studyCategory_Btn3"
+        app:layout_constraintTop_toBottomOf="@+id/studyCategory_Btn3" />
+
+    <Button
+        android:id="@+id/studyCategory_Btn7"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rectangle_round"
+        android:backgroundTint="#f5f5f5"
+        android:text="승무원"
+        android:textColor="#707070"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="@+id/studyCategory_Btn4"
+        app:layout_constraintTop_toBottomOf="@+id/studyCategory_Btn4" />
+
+    <Button
+        android:id="@+id/studyCategory_Btn8"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rectangle_round"
+        android:backgroundTint="#f5f5f5"
+        android:text="수능대비"
+        android:textColor="#707070"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="@+id/studyCategory_Btn5"
+        app:layout_constraintTop_toBottomOf="@+id/studyCategory_Btn5" />
+
+    <Button
+        android:id="@+id/studyCategory_Btn9"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rectangle_round"
+        android:backgroundTint="#f5f5f5"
+        android:text="+"
+        android:textColor="#707070"
+        android:textSize="40dp"
+        app:layout_constraintStart_toStartOf="@+id/studyCategory_Btn6"
+        app:layout_constraintTop_toBottomOf="@+id/studyCategory_Btn6" />
+
+    <Button
+        android:id="@+id/studyCategory_nextBtn"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="100dp"
+        android:background="@drawable/rectangle_round"
+        android:backgroundTint="#7964e3"
+        android:text="다음"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

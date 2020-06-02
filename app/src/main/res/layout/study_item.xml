@@ -42,7 +42,7 @@
             android:background="@drawable/location_marker"/>
 
         <TextView
-            android:id="@+id/studyLocationText"
+            android:id="@+id/studyAddressText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"

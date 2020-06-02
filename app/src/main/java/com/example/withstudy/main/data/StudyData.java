@@ -12,13 +12,18 @@ public class StudyData {
     private String                      frequency;      // 모임 빈도
     private int                         memberCount;    // 멤버수
     private String                      iconUri;        // 아이콘 uri
+    private double                      latitude;       // 위도
+    private double                      longitude;      // 경도
+    private String                      address;        // 주소
+    private String                      category;       // 스터디 분야
     //private String                      members;        // 가입 멤버들
 //    private String                      goal;           // 스터디 목표
 //    private LinkedList<CurriculumData>  curriculums;    // 커리큘럼 데이터
 //    private ChatRoomData                chatRoom;       // 채팅방
 
     // 생성자
-    public StudyData(String studyName, int minMember, int limitGender, int minAge, int visible, int duration, String frequency) {
+    public StudyData(String studyName, int minMember, int limitGender, int minAge, int visible, int duration, String frequency
+                        , double latitude, double longitude, String address, String category) {
         this.studyName = studyName;
         this.minMember = minMember;
         this.limitGender = limitGender;
@@ -26,11 +31,15 @@ public class StudyData {
         this.visible = visible;
         this.duration = duration;
         this.frequency = frequency;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.address = address;
+        this.category = category;
 
         memberCount = 1;
         //members = "";
 
-        initialize();
+        //initialize();
     }
 
     public StudyData() {
@@ -115,4 +124,44 @@ public class StudyData {
 
     // 아이콘 Uri 반환
     public String getIconUri() { return iconUri; }
+
+    // 위도 설정
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    // 위도 가져오기
+    public double getLatitude() {
+        return latitude;
+    }
+
+    // 경도 설정
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    // 경도 반환
+    public double getLongitude() {
+        return longitude;
+    }
+
+    // 주소 설정
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    // 주소 반환
+    public String getAddress() {
+        return address;
+    }
+
+    // 스터디 분야 설정
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    // 스터디 분야 반환
+    public String getCategory() {
+        return category;
+    }
 }

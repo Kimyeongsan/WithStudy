@@ -1,5 +1,6 @@
 package com.example.withstudy.ui.studyroom;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.ViewGroup;
@@ -10,10 +11,9 @@ import com.example.withstudy.R;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
-import net.daum.mf.map.api.MapPolyline;
 import net.daum.mf.map.api.MapView;
 
-public class MapActivity extends AppCompatActivity implements MapView.MapViewEventListener, MapView.CurrentLocationEventListener {
+public class MapActivity extends AppCompatActivity implements MapView.POIItemEventListener, MapView.MapViewEventListener, MapView.CurrentLocationEventListener {
     private MapView mapView;
     private MapPOIItem studyLocationMarker = null;
 
@@ -42,18 +42,11 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
         // 맵 관련 Listener 등록
         mapView.setCurrentLocationEventListener(this);
         mapView.setMapViewEventListener(this);
+        mapView.setPOIItemEventListener(this);
     }
 
     // 반경 안에 있는지 검사
     private void checkRange() {
-        MapPolyline line;
-
-        line = new MapPolyline();
-
-        line.addPoint(mapView.getMapCenterPoint());
-        line.addPoint(studyLocationMarker.getMapPoint());
-
-
     }
 
     @Override
@@ -96,20 +89,19 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
 
     @Override
     public void onMapViewSingleTapped(MapView mapView, MapPoint mapPoint) {
-
         if(studyLocationMarker == null) {
             studyLocationMarker = new MapPOIItem();
 
             studyLocationMarker.setItemName("생성 위치");
             studyLocationMarker.setMapPoint(mapPoint);
-            studyLocationMarker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+            studyLocationMarker.setMarkerType(MapPOIItem.MarkerType.RedPin);
 
             mapView.addPOIItem(studyLocationMarker);
         } else {
             studyLocationMarker.setMapPoint(mapPoint);
         }
 
-        System.out.println("x좌표 = " + mapPoint.getMapPointGeoCoord().latitude + ", y좌표 = " + mapPoint.getMapPointGeoCoord().longitude);
+        System.out.println("위도 = " + mapPoint.getMapPointGeoCoord().latitude + ", 경도 = " + mapPoint.getMapPointGeoCoord().longitude);
     }
 
     @Override
@@ -134,6 +126,41 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
 
     @Override
     public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
+
+    }
+
+    // 레퍼런스 상에서 Deprecated 되었다 함.
+    @Deprecated
+    @Override
+    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem) {
+
+    }
+
+    @Override
+    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
+        // 말풍선 클릭시 지도를 종료하고 이전 액티비티에 위도와 경도값, 주소정보를 돌려주기
+        Intent intent;
+        MapPoint.GeoCoordinate geoc;
+
+        intent = new Intent();
+
+        geoc = mapPOIItem.getMapPoint().getMapPointGeoCoord();
+
+        intent.putExtra("latitude", geoc.latitude);
+        intent.putExtra("longitude", geoc.longitude);
+
+        setResult(RESULT_OK, intent);
+
+        finish();
+    }
+
+    @Override
+    public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) {
 
     }
 }

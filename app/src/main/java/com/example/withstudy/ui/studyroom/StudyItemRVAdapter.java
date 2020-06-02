@@ -70,6 +70,11 @@ public class StudyItemRVAdapter extends RecyclerView.Adapter<StudyItemRVAdapter.
     // item 항목 가져오기
     public StudyItemData getItem(int pos) { return listData.get(pos); }
 
+    // 외부에서 모든 item 항목 삭제
+    public void delAllItem() {
+        listData.clear();
+    }
+
     // subView 셋팅
     class ItemViewHolder extends RecyclerView.ViewHolder {
         private TextView textView1;
@@ -95,13 +100,13 @@ public class StudyItemRVAdapter extends RecyclerView.Adapter<StudyItemRVAdapter.
             });
 
             textView1 = (TextView)itemView.findViewById(R.id.studyTitleText);
-            textView2 = (TextView)itemView.findViewById(R.id.studyLocationText);
+            textView2 = (TextView)itemView.findViewById(R.id.studyAddressText);
             imageView = (ImageView)itemView.findViewById(R.id.studyIconIV);
         }
 
         void onBind(StudyItemData data) {
             textView1.setText(data.getTitle());
-            textView2.setText(data.getLocation());
+            textView2.setText(data.getAddress());
 
             // 등록한 이미지가 존재할 때만
             if (data.getRef() != null) {

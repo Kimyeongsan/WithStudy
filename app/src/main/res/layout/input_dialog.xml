@@ -11,7 +11,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/dialog_titleTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -22,7 +22,7 @@
             android:textSize = "15dp"/>
 
         <EditText
-            android:id="@+id/minMember"
+            android:id="@+id/dialog_ET"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

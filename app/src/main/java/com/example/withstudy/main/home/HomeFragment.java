@@ -52,6 +52,22 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         return root;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        refresh();
+    }
+
+    private void refresh() {
+        // 어댑터의 모든 item 항목 삭제후 변환된 걸 알리기
+        joinStudyRVAdapter.delAllItem();
+        joinStudyRVAdapter.notifyDataSetChanged();
+
+        // 새로 데이터 추가
+        setData();
+    }
+
     private void initialize(View root) {
         Button addMeetingBtn; // 모임 만들기 버튼
 
@@ -85,7 +101,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         //////////////////////////////////////////////////
         // Item 항목 설정
-        setData();
+        //setData();
         //////////////////////////////////////////////////
 
         // Click Listener 추가
@@ -130,7 +146,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         studyItemData = new StudyItemData();
 
                         studyItemData.setTitle(studyData.getStudyName());
-                        studyItemData.setLocation("테스트");
+                        studyItemData.setAddress(studyData.getAddress());
 
                         if(!studyData.getIconUri().equals("")) {
                             studyIconRef = FirebaseStorage.getInstance().getReferenceFromUrl(studyData.getIconUri());
@@ -141,6 +157,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
                         // 리싸이클러 뷰에 추가
                         joinStudyRVAdapter.addItem(studyItemData);
+
+                        // 앱상 전반적인 데이터에 해당 스터디 추가
+                        ManagementData.getInstance().addJoinStudy(studyData);
                     }
 
                     // 변경된 값 표시

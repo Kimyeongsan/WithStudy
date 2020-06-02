@@ -90,13 +90,13 @@ public class SearchFragment extends Fragment {
     // RecyclerView의 Item 항목 설정
     private void setData() {
         List<String> myAroundStudyTitles, popularStudyTitles;
-        List<String> myAroundStudyLocations, popularStudyLocations;
+        List<String> myAroundStudyAddresss, popularStudyAddresss;
 
         myAroundStudyTitles = Arrays.asList("내 주변 스터디1", "내 주변 스터디2");
-        myAroundStudyLocations = Arrays.asList("내 주변 스터디 위치1", "내 주변 스터디 위치2");
+        myAroundStudyAddresss = Arrays.asList("내 주변 스터디 위치1", "내 주변 스터디 위치2");
 
         popularStudyTitles = Arrays.asList("인기있는 스터디1", "인기있는 스터디2");
-        popularStudyLocations = Arrays.asList("인기있는 스터디 위치1", "인기있는 스터디 위치2");
+        popularStudyAddresss = Arrays.asList("인기있는 스터디 위치1", "인기있는 스터디 위치2");
 
         // List의 값들을 StudyItemData 객체에 설정
         for(int i = 0; i < myAroundStudyTitles.size(); i++) {
@@ -105,7 +105,7 @@ public class SearchFragment extends Fragment {
             data = new StudyItemData();
 
             data.setTitle(myAroundStudyTitles.get(i));
-            data.setLocation(myAroundStudyLocations.get(i));
+            data.setAddress(myAroundStudyAddresss.get(i));
 
             // Adapter에 추가
             myAroundStudyRVAdapter.addItem(data);
@@ -118,7 +118,7 @@ public class SearchFragment extends Fragment {
             data = new StudyItemData();
 
             data.setTitle(popularStudyTitles.get(i));
-            data.setLocation(popularStudyLocations.get(i));
+            data.setAddress(popularStudyAddresss.get(i));
 
             // Adapter에 추가
             popularStudyRVAdapter.addItem(data);

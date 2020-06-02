@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -22,13 +21,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import net.daum.mf.map.api.MapPoint;
-import net.daum.mf.map.api.MapView;
-
 public class InitStudyActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int REQUEST_ALBUM   = 1;
+    private static final int REQUEST_MAP     = 2;
     private Uri selectedImageUri;
     private int checkFlag = 0; // 중복명 검사 플래그(중복명이 아니었을 때 화면이 넘어가는데 시작하기 버튼을 여러번 누르면 여러개 생성 방지)
+    private double latitude = 0, longitude = 0; // 위도, 경도
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,35 +37,34 @@ public class InitStudyActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void initialize() {
-        Button backFromInitStudyBtn, makeStudyBtn, addPictureBtn;
-        Button test;
+        Button backFromInitStudyBtn, makeStudyBtn, addPictureBtn, locationBtn;
         ImageView studyImageIV;
 
         backFromInitStudyBtn = (Button)findViewById(R.id.backFromInitStudyBtn);
         makeStudyBtn = (Button)findViewById(R.id.makeStudyBtn);
         addPictureBtn = (Button)findViewById(R.id.addPictureBtn);
         studyImageIV = (ImageView)findViewById(R.id.initStudy_studyImageIV);
+        locationBtn = (Button)findViewById(R.id.initStudy_locationBtn);
 
         // Click Listener 추가
         backFromInitStudyBtn.setOnClickListener(this);
         makeStudyBtn.setOnClickListener(this);
         addPictureBtn.setOnClickListener(this);
         studyImageIV.setOnClickListener(this);
-
-        test = (Button)findViewById(R.id.test);
-        test.setOnClickListener(this);
+        locationBtn.setOnClickListener(this);
 
     }
 
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
-            case R.id.test:
+            case R.id.initStudy_locationBtn:    // 스터디 생성 위치 설정 버튼
                 Intent intent;
 
                 intent = new Intent(InitStudyActivity.this, MapActivity.class);
 
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_MAP);
+
                 break;
             case R.id.backFromInitStudyBtn: // 뒤로가기 버튼
                 onBackPressed();
@@ -98,6 +95,13 @@ public class InitStudyActivity extends AppCompatActivity implements View.OnClick
                     break;
                 }
 
+                // 위치 설정을 하지 않았다면 나가기
+                if(latitude == 0 && longitude == 0) {
+                    Toast.makeText(getApplicationContext(), "위치를 설정해주세요", Toast.LENGTH_LONG).show();
+
+                    return;
+                }
+
                 checkFlag = 1;
 
                 // 스터디명 중복명 체크
@@ -116,8 +120,8 @@ public class InitStudyActivity extends AppCompatActivity implements View.OnClick
                                     }
                                 }
 
-                                // activity_make_study 레이아웃으로 변경하기 위한 intent 설정
-                                Intent intent = new Intent(InitStudyActivity.this, MakeStudyActivity.class);
+                                // activity_study_category 레이아웃으로 변경하기 위한 intent 설정
+                                Intent intent = new Intent(InitStudyActivity.this, StudyCategoryActivity.class);
 
                                 // 모임명 및 이미지를 선택 했을 시 이미지 Uri 전달
                                 intent.putExtra("studyName", studyNameText.getText().toString());
@@ -125,7 +129,13 @@ public class InitStudyActivity extends AppCompatActivity implements View.OnClick
                                 if(selectedImageUri != null)
                                     intent.putExtra("iconUri", selectedImageUri.toString());
 
+                                // 위치 정보 전달
+                                intent.putExtra("latitude", latitude);
+                                intent.putExtra("longitude", longitude);
+
                                 startActivity(intent);
+
+                                finish();
 
                                 checkFlag = 0;
                             }
@@ -161,18 +171,32 @@ public class InitStudyActivity extends AppCompatActivity implements View.OnClick
         if (resultCode != RESULT_OK)
             return;
 
-        selectedImageUri = null;
+        switch(requestCode) {
+            // 앨범 결과
+            case REQUEST_ALBUM:
+                selectedImageUri = null;
 
-        // 앨범에서 이미지 선택한 경우
-        if (requestCode == REQUEST_ALBUM) {
-            selectedImageUri = data.getData();
+                // 앨범에서 이미지 선택한 경우
+                if (requestCode == REQUEST_ALBUM) {
+                    selectedImageUri = data.getData();
+                }
+
+                // 이미지 표시 및 버튼 숨기기
+                studyImageIV = (ImageView) findViewById(R.id.initStudy_studyImageIV);
+                studyImageIV.setImageURI(selectedImageUri);
+
+                addPictureBtn = (Button) findViewById(R.id.addPictureBtn);
+                addPictureBtn.setVisibility(View.INVISIBLE);
+
+                break;
+
+            // 위치 설정 결과
+            case REQUEST_MAP:
+                // 위도, 경도 받아오기
+                latitude = data.getDoubleExtra("latitude", 0);
+                longitude = data.getDoubleExtra("longitude", 0);
+
+                break;
         }
-
-        // 이미지 표시 및 버튼 숨기기
-        studyImageIV = (ImageView)findViewById(R.id.initStudy_studyImageIV);
-        studyImageIV.setImageURI(selectedImageUri);
-
-        addPictureBtn = (Button) findViewById(R.id.addPictureBtn);
-        addPictureBtn.setVisibility(View.INVISIBLE);
     }
 }
