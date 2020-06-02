@@ -4,6 +4,7 @@ package com.example.withstudy.main.data;
 public class StudyData {
 //    private int                         studyId;        // 스터디 고유 번호(스터디 구별용)
     private String                      studyName;      // 스터디 이름
+    private String                      president;      // 스터디 생성한 사람(방장)
     private int                         minMember;      // 최소 인원
     private int                         limitGender;    // 성별 제한
     private int                         minAge;         // 나이 제한
@@ -22,9 +23,10 @@ public class StudyData {
 //    private ChatRoomData                chatRoom;       // 채팅방
 
     // 생성자
-    public StudyData(String studyName, int minMember, int limitGender, int minAge, int visible, int duration, String frequency
+    public StudyData(String studyName, String president, int minMember, int limitGender, int minAge, int visible, int duration, String frequency
                         , double latitude, double longitude, String address, String category) {
         this.studyName = studyName;
+        this.president = president;
         this.minMember = minMember;
         this.limitGender = limitGender;
         this.minAge = minAge;
@@ -60,6 +62,12 @@ public class StudyData {
     public String getStudyName() {
         return studyName;
     }
+
+    // 스터디 방장 설정
+    public void setPresident(String president) { this.president = president; }
+
+    // 스터디 방장 가져오기
+    public String getPresident() { return president; }
 
     // 최소 인원 설정
     public void setMinMember(int minMember) {

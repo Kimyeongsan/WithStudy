@@ -28,10 +28,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class HomeFragment extends Fragment implements View.OnClickListener {
     private RecyclerView joinStudyRV;
     private StudyItemRVAdapter joinStudyRVAdapter;

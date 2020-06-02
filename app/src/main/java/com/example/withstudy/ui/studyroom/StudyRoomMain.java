@@ -1,4 +1,3 @@
-
 package com.example.withstudy.ui.studyroom;
 
 import androidx.annotation.NonNull;
@@ -9,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.withstudy.R;
@@ -22,14 +23,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class StudyRoomMain extends AppCompatActivity implements View.OnClickListener {
-    private int REQUEST_POST = 1;
     private PostItemRVAdapter postRVAdapter;
     private StudyData studyData;
     private String studyName;
+    private String studyId; // 스터디 고유값
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,19 +37,35 @@ public class StudyRoomMain extends AppCompatActivity implements View.OnClickList
         initialize();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // 고유 값 찾은 다음부터
+        if(studyId != null) {
+            refresh();
+        }
+    }
+
+    private void refresh() {
+        // 어댑터의 모든 item 항목 삭제후 변환된 걸 알리기
+        postRVAdapter.delAllItem();
+        postRVAdapter.notifyDataSetChanged();
+
+        // 새로 데이터 추가
+        setData();
+    }
+
     private void initialize() {
         DatabaseReference db;
         Intent intent;
-        TextView studyNameTV, visibleTV, memberCountTV;
+        TextView studyNameTV, visibleTV, memberCountTV, ruleWriterTV;
+        Button writePostBtn;
+        ImageButton backFromStudyRoomMainBtn;
 
         //////////////////////////////////////////////////
         // Item 항목을 둘 RecyclerView 및 LinearLayout 설정
         initAllRecyclerView();
-        //////////////////////////////////////////////////
-
-        //////////////////////////////////////////////////
-        // Item 항목 설정
-        setData();
         //////////////////////////////////////////////////
 
         ///////////////////////////////////
@@ -59,6 +73,13 @@ public class StudyRoomMain extends AppCompatActivity implements View.OnClickList
         studyNameTV = findViewById(R.id.studyRoom_studyNameTV);
         visibleTV = findViewById(R.id.studyRoom_visibleTV);
         memberCountTV = findViewById(R.id.studyRoom_memberCountTV);
+        ruleWriterTV = findViewById(R.id.studyRoomMain_ruleWriterTV);
+        ///////////////////////////////////
+
+        ///////////////////////////////////
+        // Button 종류 가져오기
+        writePostBtn = (Button)findViewById(R.id.writePostBtn);
+        backFromStudyRoomMainBtn = (ImageButton)findViewById(R.id.backFromStudyRoomMain);
         ///////////////////////////////////
 
         intent = getIntent();
@@ -74,6 +95,9 @@ public class StudyRoomMain extends AppCompatActivity implements View.OnClickList
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     // 찾았으면 스터디 정보 저장
                     if (studyName.equals(ds.getValue(StudyData.class).getStudyName())) {
+                        // 스터디 고유 값 저장해두기
+                        studyId = ds.getKey();
+
                         studyData = ds.getValue(StudyData.class);
 
                         break;
@@ -105,6 +129,10 @@ public class StudyRoomMain extends AppCompatActivity implements View.OnClickList
 
                     visibleTV.setText(visible);
                     memberCountTV.setText("멤버 " + Integer.toString(studyData.getMemberCount()));
+                    ruleWriterTV.setText(studyData.getPresident() + " 님이 만든 규칙");
+
+                    // Post 아이템 항목 설정
+                    setData();
                 }
             }
 
@@ -113,6 +141,10 @@ public class StudyRoomMain extends AppCompatActivity implements View.OnClickList
 
             }
         });
+
+        // Click Listener 추가
+        writePostBtn.setOnClickListener(this);
+        backFromStudyRoomMainBtn.setOnClickListener(this);
     }
 
     // 모든 RecyclerView 및 adapter 초기화, click listener 추가
@@ -141,28 +173,36 @@ public class StudyRoomMain extends AppCompatActivity implements View.OnClickList
 
     // RecyclerView의 Item 항목 설정
     private void setData() {
-        List<String> postWriters, postDates, postContents;
+        // 해당 스터디방의 게시글 가져와서 띄우기
+        FirebaseDatabase.getInstance().getReference()
+            .child(Constant.DB_CHILD_STUDYROOM)
+            .child(studyId)
+            .child(Constant.DB_CHILD_POST)
+            .addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for(DataSnapshot data : dataSnapshot.getChildren()) {
+                        PostItemData postItemData;
 
-        postWriters = Arrays.asList("작성자1", "작성자2");
-        postDates = Arrays.asList("작성일1", "작성일2");
-        postContents = Arrays.asList("내용1", "내용2");
+                        postItemData = data.getValue(PostItemData.class);
 
-        // List의 값들을 PostItemData 객체에 설정
-        for(int i = 0; i < postWriters.size(); i++) {
-            PostItemData data;
+                        postItemData.setWriter(postItemData.getWriter());
+                        postItemData.setDate(postItemData.getDate());
+                        postItemData.setContent(postItemData.getContent());
 
-            data = new PostItemData();
+                        // Adapter에 추가
+                        postRVAdapter.addItem(postItemData);
+                    }
 
-            data.setWriter(postWriters.get(i));
-            data.setDate(postDates.get(i));
-            data.setContent(postContents.get(i));
+                    // 변경된 값 표시
+                    postRVAdapter.notifyDataSetChanged();
+                }
 
-            // Adapter에 추가
-            postRVAdapter.addItem(data);
-        }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-        // Adapter의 값이 변경됨을 알려줌으로써 변경된 값 표시
-        postRVAdapter.notifyDataSetChanged();
+                }
+            });
     }
 
     @Override
@@ -170,6 +210,8 @@ public class StudyRoomMain extends AppCompatActivity implements View.OnClickList
         switch(view.getId()) {
             // 뒤로가기
             case R.id.backFromStudyRoomMain:
+                finish();
+
                 break;
 
             // 글쓰기
@@ -179,10 +221,11 @@ public class StudyRoomMain extends AppCompatActivity implements View.OnClickList
                 // activity_post_write 레이아웃으로 변경하기 위한 intent 설정
                 intent = new Intent(StudyRoomMain.this, PostWriteActivity.class);
 
-                // 모임명 전달
+                // 스터디 명과 스터디 고유 값 전달
                 intent.putExtra("studyName", studyName);
+                intent.putExtra("studyId", studyId);
 
-                startActivityForResult(intent, REQUEST_POST);
+                startActivity(intent);
 
                 break;
         }

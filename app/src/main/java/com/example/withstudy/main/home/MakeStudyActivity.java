@@ -662,8 +662,8 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
 
         // 옵션 설정한거에 맞게 스터디 방 생성
         // 생성한 스터디 방은 즉시 데이터베이스에 추가되어야 한다.
-        studyRoom = new StudyData(studyName, minMember, limitGender, minAge, studyVisible, studyDuration, studyFrequency
-                , latitude, longitude, address, category);
+        studyRoom = new StudyData(studyName, ManagementData.getInstance().getUserData().getUser_Name(), minMember, limitGender, minAge
+                , studyVisible, studyDuration, studyFrequency, latitude, longitude, address, category);
 
         // 생성 위치 결정
         ref = FirebaseDatabase.getInstance().getReference().child(Constant.DB_CHILD_STUDYROOM).push();

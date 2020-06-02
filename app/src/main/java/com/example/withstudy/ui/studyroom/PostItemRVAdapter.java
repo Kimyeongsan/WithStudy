@@ -56,6 +56,11 @@ public class PostItemRVAdapter extends RecyclerView.Adapter<PostItemRVAdapter.It
         listData.add(data);
     }
 
+    // 외부에서 item 항목 전체 제거
+    public void delAllItem() {
+        listData.clear();
+    }
+
     // item 항목 가져오기
     public PostItemData getItem(int pos) { return listData.get(pos); }
 
