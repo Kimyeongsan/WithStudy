@@ -27,9 +27,12 @@
         <activity android:name=".ui.studyroom.MapActivity"></activity>
         <activity android:name=".ui.studyroom.PostWriteActivity" />
         <activity android:name=".ui.studyroom.StudyRoomMain" />
+        <activity android:name=".ui.studyroom.StudyRoomViewPager" />
+
         <activity android:name=".main.home.JoinConditionActivity" />
         <activity android:name=".main.home.MakeStudyActivity" />
         <activity android:name=".main.home.InitStudyActivity" />
+
         <activity android:name=".main.chatting.ChatRoomActivity" /> <!-- android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/> -->
         <activity
             android:name=".ui.studyroom.curriculum.CurriculumMainActivity"

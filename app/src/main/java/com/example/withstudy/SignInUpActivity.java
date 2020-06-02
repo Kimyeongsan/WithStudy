@@ -5,17 +5,13 @@ import android.os.Bundle;
 
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.withstudy.main.data.Constant;
 import com.example.withstudy.main.data.ManagementData;
-import com.example.withstudy.main.data.StudyData;
 import com.example.withstudy.main.data.UserData;
-import com.example.withstudy.main.home.InitStudyActivity;
-import com.example.withstudy.main.home.MakeStudyActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;

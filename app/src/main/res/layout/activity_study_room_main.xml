@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@drawable/main_board"
@@ -9,40 +10,34 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:scrollbars="vertical">
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="56dp">
-
-        <ImageButton
-            android:id="@+id/backFromStudyRoomMain"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/arrowback"
-            android:backgroundTint="#ffffff"/>
-
-        <Button
-            android:id="@+id/writePostBtn"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="8"
-            android:layout_gravity="right"
-            android:background="@null"
-            android:gravity="center"
-            android:text="글쓰기"
-            android:textColor="#ffffff"
-            android:textSize="15dp" />
-    </FrameLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp">
+
+            <ImageButton
+                android:id="@+id/backFromStudyRoomMain"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/arrowback"
+                android:backgroundTint="#ffffff"/>
+
+            <Button
+                android:id="@+id/writePostBtn"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:layout_gravity="right"
+                android:background="@null"
+                android:gravity="center"
+                android:text="글쓰기"
+                android:textColor="#ffffff"
+                android:textSize="15dp" />
+        </FrameLayout>
 
         <TextView
             android:id="@+id/studyRoom_studyNameTV"
@@ -90,7 +85,7 @@
         android:layout_width="match_parent"
         android:layout_height="220dp"
         android:gravity="center"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="0dp">
 
         <FrameLayout
             android:layout_width="340dp"
@@ -156,8 +151,7 @@
         android:layout_width="340dp"
         android:layout_height="match_parent"
         android:layout_gravity="center"
+        android:scrollbars="horizontal"
         android:layout_marginBottom="20dp">
     </androidx.recyclerview.widget.RecyclerView>
-
-    </LinearLayout>
-</LinearLayout>
+ </LinearLayout>
