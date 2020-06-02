@@ -20,7 +20,7 @@ import com.example.withstudy.main.data.StudyData;
 import com.example.withstudy.main.data.StudyItemData;
 import com.example.withstudy.main.data.UserData;
 import com.example.withstudy.ui.studyroom.StudyItemRVAdapter;
-import com.example.withstudy.ui.studyroom.StudyRoomMain;
+import com.example.withstudy.ui.studyroom.StudyRoomViewPager;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -84,7 +84,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 studyItem = joinStudyRVAdapter.getItem(pos);
 
                 // 클릭한 스터디 화면으로 이동해야함
-                intent = new Intent(getActivity(), StudyRoomMain.class);
+                intent = new Intent(getActivity(), StudyRoomViewPager.class);
 
                 intent.putExtra("studyName", studyItem.getTitle());
 

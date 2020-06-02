@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.withstudy.R;
 import com.example.withstudy.main.data.StudyItemData;
 import com.example.withstudy.ui.studyroom.StudyItemRVAdapter;
-import com.example.withstudy.ui.studyroom.StudyRoomMain;
+import com.example.withstudy.ui.studyroom.StudyRoomViewPager;
 
 import java.util.Arrays;
 import java.util.List;
@@ -78,7 +78,7 @@ public class SearchFragment extends Fragment {
                 studyItem = studyItemRVAdapter.getItem(pos);
 
                 // 클릭한 스터디 화면으로 이동해야함
-                intent = new Intent(getActivity(), StudyRoomMain.class);
+                intent = new Intent(getActivity(), StudyRoomViewPager.class);
 
                 intent.putExtra("studyName", studyItem.getTitle());
 

@@ -27,7 +27,6 @@
         <activity android:name=".main.home.StudyCategoryActivity"></activity>
         <activity android:name=".ui.studyroom.MapActivity" />
         <activity android:name=".ui.studyroom.PostWriteActivity" />
-        <activity android:name=".ui.studyroom.StudyRoomMain" />
         <activity android:name=".ui.studyroom.StudyRoomViewPager" />
         <activity android:name=".main.home.JoinConditionActivity" />
         <activity android:name=".main.home.MakeStudyActivity" />
