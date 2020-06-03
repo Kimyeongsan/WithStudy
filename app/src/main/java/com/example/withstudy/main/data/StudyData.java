@@ -2,7 +2,7 @@ package com.example.withstudy.main.data;
 
 // 스터디 방의 정보를 가지는 클래스
 public class StudyData {
-//    private int                         studyId;        // 스터디 고유 번호(스터디 구별용)
+    public  String                      studyId;        // 스터디 고유 번호(스터디 구별용)
     private String                      studyName;      // 스터디 이름
     private String                      president;      // 스터디 생성한 사람(방장)
     private int                         minMember;      // 최소 인원
