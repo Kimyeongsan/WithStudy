@@ -21,13 +21,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.withstudy.R;
+import com.example.withstudy.main.chatting.ChatData;
 import com.example.withstudy.main.data.BasicItemData;
 import com.example.withstudy.main.data.Constant;
 import com.example.withstudy.main.data.DetailItemData;
 import com.example.withstudy.main.data.ManagementData;
 import com.example.withstudy.main.data.StudyData;
 import com.example.withstudy.main.data.UserData;
-import com.example.withstudy.ui.studyroom.StudyRoomMain;
+import com.example.withstudy.ui.studyroom.StudyRoomViewPager;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -544,6 +545,7 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
     private void insertStudyRoomToDatabase(DatabaseReference studyRoomRef, StudyData studyRoom) {
         Intent intent;
         UserData userData;
+        ChatData chatData;
         DatabaseReference userRef;
 
         userData = ManagementData.getInstance().getUserData();
@@ -561,7 +563,7 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
                 .setValue(studyRoom);
 
         // activity_study_room_main 레이아웃으로 변경하기 위한 intent 설정
-        intent = new Intent(MakeStudyActivity.this, StudyRoomMain.class);
+        intent = new Intent(MakeStudyActivity.this, StudyRoomViewPager.class);
 
         intent.putExtra("studyName", studyRoom.getStudyName());
 
@@ -666,6 +668,33 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
 
         // 위도, 경도로 MapPoint 변환
         mapPoint = MapPoint.mapPointWithGeoCoord(latitude, longitude);
+        if(longitude == 127.18804931640625){
+            Intent intent;
+            DatabaseReference ref;
+            StudyData studyRoom;
+            String studyName, iconUri, category;
+
+            // 데이터 수신
+            intent = getIntent();
+
+            // 이름, 아이콘, 분야 가져오기 및 주소 설정
+            studyName = intent.getExtras().getString("studyName");
+            iconUri = intent.getExtras().getString("iconUri");
+            category = intent.getExtras().getString("category");
+
+            address = "asdasdasd";
+
+            // 옵션 설정한거에 맞게 스터디 방 생성
+            // 생성한 스터디 방은 즉시 데이터베이스에 추가되어야 한다.
+            studyRoom = new StudyData(studyName, ManagementData.getInstance().getUserData().getUser_Name(), minMember, limitGender, minAge
+                    , studyVisible, studyDuration, studyFrequency, latitude, longitude, address, category);
+
+            // 생성 위치 결정
+            ref = FirebaseDatabase.getInstance().getReference().child(Constant.DB_CHILD_STUDYROOM).push();
+
+            // 스터디방 생성 위치 고유값으로 스토리지에 이미지 업로드 및 데이터베이스에 스터디방 저장
+            uploadFirebaseStorage(ref, iconUri, studyRoom);
+        }
 
         reverseGeoCoder = new MapReverseGeoCoder("d63aae8019a77e3a15b350bda76bc561", mapPoint
                 , this, this);

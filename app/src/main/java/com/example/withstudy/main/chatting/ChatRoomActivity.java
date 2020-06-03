@@ -192,7 +192,7 @@ public class ChatRoomActivity extends AppCompatActivity
             public ChatData parseSnapshot(DataSnapshot dataSnapshot) {
                 ChatData chatData = dataSnapshot.getValue(ChatData.class);
                 if (chatData != null) {
-                    chatData.setId(dataSnapshot.getKey());
+                    chatData.setName(dataSnapshot.getKey());
                 }
                 return chatData;
             }

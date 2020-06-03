@@ -3,7 +3,6 @@ package com.example.withstudy.main.chatting;
 // 채팅 데이터를 묶는 클래스
 public class ChatData {
 
-    private String id;
     private String text;
     private String name;
     private String photoUrl;
@@ -17,10 +16,6 @@ public class ChatData {
         this.name = name;
         this.photoUrl = photoUrl;
         this.imageUrl = imageUrl;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public void setText(String text) {

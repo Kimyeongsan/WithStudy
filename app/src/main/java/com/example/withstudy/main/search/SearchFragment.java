@@ -24,6 +24,7 @@ import com.example.withstudy.ui.studyroom.StudyItemRVAdapter;
 import com.example.withstudy.ui.studyroom.StudyRoomMain;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.example.withstudy.ui.studyroom.StudyRoomViewPager;
 
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapReverseGeoCoder;
@@ -231,7 +232,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ma
                 studyItem = studyItemRVAdapter.getItem(pos);
 
                 // 클릭한 스터디 화면으로 이동해야함
-                intent = new Intent(getActivity(), StudyRoomMain.class);
+                intent = new Intent(getActivity(), StudyRoomViewPager.class);
 
                 intent.putExtra("studyName", studyItem.getTitle());
 

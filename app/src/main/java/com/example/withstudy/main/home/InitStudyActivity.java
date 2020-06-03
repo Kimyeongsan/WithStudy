@@ -113,7 +113,11 @@ public class InitStudyActivity extends AppCompatActivity implements View.OnClick
                 if(latitude == 0 && longitude == 0) {
                     Toast.makeText(getApplicationContext(), "위치를 설정해주세요", Toast.LENGTH_LONG).show();
 
-                    return;
+                    // 임시 코드
+                    latitude = 37.233985900878906;
+                    longitude = 127.18804931640625;
+
+                    //return;
                 }
 
                 checkFlag = 1;
