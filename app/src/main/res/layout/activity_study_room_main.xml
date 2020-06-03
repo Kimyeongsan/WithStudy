@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@drawable/main_board"
-    tools:context=".ui.studyroom.StudyRoomMain">
+    tools:context=".ui.studyroom.StudyRoomFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
