@@ -16,8 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.withstudy.R;
 import com.example.withstudy.main.data.Constant;
+import com.example.withstudy.main.data.ManagementData;
 import com.example.withstudy.main.data.PostItemData;
 import com.example.withstudy.main.data.StudyData;
+import com.example.withstudy.ui.studyroom.curriculum.CurriculumMainActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,6 +43,7 @@ public class StudyRoomFragment extends Fragment {
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.activity_study_room_main, container, false);
+
         initialize();
 
         return root;
@@ -61,7 +64,7 @@ public class StudyRoomFragment extends Fragment {
         DatabaseReference db;
         Intent intent;
         TextView studyNameTV, visibleTV, memberCountTV, ruleWriterTV;
-        Button writePostBtn;
+        Button writePostBtn, curriculumBtn;
         ImageButton backFromStudyRoomMainBtn;
 
         //////////////////////////////////////////////////
@@ -80,6 +83,7 @@ public class StudyRoomFragment extends Fragment {
         ///////////////////////////////////
         // Button 종류 가져오기
         writePostBtn = (Button)root.findViewById(R.id.writePostBtn);
+        curriculumBtn = (Button)root.findViewById(R.id.studyRoom_curriculumBtn);
         backFromStudyRoomMainBtn = (ImageButton)root.findViewById(R.id.backFromStudyRoomMain);
         ///////////////////////////////////
 
@@ -130,10 +134,9 @@ public class StudyRoomFragment extends Fragment {
 
                     visibleTV.setText(visible);
                     memberCountTV.setText("멤버 " + Integer.toString(studyData.getMemberCount()));
-                    ruleWriterTV.setText(studyData.getPresident() + " 님이 만든 규칙");
 
-                    // Post 아이템 항목 설정
-                    setData();
+                    // Post 아이템 항목 및 커리큘럼 항목 설정
+                    refresh();
                 }
             }
 
@@ -159,6 +162,25 @@ public class StudyRoomFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        curriculumBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 스터디 생성자만 작성가능
+                if(ManagementData.getInstance().getUserData().getUser_Name().equals(studyData.getPresident())) {
+                    Intent intent;
+
+                    // activity_curriculum_main 레이아웃으로 변경하기 위한 intent 설정
+                    intent = new Intent(getContext(), CurriculumMainActivity.class);
+
+                    // 스터디 고유 값 전달
+                    intent.putExtra("studyId", studyId);
+
+                    startActivity(intent);
+                }
+            }
+        });
+
         backFromStudyRoomMainBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,7 +189,6 @@ public class StudyRoomFragment extends Fragment {
         });
     }
 
-
     private void refresh() {
         // 어댑터의 모든 item 항목 삭제후 변환된 걸 알리기
         postRVAdapter.delAllItem();
@@ -175,9 +196,43 @@ public class StudyRoomFragment extends Fragment {
 
         // 새로 데이터 추가
         setData();
+
+        // 커리큘럼 항목 새로고침
+        curriculumRefresh();
     }
 
+    private void curriculumRefresh() {
+        TextView curriculumWriterTV, curriculumDateTV, curriculumContentTV;
 
+        curriculumWriterTV = (TextView)root.findViewById(R.id.studyRoomMain_ruleWriterTV);
+        curriculumDateTV = (TextView)root.findViewById(R.id.studyRoom_ruleDateTV);
+        curriculumContentTV = (TextView)root.findViewById(R.id.studyRoom_ruleContentTV);
+
+        // 데이터베이스에서 해당 스터디방의 커리큘럼 가져오기
+        FirebaseDatabase.getInstance().getReference().child(Constant.DB_CHILD_STUDYROOM).child(studyId).child(Constant.DB_CHILD_CURRICULUM)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    // 커리큘럼 데이터 가져오기
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        PostItemData postItem;
+
+                        postItem = dataSnapshot.getValue(PostItemData.class);
+
+                        // 없으면 빠져나오기
+                        if(postItem == null)
+                            return;
+
+                        curriculumWriterTV.setText(postItem.getWriter() + " 님이 만든 커리큘럼");
+                        curriculumDateTV.setText(postItem.getDate());
+                        curriculumContentTV.setText(postItem.getContent());
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
 
     // 모든 RecyclerView 및 adapter 초기화, click listener 추가
     private void initAllRecyclerView() {

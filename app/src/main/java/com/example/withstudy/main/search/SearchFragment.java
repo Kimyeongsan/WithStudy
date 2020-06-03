@@ -21,7 +21,7 @@ import com.example.withstudy.main.data.StudyData;
 import com.example.withstudy.main.data.StudyItemData;
 import com.example.withstudy.ui.studyroom.MapActivity;
 import com.example.withstudy.ui.studyroom.StudyItemRVAdapter;
-import com.example.withstudy.ui.studyroom.StudyRoomMain;
+
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.example.withstudy.ui.studyroom.StudyRoomViewPager;
