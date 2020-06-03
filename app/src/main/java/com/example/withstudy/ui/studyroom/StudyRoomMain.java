@@ -14,9 +14,11 @@ import android.widget.TextView;
 
 import com.example.withstudy.R;
 import com.example.withstudy.main.data.Constant;
+import com.example.withstudy.main.data.ManagementData;
 import com.example.withstudy.main.data.PostItemData;
 import com.example.withstudy.main.data.StudyData;
 
+import com.example.withstudy.ui.studyroom.curriculum.CurriculumMainActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,7 +43,7 @@ public class StudyRoomMain extends AppCompatActivity implements View.OnClickList
     public void onResume() {
         super.onResume();
 
-        // 고유 값 찾은 다음부터
+        // 스터디 고유 값 찾은 다음부터
         if(studyId != null) {
             refresh();
         }
@@ -54,13 +56,49 @@ public class StudyRoomMain extends AppCompatActivity implements View.OnClickList
 
         // 새로 데이터 추가
         setData();
+
+        // 커리큘럼 항목 새로고침
+        curriculumRefresh();
+    }
+
+    private void curriculumRefresh() {
+        TextView curriculumWriterTV, curriculumDateTV, curriculumContentTV;
+
+        curriculumWriterTV = (TextView)findViewById(R.id.studyRoomMain_ruleWriterTV);
+        curriculumDateTV = (TextView)findViewById(R.id.studyRoom_ruleDateTV);
+        curriculumContentTV = (TextView)findViewById(R.id.studyRoom_ruleContentTV);
+
+        // 데이터베이스에서 해당 스터디방의 커리큘럼 가져오기
+        FirebaseDatabase.getInstance().getReference().child(Constant.DB_CHILD_STUDYROOM).child(studyId).child(Constant.DB_CHILD_CURRICULUM)
+            .addListenerForSingleValueEvent(new ValueEventListener() {
+                // 커리큘럼 데이터 가져오기
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    PostItemData postItem;
+
+                    postItem = dataSnapshot.getValue(PostItemData.class);
+
+                    // 없으면 빠져나오기
+                    if(postItem == null)
+                        return;
+
+                    curriculumWriterTV.setText(postItem.getWriter() + " 님이 만든 커리큘럼");
+                    curriculumDateTV.setText(postItem.getDate());
+                    curriculumContentTV.setText(postItem.getContent());
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
     }
 
     private void initialize() {
         DatabaseReference db;
         Intent intent;
         TextView studyNameTV, visibleTV, memberCountTV, ruleWriterTV;
-        Button writePostBtn;
+        Button writePostBtn, curriculumBtn;
         ImageButton backFromStudyRoomMainBtn;
 
         //////////////////////////////////////////////////
@@ -79,6 +117,7 @@ public class StudyRoomMain extends AppCompatActivity implements View.OnClickList
         ///////////////////////////////////
         // Button 종류 가져오기
         writePostBtn = (Button)findViewById(R.id.writePostBtn);
+        curriculumBtn = (Button)findViewById(R.id.studyRoom_curriculumBtn);
         backFromStudyRoomMainBtn = (ImageButton)findViewById(R.id.backFromStudyRoomMain);
         ///////////////////////////////////
 
@@ -129,10 +168,9 @@ public class StudyRoomMain extends AppCompatActivity implements View.OnClickList
 
                     visibleTV.setText(visible);
                     memberCountTV.setText("멤버 " + Integer.toString(studyData.getMemberCount()));
-                    ruleWriterTV.setText(studyData.getPresident() + " 님이 만든 규칙");
 
-                    // Post 아이템 항목 설정
-                    setData();
+                    // Post 아이템 항목 및 커리큘럼 항목 설정
+                    refresh();
                 }
             }
 
@@ -144,6 +182,7 @@ public class StudyRoomMain extends AppCompatActivity implements View.OnClickList
 
         // Click Listener 추가
         writePostBtn.setOnClickListener(this);
+        curriculumBtn.setOnClickListener(this);
         backFromStudyRoomMainBtn.setOnClickListener(this);
     }
 
@@ -207,6 +246,8 @@ public class StudyRoomMain extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
+        Intent intent;
+
         switch(view.getId()) {
             // 뒤로가기
             case R.id.backFromStudyRoomMain:
@@ -216,8 +257,6 @@ public class StudyRoomMain extends AppCompatActivity implements View.OnClickList
 
             // 글쓰기
             case R.id.writePostBtn:
-                Intent intent;
-
                 // activity_post_write 레이아웃으로 변경하기 위한 intent 설정
                 intent = new Intent(StudyRoomMain.this, PostWriteActivity.class);
 
@@ -226,6 +265,21 @@ public class StudyRoomMain extends AppCompatActivity implements View.OnClickList
                 intent.putExtra("studyId", studyId);
 
                 startActivity(intent);
+
+                break;
+
+            // 커리큘럼
+            case R.id.studyRoom_curriculumBtn:
+                // 스터디 생성자만 작성가능
+                if(ManagementData.getInstance().getUserData().getUser_Name().equals(studyData.getPresident())) {
+                    // activity_curriculum_main 레이아웃으로 변경하기 위한 intent 설정
+                    intent = new Intent(StudyRoomMain.this, CurriculumMainActivity.class);
+
+                    // 스터디 고유 값 전달
+                    intent.putExtra("studyId", studyId);
+
+                    startActivity(intent);
+                }
 
                 break;
         }

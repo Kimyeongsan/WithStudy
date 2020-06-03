@@ -8,6 +8,7 @@ public interface Constant {
     String DB_CHILD_POST         = "posts";
     String DB_CHILD_USER         = "users";
     String DB_CHILD_JOINSTUDY    = "joinStudys";
+    String DB_CHILD_CURRICULUM   = "curriculum";
     /////////////////////////////
 
     /////////////////////////////

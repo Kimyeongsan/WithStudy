@@ -17,10 +17,6 @@ public class StudyData {
     private double                      longitude;      // 경도
     private String                      address;        // 주소
     private String                      category;       // 스터디 분야
-    //private String                      members;        // 가입 멤버들
-//    private String                      goal;           // 스터디 목표
-//    private LinkedList<CurriculumData>  curriculums;    // 커리큘럼 데이터
-//    private ChatRoomData                chatRoom;       // 채팅방
 
     // 생성자
     public StudyData(String studyName, String president, int minMember, int limitGender, int minAge, int visible, int duration, String frequency
@@ -39,18 +35,9 @@ public class StudyData {
         this.category = category;
 
         memberCount = 1;
-        //members = "";
-
-        //initialize();
     }
 
     public StudyData() {
-    }
-
-    // 스터디 방 처음 생성시 초기화
-    private void initialize() {
-//        curriculums = new LinkedList<CurriculumData>();
-//        chatRoom = new ChatRoomData();
     }
 
     // 스터디 이름 설정

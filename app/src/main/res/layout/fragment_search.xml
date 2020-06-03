@@ -32,6 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:singleLine="true"
             android:background="@null"
             android:hint="모임을 검색해보세요"
             android:textSize="13dp" />
@@ -50,6 +51,57 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
+    <Button
+        android:id="@+id/search_categoryBtn1"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rectangle_round"
+        android:backgroundTint="#d6c4f9"
+        android:text="테스트"
+        android:textColor="#454444"
+        app:layout_constraintStart_toStartOf="@+id/textView10"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+    <Button
+        android:id="@+id/search_categoryBtn2"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rectangle_round"
+        android:backgroundTint="#b1b0f7"
+        android:text="테스트"
+        android:textColor="#454444"
+        app:layout_constraintStart_toEndOf="@+id/search_categoryBtn1"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+    <Button
+        android:id="@+id/search_categoryBtn3"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rectangle_round"
+        android:backgroundTint="#d2d2fc"
+        android:text="테스트"
+        android:textColor="#454444"
+        app:layout_constraintStart_toEndOf="@+id/search_categoryBtn2"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+    <Button
+        android:id="@+id/search_categoryBtn4"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rectangle_round"
+        android:backgroundTint="#d6c4f9"
+        android:text="테스트"
+        android:textColor="#454444"
+        app:layout_constraintStart_toEndOf="@+id/search_categoryBtn3"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
     <TextView
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
@@ -57,11 +109,31 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:text="내 주변 스터디"
-        android:textSize="20dp"
         android:textColor="#000000"
+        android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+        app:layout_constraintTop_toBottomOf="@+id/search_categoryBtn1" />
+
+    <ImageView
+        android:id="@+id/search_findLocationIV"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="5dp"
+        android:src="@drawable/find_location"
+        app:layout_constraintStart_toEndOf="@+id/textView11"
+        app:layout_constraintTop_toTopOf="@+id/textView11" />
+
+    <TextView
+        android:id="@+id/search_myAddressTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="버튼을 눌러 위치를 설정하세요"
+        android:textColor="#000000"
+        android:textSize="18dp"
+        app:layout_constraintStart_toEndOf="@+id/search_findLocationIV"
+        app:layout_constraintTop_toTopOf="@+id/search_findLocationIV" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myAroundStudyRV"

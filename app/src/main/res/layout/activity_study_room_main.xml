@@ -110,26 +110,28 @@
                 android:gravity="center|top"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="50dp"
-                android:text="KimyeongSan님이 만든 규칙"
+                android:text="설정된 커리큘럼 없음"
                 android:textColor="#000000"
                 android:textSize="17dp"/>
 
             <TextView
+                android:id="@+id/studyRoom_ruleDateTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center|top"
                 android:layout_marginTop="40dp"
                 android:layout_marginLeft="50dp"
                 android:textSize="10dp"
-                android:text="2020년도 05월 28일"/>
+                android:text=""/>
 
             <TextView
+                android:id="@+id/studyRoom_ruleContentTV"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_gravity="center"
                 android:textColor="#000000"
-                android:text="We Study Together">
+                android:text="없음">
             </TextView>
 
             <Button

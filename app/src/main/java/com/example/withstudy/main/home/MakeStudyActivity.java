@@ -9,9 +9,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,6 +42,8 @@ import net.daum.mf.map.api.MapReverseGeoCoder;
 
 import java.io.ByteArrayOutputStream;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
@@ -60,6 +64,7 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
     private int studyVisible;      // 공개여부
     private double latitude, longitude; // 위도, 경도
     private String address;         // 주소
+    private int flag = 0;           // 중복 생성 방지
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -458,6 +463,13 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
             case R.id.completeFromMakeStudyText:    // 완료 텍스트
                 Intent intent;
 
+                // 이미 생성중이면 나가기
+                if(flag == 1) {
+                    return;
+                }
+
+                flag = 1;
+
                 intent = getIntent();
 
                 latitude = intent.getExtras().getDouble("latitude");
@@ -561,7 +573,7 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
     private void uploadFirebaseStorage(DatabaseReference studyRoomRef, String iconUri, StudyData studyRoom) {
         StorageReference studyRoomIconRef;
         ByteArrayOutputStream baos;
-        Bitmap bitmap;
+        Bitmap bitmap = null;
 
         // 만약 설정한 스터디 아이콘이 없으면 그냥 스터디방 생성
         if(iconUri == null) {
@@ -581,9 +593,28 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
             byte[] datas;
             UploadTask uploadTask;
             Task<Uri> uriTask;
+            ExifInterface exif;
+            int exifOrientation, exifDegree = 0;
 
-            // Uri로 부터 비트맵 추출후 압축
-            bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), Uri.parse(iconUri));
+            try {
+                Uri uri;
+                InputStream in;
+
+                uri = ManagementData.getAbsolutePathFromUri(getContentResolver(), Uri.parse(iconUri));
+
+                in = getContentResolver().openInputStream(Uri.parse(iconUri));
+                bitmap = BitmapFactory.decodeFile(uri.getPath());
+
+                exif = new ExifInterface(in);
+
+                exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                exifDegree = ManagementData.exifOrientationToDegrees(exifOrientation);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            // Uri로 부터 비트맵 추출후 회전시킨 다음 압축
+            bitmap = ManagementData.rotate(bitmap, exifDegree);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
 
             // Byte배열로 변환

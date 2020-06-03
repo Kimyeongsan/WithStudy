@@ -16,6 +16,7 @@ import net.daum.mf.map.api.MapView;
 public class MapActivity extends AppCompatActivity implements MapView.POIItemEventListener, MapView.MapViewEventListener, MapView.CurrentLocationEventListener {
     private MapView mapView;
     private MapPOIItem studyLocationMarker = null;
+    private String fromActivity;    // 어느 액티비티에서 넘어왔는지
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,11 @@ public class MapActivity extends AppCompatActivity implements MapView.POIItemEve
     // 맵 데이터 초기화
     private void initialize() {
         ViewGroup mapViewContainer;
+        Intent intent;
+
+        intent = getIntent();
+
+        fromActivity = intent.getStringExtra("activity");
 
         mapView = new MapView(this);
 
@@ -45,15 +51,23 @@ public class MapActivity extends AppCompatActivity implements MapView.POIItemEve
         mapView.setPOIItemEventListener(this);
     }
 
-    // 반경 안에 있는지 검사
-    private void checkRange() {
-    }
-
     @Override
     public void onCurrentLocationUpdate(MapView mapView, MapPoint mapPoint, float v) {
+        if(fromActivity.equals("SearchFragment")) {
+            Intent intent;
+
+            intent = new Intent();
+
+            intent.putExtra("latitude", mapPoint.getMapPointGeoCoord().latitude);
+            intent.putExtra("longitude", mapPoint.getMapPointGeoCoord().longitude);
+
+            setResult(RESULT_OK, intent);
+
+            finish();
+        }
+
         // 250m 반경
         mapView.setCurrentLocationRadius(250);
-        System.out.println("x좌표 = " + mapPoint.getMapPointGeoCoord().latitude + ", y좌표 = " + mapPoint.getMapPointGeoCoord().longitude);
         mapView.setCurrentLocationRadiusFillColor(Color.argb(50, 0, 0, 255));
     }
 

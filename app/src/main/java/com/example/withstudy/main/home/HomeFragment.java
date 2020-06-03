@@ -52,7 +52,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
 
-        refresh();
+        if(ManagementData.getInstance().getUserData() != null) {
+            refresh();
+        }
     }
 
     private void refresh() {
@@ -134,7 +136,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     for(DataSnapshot data : dataSnapshot.getChildren()) {
                         StudyData studyData;
                         StudyItemData studyItemData;
-                        StorageReference studyIconRef;
 
                         // 디비에서 가입한 스터디 가져오기
                         studyData = data.getValue(StudyData.class);
@@ -145,6 +146,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         studyItemData.setAddress(studyData.getAddress());
 
                         if(!studyData.getIconUri().equals("")) {
+                            StorageReference studyIconRef;
+
                             studyIconRef = FirebaseStorage.getInstance().getReferenceFromUrl(studyData.getIconUri());
 
                             studyItemData.setRef(studyIconRef);

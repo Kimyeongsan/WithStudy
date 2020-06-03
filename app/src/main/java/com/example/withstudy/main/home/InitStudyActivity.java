@@ -3,6 +3,11 @@ package com.example.withstudy.main.home;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -13,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.withstudy.R;
 import com.example.withstudy.main.data.Constant;
+import com.example.withstudy.main.data.ManagementData;
 import com.example.withstudy.main.data.StudyData;
 import com.example.withstudy.ui.studyroom.MapActivity;
 import com.google.android.material.textfield.TextInputEditText;
@@ -20,6 +26,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class InitStudyActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int REQUEST_ALBUM   = 1;
@@ -63,6 +75,8 @@ public class InitStudyActivity extends AppCompatActivity implements View.OnClick
 
                 intent = new Intent(InitStudyActivity.this, MapActivity.class);
 
+                intent.putExtra("activity", "InitStudyActivity");
+
                 startActivityForResult(intent, REQUEST_MAP);
 
                 break;
@@ -72,7 +86,7 @@ public class InitStudyActivity extends AppCompatActivity implements View.OnClick
                 break;
 
             // 사진 추가 버튼
-
+            case R.id.initStudy_studyImageIV:
             case R.id.addPictureBtn:
                 pickFromAlbum();
 
@@ -156,7 +170,8 @@ public class InitStudyActivity extends AppCompatActivity implements View.OnClick
         Intent intent;
 
         intent = new Intent(Intent.ACTION_PICK);
-        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+        //intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
 
         startActivityForResult(intent, REQUEST_ALBUM);
     }
@@ -172,18 +187,36 @@ public class InitStudyActivity extends AppCompatActivity implements View.OnClick
             return;
 
         switch(requestCode) {
-            // 앨범 결과
+            // 앨범에서 이미지 선택한 경우
             case REQUEST_ALBUM:
-                selectedImageUri = null;
+                Bitmap bitmap = null;
+                ExifInterface exif;
+                int exifOrientation, exifDegree = 0;
 
-                // 앨범에서 이미지 선택한 경우
-                if (requestCode == REQUEST_ALBUM) {
-                    selectedImageUri = data.getData();
+                selectedImageUri = data.getData();
+
+                try {
+                    Uri uri;
+                    InputStream in;
+
+                    uri = ManagementData.getAbsolutePathFromUri(getContentResolver(), selectedImageUri);
+
+                    in = getContentResolver().openInputStream(selectedImageUri);
+                    bitmap = BitmapFactory.decodeFile(uri.getPath());
+
+                    exif = new ExifInterface(in);
+
+                    exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                    exifDegree = ManagementData.exifOrientationToDegrees(exifOrientation);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+
+                bitmap = ManagementData.rotate(bitmap, exifDegree);
 
                 // 이미지 표시 및 버튼 숨기기
                 studyImageIV = (ImageView) findViewById(R.id.initStudy_studyImageIV);
-                studyImageIV.setImageURI(selectedImageUri);
+                studyImageIV.setImageBitmap(bitmap);
 
                 addPictureBtn = (Button) findViewById(R.id.addPictureBtn);
                 addPictureBtn.setVisibility(View.INVISIBLE);
@@ -195,6 +228,8 @@ public class InitStudyActivity extends AppCompatActivity implements View.OnClick
                 // 위도, 경도 받아오기
                 latitude = data.getDoubleExtra("latitude", 0);
                 longitude = data.getDoubleExtra("longitude", 0);
+
+                Toast.makeText(getApplicationContext(), "위치를 설정하였습니다.", Toast.LENGTH_SHORT);
 
                 break;
         }
