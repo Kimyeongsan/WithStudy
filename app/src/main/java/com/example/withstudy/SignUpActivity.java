@@ -13,11 +13,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.withstudy.main.data.Constant;
+import com.example.withstudy.main.data.ManagementData;
 import com.example.withstudy.main.data.UserData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,7 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class SignUpActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "SignUpActivity";
 
@@ -51,104 +55,91 @@ public class SignUpActivity extends AppCompatActivity {
         emailId = findViewById(R.id.sign_up_email);
         passwd = findViewById(R.id.sign_up_pwd);
 
-
         btnSignUp = findViewById(R.id.sign_up_btn);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
-        FirebaseUser user =  firebaseAuth.getCurrentUser();
-        userID = user.getUid();
 
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String emailID = emailId.getText().toString();
-                String paswd = passwd.getText().toString();
-                String userID = id.getText().toString();
-                String userName = name.getText().toString();
-
-                if(!userID.equals("") && !userName.equals("") && !emailId.equals("") && !passwd.equals("")){
-
-                    UserData userInfor = new UserData(userID, userName, emailID, paswd);
-                    myRef.child("users").child(userID).setValue(userInfor);
-                    toastMessage("New Information has been saved.");
-
-                    id.setText("");
-                    name.setText("");
-                    emailId.setText("");
-                    passwd.setText("");
-
-                } else{
-                    toastMessage("Fill out all the fields");
-                }
-
-                if (emailID.isEmpty()) {
-                    emailId.setError("Provide your Email first!");
-                    emailId.requestFocus();
-
-                } else if (paswd.isEmpty()) {
-                    passwd.setError("Set your password");
-                    passwd.requestFocus();
-
-                } else if (emailID.isEmpty() && paswd.isEmpty()) {
-                    Toast.makeText(SignUpActivity.this, "Fields Empty!", Toast.LENGTH_SHORT).show();
-
-                } else if (!(emailID.isEmpty() && paswd.isEmpty())) {
-                    firebaseAuth.createUserWithEmailAndPassword(emailID, paswd).addOnCompleteListener(SignUpActivity.this, new OnCompleteListener() {
-                        @Override
-                        public void onComplete(@NonNull Task task) {
-
-                            if (!task.isSuccessful()) {
-                                Toast.makeText(SignUpActivity.this.getApplicationContext(),
-                                        "SignUp unsuccessful: " + task.getException().getMessage(),
-                                        Toast.LENGTH_SHORT).show();
-                            } else {
-                                startActivity(new Intent(SignUpActivity.this, MainActivity.class));
-                            }
-                        }
-                    });
-                } else {
-                    Toast.makeText(SignUpActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    toastMessage("Successfully signed in with: " + user.getEmail());
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                    toastMessage("Successfully signed out.");
-                }
-            }
-        };
-    }
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        firebaseAuth.addAuthStateListener(mAuthListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            firebaseAuth.removeAuthStateListener(mAuthListener);
-        }
+        btnSignUp.setOnClickListener(this);
     }
 
     private void toastMessage(String message){
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onClick(View v) {
+        String emailID = emailId.getText().toString();
+        String paswd = passwd.getText().toString();
+        String userID = id.getText().toString();
+        String userName = name.getText().toString();
+
+        if (v.getId() == R.id.sign_up_btn) {
+            if (!userID.equals("") && !userName.equals("") && !emailID.equals("") && !paswd.equals("")) {
+                UserData userInfor = new UserData(userID, userName, emailID, paswd);
+
+                firebaseAuth.createUserWithEmailAndPassword(emailID, paswd)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    FirebaseUser user;
+                                    UserProfileChangeRequest profileUpdate;
+
+                                    profileUpdate = new UserProfileChangeRequest.Builder()
+                                            .setDisplayName(userName)
+                                            .build();
+
+                                    user = firebaseAuth.getCurrentUser();
+                                    user.updateProfile(profileUpdate)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()) {
+                                                ManagementData.registerUser(user);
+                                            }
+                                        }
+                                    });
+
+                                    //myRef.child(Constant.DB_CHILD_USER).child(userID).setValue(userInfor);
+                                    toastMessage("New Information has been saved.");
+
+                                    id.setText("");
+                                    name.setText("");
+                                    emailId.setText("");
+                                    passwd.setText("");
+                                }
+                            }
+                        });
+            } else if (emailID.isEmpty()) {
+                emailId.setError("Provide your Email first!");
+                emailId.requestFocus();
+
+            } else if (paswd.isEmpty()) {
+                passwd.setError("Set your password");
+                passwd.requestFocus();
+
+            } else if (emailID.isEmpty() && paswd.isEmpty()) {
+                Toast.makeText(SignUpActivity.this, "Fields Empty!", Toast.LENGTH_SHORT).show();
+
+            } else if (!(emailID.isEmpty() && paswd.isEmpty())) {
+                firebaseAuth.createUserWithEmailAndPassword(emailID, paswd).addOnCompleteListener(SignUpActivity.this, new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(SignUpActivity.this.getApplicationContext(),
+                                    "SignUp unsuccessful: " + task.getException().getMessage(),
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+                        }
+                    }
+                });
+            } else {
+                Toast.makeText(SignUpActivity.this, "Error", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

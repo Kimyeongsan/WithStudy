@@ -25,6 +25,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -102,9 +103,44 @@ public class SignInUpActivity extends AppCompatActivity implements View.OnClickL
 
             // 비회원
             case R.id.nonMemberBtn:
-                intent = new Intent(SignInUpActivity.this, MainActivity.class);
+                // 익명으로 로그인해주기
+                FirebaseUser currentUser;
 
-                startActivity(intent);
+                currentUser = firebaseAuth.getCurrentUser();
+
+                // 이미 로그인이 되어있으면 그대로 진행
+                updateUI(currentUser);
+
+                // 아니면 익명으로 로그인
+                firebaseAuth.signInAnonymously()
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if(task.isSuccessful()){
+                                    FirebaseUser user;
+                                    UserProfileChangeRequest profileUpdate;
+
+                                    profileUpdate = new UserProfileChangeRequest.Builder()
+                                            .setDisplayName("익명")
+                                            .build();
+
+                                    user = firebaseAuth.getCurrentUser();
+                                    user.updateProfile(profileUpdate)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if(task.isSuccessful()) {
+                                                        ManagementData.registerUser(user);
+                                                    }
+                                                }
+                                            });
+
+                                    updateUI(user);
+                                } else {
+                                    updateUI(null);
+                                }
+                            }
+                        });
 
                 break;
 
@@ -137,16 +173,6 @@ public class SignInUpActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    // 유저 정보를 디비에 등록
-    private void insertUserToDatabase() {
-        DatabaseReference userRef;
-
-        userRef = FirebaseDatabase.getInstance().getReference().child(Constant.DB_CHILD_USER).child(userData.getUser_Id());
-
-        // 디비에 유저 생성
-        userRef.setValue(userData);
-    }
-
     // 파이어베이스에 구글계정 등록
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
         AuthCredential credential;
@@ -164,33 +190,8 @@ public class SignInUpActivity extends AppCompatActivity implements View.OnClickL
                     // 현재 User 가져오기
                     user = firebaseAuth.getCurrentUser();
 
-                    // 싱글톤 객체에 유저 정보 등록
-                    mData = ManagementData.getInstance();
-                    mData.setUserData(new UserData(user.getUid(), user.getDisplayName(), user.getEmail(), null));
-
-                    // 이미 DB에 존재하는 유저면 화면만 넘기기
-                    FirebaseDatabase.getInstance().getReference().child(Constant.DB_CHILD_USER).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            for (DataSnapshot data : dataSnapshot.getChildren()) {
-                                // Uid를 비교해서 같으면 디비에 등록X
-                                if (data.getValue(UserData.class).getUser_Id().equals(user.getUid())) {
-                                    return;
-                                }
-                            }
-
-                            // 유저 정보 생성
-                            userData = new UserData(user.getUid(), user.getDisplayName(), user.getEmail(), null);
-
-                            // DB에 유저 정보 등록
-                            insertUserToDatabase();
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
+                    // 디비에 등록
+                    ManagementData.registerUser(user);
 
                     // UI 업데이트(화면 넘기기)
                     updateUI(user);

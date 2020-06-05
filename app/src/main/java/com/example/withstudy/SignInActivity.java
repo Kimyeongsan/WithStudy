@@ -10,6 +10,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.withstudy.main.data.ManagementData;
+import com.example.withstudy.main.data.UserData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,7 +39,14 @@ public class SignInActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
+                    ManagementData mData;
+
                     Toast.makeText(SignInActivity.this, "User logged in ", Toast.LENGTH_SHORT).show();
+
+                    // 앱 상에서 전반적인 유저 데이터 저장
+                    mData = ManagementData.getInstance();
+                    mData.setUserData(new UserData(user.getUid(), user.getDisplayName(), user.getEmail(), null));
+
                     Intent I = new Intent(SignInActivity.this, MainActivity.class);
                     startActivity(I);
                 } else {
@@ -67,6 +76,13 @@ public class SignInActivity extends AppCompatActivity {
                             if (!task.isSuccessful()) {
                                 Toast.makeText(SignInActivity.this, "Not sucessfull", Toast.LENGTH_SHORT).show();
                             } else {
+                                FirebaseUser user = firebaseAuth.getCurrentUser();
+                                ManagementData mData;
+
+                                // 앱 상에서 전반적인 유저 데이터 저장
+                                mData = ManagementData.getInstance();
+                                mData.setUserData(new UserData(user.getUid(), user.getDisplayName(), user.getEmail(), null));
+
                                 startActivity(new Intent(SignInActivity.this, MainActivity.class));
                             }
                         }

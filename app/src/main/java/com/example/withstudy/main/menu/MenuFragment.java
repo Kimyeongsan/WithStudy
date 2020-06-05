@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.withstudy.R;
 import com.example.withstudy.SignInUpActivity;
+import com.example.withstudy.main.data.ManagementData;
 import com.google.firebase.auth.FirebaseAuth;
 
 
@@ -49,6 +50,10 @@ public class MenuFragment extends Fragment {
                 logOut();
                 Intent intent = new Intent(
                         getContext(), SignInUpActivity.class);
+
+                // 데이터 초기화
+                ManagementData.getInstance().delAllData();
+
                 startActivity(intent);
 
             }
@@ -59,6 +64,10 @@ public class MenuFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(
                         getContext(), SignInUpActivity.class);
+
+                // 데이터 초기화
+                ManagementData.getInstance().delAllData();
+
                 startActivity(intent);
 
                 signOut();

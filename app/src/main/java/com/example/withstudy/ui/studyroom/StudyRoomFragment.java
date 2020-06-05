@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -19,6 +20,7 @@ import com.example.withstudy.main.data.Constant;
 import com.example.withstudy.main.data.ManagementData;
 import com.example.withstudy.main.data.PostItemData;
 import com.example.withstudy.main.data.StudyData;
+import com.example.withstudy.main.data.UserData;
 import com.example.withstudy.ui.studyroom.curriculum.CurriculumMainActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,9 +28,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class StudyRoomFragment extends Fragment {
     private PostItemRVAdapter postRVAdapter;
-    private StudyData studyData;
+    private StudyData studyData = null;
     private String studyName;
     private String studyId; // 스터디 고유값
     private View root;
@@ -64,7 +68,7 @@ public class StudyRoomFragment extends Fragment {
         DatabaseReference db;
         Intent intent;
         TextView studyNameTV, visibleTV, memberCountTV, ruleWriterTV;
-        Button writePostBtn, curriculumBtn;
+        Button writePostBtn, curriculumBtn, joinBtn;
         ImageButton backFromStudyRoomMainBtn;
 
         //////////////////////////////////////////////////
@@ -85,6 +89,7 @@ public class StudyRoomFragment extends Fragment {
         writePostBtn = (Button)root.findViewById(R.id.writePostBtn);
         curriculumBtn = (Button)root.findViewById(R.id.studyRoom_curriculumBtn);
         backFromStudyRoomMainBtn = (ImageButton)root.findViewById(R.id.backFromStudyRoomMain);
+        joinBtn = (Button)root.findViewById(R.id.studyRoom_joinBtn);
         ///////////////////////////////////
 
         intent = getActivity().getIntent();
@@ -100,10 +105,23 @@ public class StudyRoomFragment extends Fragment {
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     // 찾았으면 스터디 정보 저장
                     if (studyName.equals(ds.getValue(StudyData.class).getStudyName())) {
+                        ArrayList<StudyData> joinStudys;
+
                         // 스터디 고유 값 저장해두기
                         studyId = ds.getKey();
 
                         studyData = ds.getValue(StudyData.class);
+
+                        joinStudys = ManagementData.getInstance().getJoinStudys();
+
+                        // 모임에 가입되어있으면 '모임 가입하기'버튼 숨기기
+                        for(StudyData study : joinStudys) {
+                            if(study.getStudyName().equals(studyName)) {
+                                joinBtn.setVisibility(View.INVISIBLE);
+
+                                break;
+                            }
+                        }
 
                         break;
                     }
@@ -151,15 +169,28 @@ public class StudyRoomFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent;
+                ArrayList<StudyData> joinStudys;
 
-                // activity_post_write 레이아웃으로 변경하기 위한 intent 설정
-                intent = new Intent(getContext(), PostWriteActivity.class);
+                // 가입한 멤버만 가능
+                joinStudys = ManagementData.getInstance().getJoinStudys();
 
-                // 스터디 명과 스터디 고유 값 전달
-                intent.putExtra("studyName", studyName);
-                intent.putExtra("studyId", studyId);
+                // 모임에 가입되어있을 때만 작동
+                for(StudyData study : joinStudys) {
+                    if(study.getStudyName().equals(studyName)) {
+                        // activity_post_write 레이아웃으로 변경하기 위한 intent 설정
+                        intent = new Intent(getContext(), PostWriteActivity.class);
 
-                startActivity(intent);
+                        // 스터디 명과 스터디 고유 값 전달
+                        intent.putExtra("studyName", studyName);
+                        intent.putExtra("studyId", studyId);
+
+                        startActivity(intent);
+
+                        return;
+                    }
+                }
+
+                Toast.makeText(getActivity().getApplicationContext(), "권한이 없습니다.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -177,6 +208,79 @@ public class StudyRoomFragment extends Fragment {
                     intent.putExtra("studyId", studyId);
 
                     startActivity(intent);
+                } else {
+                    Toast.makeText(getActivity().getApplicationContext(), "권한이 없습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        joinBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(studyData != null) {
+                    UserData userData;
+                    DatabaseReference studyRoomRef, userRef;
+
+                    userData = ManagementData.getInstance().getUserData();
+
+                    // 인원 수 증가
+                    studyData.setMemberCount(studyData.getMemberCount() + 1);
+                    memberCountTV.setText("멤버 " + Integer.toString(studyData.getMemberCount()));
+
+                    // 데이터베이스 해당 스터디방에 멤버 추가 및 인원 갱신
+                    studyRoomRef = FirebaseDatabase.getInstance().getReference();
+                    studyRoomRef.child(Constant.DB_CHILD_STUDYROOM)
+                            .child(studyId)
+                            .child("members")
+                            .child(userData.getUser_Id())
+                            .setValue(userData);
+
+                    studyRoomRef.child(Constant.DB_CHILD_STUDYROOM)
+                            .child(studyId)
+                            .child("memberCount")
+                            .setValue(studyData.getMemberCount());
+/*
+                    // 유저 데이터에 가입한 스터디 추가
+                    userRef = FirebaseDatabase.getInstance().getReference();
+                    userRef.child(Constant.DB_CHILD_USER)
+                            .child(userData.getUser_Id())
+                            .child(Constant.DB_CHILD_JOINSTUDY)
+                            .child(studyId)
+                            .setValue(studyData);
+*/
+                    // 유저들 데이터에도 스터디 갱신
+                    studyRoomRef.child(Constant.DB_CHILD_STUDYROOM)
+                            .child(studyId)
+                            .child("members")
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                                        UserData user;
+
+                                        user = ds.getValue(UserData.class);
+
+                                        studyRoomRef.child(Constant.DB_CHILD_USER)
+                                                .child(user.getUser_Id())
+                                                .child(Constant.DB_CHILD_JOINSTUDY)
+                                                .child(studyId)
+                                                .setValue(studyData);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+                    // 버튼 숨기기
+                    joinBtn.setVisibility(View.INVISIBLE);
+
+                    // 앱상 전반적인 데이터에 해당 스터디 추가
+                    ManagementData.getInstance().addJoinStudy(studyData);
+
+                    Toast.makeText(getActivity().getApplicationContext(), "가입되었습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
