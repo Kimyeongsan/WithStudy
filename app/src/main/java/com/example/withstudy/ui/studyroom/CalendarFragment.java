@@ -25,30 +25,20 @@ import java.util.List;
 import java.util.Locale;
 
 public class CalendarFragment extends Fragment {
-    private View root;
-    /**
-     * 연/월 텍스트뷰
-     */
+
+
     private TextView tvYear;
     private TextView tvDate;
 
-    /**
-     * 그리드뷰 어댑터
-     */
-    private GridAdapter gridAdapter;
-    /**
-     * 일 저장 할 리스트
-     */
     private ArrayList<String> dayList;
-    ;
-    /**
-     * 그리드뷰
-     */
+
+    private GridAdapter gridAdapter;
     private GridView gridView;
-    /**
-     * 캘린더 변수
-     */
+
     private Calendar mCal;
+
+    private View root;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,13 +52,14 @@ public class CalendarFragment extends Fragment {
 
         tvYear = root.findViewById(R.id.tv_year);
         tvDate = root.findViewById(R.id.tv_date);
+
         gridView = root.findViewById(R.id.gridview);
 
         // 오늘에 날짜를 세팅 해준다.
-
         long now = System.currentTimeMillis();
         final Date date = new Date(now);
         //연,월,일을 따로 저장
+
         final SimpleDateFormat curYearFormat = new SimpleDateFormat("yyyy", Locale.KOREA);
         final SimpleDateFormat curMonthFormat = new SimpleDateFormat("MM", Locale.KOREA);
         final SimpleDateFormat curDayFormat = new SimpleDateFormat("dd", Locale.KOREA);
@@ -98,15 +89,12 @@ public class CalendarFragment extends Fragment {
         setCalendarDate(mCal.get(Calendar.MONTH) + 1);
 
         gridAdapter = new GridAdapter(root.getContext(), dayList);
-
         gridView.setAdapter(gridAdapter);
 
         return root;
     }
 
-    /**
-     * 해당 월에 표시할 일 수 구함 * * @param month
-     */
+
     private void setCalendarDate(int month) {
         mCal.set(Calendar.MONTH, month - 1);
 
@@ -116,15 +104,10 @@ public class CalendarFragment extends Fragment {
         }
     }
 
-    /**
-     * 그리드뷰 어댑터 *
-     */
     private class GridAdapter extends BaseAdapter {
         private final List<String> list;
         private final LayoutInflater inflater;
-        /**
-         * 생성자 * * @param context * @param list
-         */
+
         private int date;
 
         public GridAdapter(Context context, List<String> list) {
@@ -159,12 +142,14 @@ public class CalendarFragment extends Fragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder holder = null;
+
             if (convertView == null) {
                 convertView = inflater.inflate(R.layout.item_calendar, parent, false);
                 holder = new ViewHolder();
 
                 holder.tvItemGridView =  convertView.findViewById(R.id.tv_item_gridview);
                 convertView.setTag(holder);
+
                 holder.tvItemGridView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -181,6 +166,7 @@ public class CalendarFragment extends Fragment {
                                 int dayNum = mCal.get(Calendar.DAY_OF_WEEK);
                                 for (int i = 1; i < mCal.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
                                     int s = i;
+
                                     if (getdate() == i) {
                                         dayList.set(dayNum + i + 4, s + "\n" + value);
                                     }
@@ -201,6 +187,7 @@ public class CalendarFragment extends Fragment {
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
+
             holder.tvItemGridView.setText("" + getItem(position)); //해당 날짜 텍스트 컬러,배경 변경
 
             mCal = Calendar.getInstance(); //오늘 day 가져옴
@@ -208,7 +195,7 @@ public class CalendarFragment extends Fragment {
             String sToday = String.valueOf(today);
 
             if (sToday.equals(getItem(position))) { //오늘 day 텍스트 컬러 변경
-                holder.tvItemGridView.setTextColor(getResources().getColor(R.color.colorPrimary));
+                holder.tvItemGridView.setTextColor(getResources().getColor(R.color.colorBlack,null));
             }
             return convertView;
         }
