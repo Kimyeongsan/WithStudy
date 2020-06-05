@@ -7,9 +7,12 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.renderscript.Sampler;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -82,7 +85,7 @@ public class ManagementData {
         // 모든 스터디 목록 받아와서 띄워주기
         FirebaseDatabase.getInstance().getReference()
             .child(Constant.DB_CHILD_STUDYROOM)
-            .addValueEventListener(new ValueEventListener() {
+                .addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     // 각 스터디뽑아와서 집어넣기
@@ -192,5 +195,50 @@ public class ManagementData {
         cursor.close();
 
         return uri;
+    }
+
+    // 디비에 유저 등록
+    public static void registerUser(FirebaseUser user) {
+        ManagementData mData;   // 싱글톤 객체(앱상에서 전반적인 데이터 관리)
+
+        // 싱글톤 객체에 유저 정보 등록
+        mData = ManagementData.getInstance();
+        mData.setUserData(new UserData(user.getUid(), user.getDisplayName(), user.getEmail(), null));
+
+        // 이미 DB에 존재하는 유저면 화면만 넘기기
+        FirebaseDatabase.getInstance().getReference().child(Constant.DB_CHILD_USER).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                UserData userData;
+
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    // Uid를 비교해서 같으면 디비에 등록X
+                    if (data.getValue(UserData.class).getUser_Id().equals(user.getUid())) {
+                        return;
+                    }
+                }
+
+                // 유저 정보 생성
+                userData = new UserData(user.getUid(), user.getDisplayName(), user.getEmail(), null);
+
+                // DB에 유저 정보 등록
+                insertUserToDatabase(userData);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    // 유저 정보를 디비에 등록
+    private static void insertUserToDatabase(UserData userData) {
+        DatabaseReference userRef;
+
+        userRef = FirebaseDatabase.getInstance().getReference().child(Constant.DB_CHILD_USER).child(userData.getUser_Id());
+
+        // 디비에 유저 생성
+        userRef.setValue(userData);
     }
 }

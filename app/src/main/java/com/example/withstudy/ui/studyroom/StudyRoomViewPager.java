@@ -11,9 +11,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.withstudy.R;
 
 public class StudyRoomViewPager extends AppCompatActivity {
-
     private int  MAX_PAGE = 2;
-
     Fragment current_fragment;   //현재 Viewpager
     StudyRoomFragment studyRoomFragment;
     CalendarFragment calendarFragment;

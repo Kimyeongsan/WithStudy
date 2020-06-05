@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,10 +43,8 @@ import java.util.Set;
 
 public class SearchFragment extends Fragment implements View.OnClickListener, MapReverseGeoCoder.ReverseGeoCodingResultListener {
     private ArrayList<Button> categoryBtns;
-    private RecyclerView myAroundStudyRV, popularStudyRV;
-    private StudyItemRVAdapter myAroundStudyRVAdapter, popularStudyRVAdapter;
-    private HashMap<String, StudyData> studyDatas;
-    private Set<Map.Entry<String, StudyData>> studySet;
+    private RecyclerView myAroundStudyRV, popularStudyRV, resultSearchRV;
+    private StudyItemRVAdapter myAroundStudyRVAdapter, popularStudyRVAdapter, resultSearchRVAdapter;
     private TextView myAddressTV;
     private int REQUEST_MAP = 1;
 
@@ -62,6 +61,12 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ma
         EditText searchStudy;
 
         v = inflater.inflate(R.layout.fragment_search, container, false);
+
+        //////////////////////////////////////////////////
+        // 레이아웃
+        // 검색 결과 레이아웃 안보이게
+        v.findViewById(R.id.search_resultSearchLayout).setVisibility(View.INVISIBLE);
+        //////////////////////////////////////////////////
 
         //////////////////////////////////////////////////
         // 카테고리 항목 설정
@@ -81,6 +86,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ma
 
         myAroundStudyRV = v.findViewById(R.id.myAroundStudyRV);
         popularStudyRV = v.findViewById(R.id.popularStudyRV);
+        resultSearchRV = v.findViewById(R.id.search_resultSearchRV);
 
         // 이미지 뷰
         findLocationIV = v.findViewById(R.id.search_findLocationIV);
@@ -104,28 +110,76 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ma
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // 입력칸에 변화 발생 시
-                Iterator<Map.Entry<String, StudyData>> studyIt;
+                HashMap<String, StudyData> studyDatas;
+                Set<Map.Entry<String, StudyData>> studySet;
 
-                studyIt = studySet.iterator();
+                studyDatas = ManagementData.getInstance().getStudys();
+                studySet = studyDatas.entrySet();
 
-                while(studyIt.hasNext()) {
-                    Map.Entry<String, StudyData> studyDataMap;
-                    StudyData studyData;
+                if(studySet != null) {
+                    // 입력칸에 변화 발생 시
+                    Iterator<Map.Entry<String, StudyData>> studyIt;
 
-                    studyDataMap = (Map.Entry<String, StudyData>)studyIt.next();
-                    studyData = studyDataMap.getValue();
+                    studyIt = studySet.iterator();
 
-                    // 스터디 명 또는 분야랑 비교해보기(입력한 문자열이 포함되는지)
-                    if(studyData.getStudyName().contains(s) || studyData.getCategory().contains(s)) {
-                        // 포함되면 검색결과에 추가
+                    // 일단 아이템 초기화
+                    resultSearchRVAdapter.delAllItem();
+                    resultSearchRVAdapter.notifyDataSetChanged();
+
+                    while (studyIt.hasNext()) {
+                        Map.Entry<String, StudyData> studyDataMap;
+                        StudyData studyData;
+
+                        studyDataMap = (Map.Entry<String, StudyData>) studyIt.next();
+                        studyData = studyDataMap.getValue();
+
+                        // 스터디 명 또는 분야랑 비교해보기(입력한 문자열이 포함되는지)
+                        if (studyData.getStudyName().contains(s) || studyData.getCategory().contains(s)) {
+                            StudyItemData studyItem;
+
+                            studyItem = new StudyItemData();
+
+                            studyItem.setTitle(studyData.getStudyName());
+                            studyItem.setAddress(studyData.getAddress());
+
+                            // 아이콘 설정한 것이 있으면
+                            if (!studyData.getIconUri().equals("")) {
+                                StorageReference studyIconRef;
+
+                                studyIconRef = FirebaseStorage.getInstance().getReferenceFromUrl(studyData.getIconUri());
+
+                                studyItem.setRef(studyIconRef);
+
+                                resultSearchRVAdapter.setContext(getContext());
+                            }
+
+                            // 포함되면 검색결과에 추가
+                            resultSearchRVAdapter.addItem(studyItem);
+                        }
                     }
+
+                    // 변경된 값 표시
+                    resultSearchRVAdapter.notifyDataSetChanged();
                 }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 // 입력 후
+                ConstraintLayout mainLayout, searchLayout;
+
+                mainLayout = v.findViewById(R.id.search_mainLayout);
+                searchLayout = v.findViewById(R.id.search_resultSearchLayout);
+
+                // 아무 글씨도 없다면 메인 레이아웃으로 변경
+                if(s.length() == 0) {
+                    searchLayout.setVisibility(View.INVISIBLE);
+                    mainLayout.setVisibility(View.VISIBLE);
+                } else {
+                    // 있다면 검색 레이아웃 보이게
+                    mainLayout.setVisibility(View.INVISIBLE);
+                    searchLayout.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -153,13 +207,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ma
     }
 
     private void initialize() {
-        HashMap<String, StudyData> studyDatas;
-        Set<Map.Entry<String, StudyData>> studySet;
-
-        // 데이터 초기화
-        studyDatas = ManagementData.getInstance().getStudys();
-        studySet = studyDatas.entrySet();
-
         //////////////////////////////////////////////////
         // Item 항목을 둘 RecyclerView 및 LinearLayout 설정
         initAllRecyclerView();
@@ -223,8 +270,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ma
 
             studyAddress = ManagementData.convertAddressToHanGul(studyAddress);
 
-            System.out.println(myAddress + " == " + studyAddress);
-
             // 일치하면 주변 스터디 목록에 추가
             if(myAddress.equals(studyAddress)) {
                 StudyItemData data;
@@ -258,15 +303,19 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ma
     private void initAllRecyclerView() {
         myAroundStudyRVAdapter   = new StudyItemRVAdapter();
         popularStudyRVAdapter    = new StudyItemRVAdapter();
+        resultSearchRVAdapter    = new StudyItemRVAdapter();
 
         myAroundStudyRV.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, true));
         popularStudyRV.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, true));
+        resultSearchRV.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, true));
 
         initStudyRVAdapter(myAroundStudyRVAdapter);
         initStudyRVAdapter(popularStudyRVAdapter);
+        initStudyRVAdapter(resultSearchRVAdapter);
 
         myAroundStudyRV.setAdapter(myAroundStudyRVAdapter);
         popularStudyRV.setAdapter(popularStudyRVAdapter);
+        resultSearchRV.setAdapter(resultSearchRVAdapter);
     }
 
     private void initStudyRVAdapter(StudyItemRVAdapter studyItemRVAdapter) {

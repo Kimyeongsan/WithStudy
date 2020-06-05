@@ -73,6 +73,11 @@ public class ChattingFragment extends Fragment {
         // 유저 정보 가져오기
         userData = ManagementData.getInstance().getUserData();
 
+        // 설정된 유저 정보가 없으면 나가기
+        if(userData == null) {
+            return;
+        }
+
         // 가입한 목록 받아와서 띄워주기
         FirebaseDatabase.getInstance().getReference()
             .child(Constant.DB_CHILD_USER)
