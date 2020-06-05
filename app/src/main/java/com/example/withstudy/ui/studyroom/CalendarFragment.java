@@ -153,17 +153,20 @@ public class CalendarFragment extends Fragment {
                 holder.tvItemGridView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
-                        ad.setTitle("임시 설정");       // 제목 설정
+                        AlertDialog.Builder schedule_Ad = new AlertDialog.Builder(getContext());
+                        schedule_Ad.setTitle("스케줄 저장");       // 제목
 
-                        final EditText et = new EditText(getContext());
-                        ad.setView(et);
+                        EditText schedule_Ed = new EditText(getContext());
+                        schedule_Ed.setHint("팀프로젝트 최종발표");
 
-                        ad.setPositiveButton("스케줄 저장", new DialogInterface.OnClickListener() {
+                        schedule_Ad.setView(schedule_Ed);
+
+                        schedule_Ad.setPositiveButton("저장", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String value = et.getText().toString();
+                                String value = schedule_Ed.getText().toString();
                                 int dayNum = mCal.get(Calendar.DAY_OF_WEEK);
+
                                 for (int i = 1; i < mCal.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
                                     int s = i;
 
@@ -175,20 +178,21 @@ public class CalendarFragment extends Fragment {
 
                             }
                         });
-                        ad.setNeutralButton("날짜저장", new DialogInterface.OnClickListener() {
+                        schedule_Ad.setNeutralButton("날짜저장", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                setdate(Integer.parseInt(et.getText().toString()));
+                                setdate(Integer.parseInt(schedule_Ed.getText().toString()));
                             }
                         });
-                        ad.show();
+                        schedule_Ad.show();
                     }
                 });
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            holder.tvItemGridView.setText("" + getItem(position)); //해당 날짜 텍스트 컬러,배경 변경
+            //해당 날짜 텍스트 컬러,배경 변경
+            holder.tvItemGridView.setText("" + getItem(position));
 
             mCal = Calendar.getInstance(); //오늘 day 가져옴
             Integer today = mCal.get(Calendar.DAY_OF_MONTH);

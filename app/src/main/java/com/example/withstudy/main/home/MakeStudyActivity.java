@@ -666,7 +666,7 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
         MapReverseGeoCoder reverseGeoCoder;
         MapPoint mapPoint;
 
-        // 위도, 경도로 MapPoint 변환
+        // 위도, 경도로 MapPoint 변환 ← 임시코드
         mapPoint = MapPoint.mapPointWithGeoCoord(latitude, longitude);
         if(longitude == 127.18804931640625){
             Intent intent;

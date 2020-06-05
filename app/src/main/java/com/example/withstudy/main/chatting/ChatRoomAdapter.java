@@ -1,5 +1,6 @@
 package com.example.withstudy.main.chatting;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.withstudy.R;
 import com.example.withstudy.main.data.StudyData;
+import com.example.withstudy.ui.studyroom.curriculum.GlideApp;
 
 
 import java.util.ArrayList;
 
 public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ItemViewHolder> {
     private ArrayList<StudyData> mDataset = new ArrayList<>();
+    private Context context;
 
     public void setDataSet(ArrayList<StudyData> myDataset) {
         mDataset = myDataset;
@@ -25,6 +28,11 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ItemVi
     public void addItem(StudyData studyData) {
         mDataset.add(studyData);
     }
+
+    // context 설정
+//    public void setContext(Context context) {
+//        this.context = context;
+//    }
 
     public void clear() {
         mDataset.clear();
@@ -51,7 +59,7 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ItemVi
 
     @Override
     public ChatRoomAdapter.ItemViewHolder onCreateViewHolder(ViewGroup parent,
-                                                      int viewType) {
+                                                             int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_chat_room, parent, false);
 
@@ -65,6 +73,14 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ItemVi
         holder.textView1.setText(data.getStudyName());
 
         final StudyData finalData = data;
+
+        // 등록한 이미지가 존재할 때만
+//        if (data.getIconUri() != null) {
+//            GlideApp.with(context)
+//                    .load(data.getIconUri())
+//                    .into(holder.imageView);
+//        }
+
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
