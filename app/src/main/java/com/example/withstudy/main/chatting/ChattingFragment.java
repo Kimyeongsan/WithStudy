@@ -1,11 +1,9 @@
 package com.example.withstudy.main.chatting;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -61,31 +59,9 @@ public class ChattingFragment extends Fragment {
     }
 
     private void initialize(View root) {
-
-
         // Item 항목을 둘 RecyclerView 및 LinearLayout 설정
         chatRoomAdapter = new ChatRoomAdapter();
-
-        recyclerChatRoom.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, true));
-        chatRoomAdapter.setOnItemClickListener(new ChatRoomAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int pos) {
-                ChatData chatItem;
-                StudyData studyData = null;
-                Intent intent;
-
-//                 클릭한 가입한 스터디 채팅방 항목 가져오기
-//                chatItem = ChatRoomAdapter.getItem(pos);
-
-                // 클릭한 채팅 화면으로 이동해야함
-                intent = new Intent(getActivity(), ChatRoomActivity.class);
-
-                intent.putExtra("studyName", studyData.getStudyName());
-
-                startActivity(intent);
-            }
-        });
-
+        recyclerChatRoom.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerChatRoom.setAdapter(chatRoomAdapter);
     }
 
@@ -99,49 +75,46 @@ public class ChattingFragment extends Fragment {
 
         // 가입한 목록 받아와서 띄워주기
         FirebaseDatabase.getInstance().getReference()
-                .child(Constant.DB_CHILD_USER)
-                .child(userData.getUser_Id())
-                .child(Constant.DB_CHILD_JOINSTUDY)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                                                    @Override
-                                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                                        for(DataSnapshot data : dataSnapshot.getChildren()) {
-                                                            ChatData chatData;
-                                                            StudyData studyData;
-                                                            StudyItemData studyItemData;
-                                                            StorageReference studyIconRef;
+            .child(Constant.DB_CHILD_USER)
+            .child(userData.getUser_Id())
+            .child(Constant.DB_CHILD_JOINSTUDY)
+            .addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    chatRoomAdapter.clear();
 
-                                                            // 디비에서 가입한 스터디 가져오기
-                                                            studyData = data.getValue(StudyData.class);
-                                                            chatData = data.getValue(ChatData.class);
+                    for(DataSnapshot data : dataSnapshot.getChildren()) {
+                        StudyData studyData;
+                        StudyItemData studyItemData;
+                        StorageReference studyIconRef;
 
-                                                            studyItemData = new StudyItemData();
+                        // 디비에서 가입한 스터디 가져오기
+                        studyData = data.getValue(StudyData.class);
+                        studyData.studyId = data.getKey();
 
-                                                            studyItemData.setTitle(studyData.getStudyName());
+                        studyItemData = new StudyItemData();
+                        studyItemData.setTitle(studyData.getStudyName());
 
-                                                            if(!studyData.getIconUri().equals("")) {
-                                                                studyIconRef = FirebaseStorage.getInstance().getReferenceFromUrl(studyData.getIconUri());
+                        if(!studyData.getIconUri().equals("")) {
+                            studyIconRef = FirebaseStorage.getInstance().getReferenceFromUrl(studyData.getIconUri());
+                            studyItemData.setRef(studyIconRef);
+                        }
 
-                                                                studyItemData.setRef(studyIconRef);
-                                                                chatRoomAdapter.setContext(getContext());
-                                                            }
+                        // 리싸이클러 뷰에 추가
+                        chatRoomAdapter.addItem(studyData);
 
-                                                            // 리싸이클러 뷰에 추가
-                                                            chatRoomAdapter.addItem(chatData);
+                        // 앱상 전반적인 데이터에 해당 스터디 추가
+                        ManagementData.getInstance().addJoinStudy(studyData);
+                    }
+                    // 변경된 값 표시
+                    chatRoomAdapter.notifyDataSetChanged();
+                }
 
-                                                            // 앱상 전반적인 데이터에 해당 스터디 추가
-                                                            ManagementData.getInstance().addJoinStudy(studyData);
-                                                        }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-                                                        // 변경된 값 표시
-                                                        chatRoomAdapter.notifyDataSetChanged();
-                                                    }
-
-                                                    @Override
-                                                    public void onCancelled(DatabaseError databaseError) {
-
-                                                    }
-                                                }
-                );
+                }
+            }
+        );
     }
 }

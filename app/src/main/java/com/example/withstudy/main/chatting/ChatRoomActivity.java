@@ -96,6 +96,7 @@ public class ChatRoomActivity extends AppCompatActivity
     private FirebaseRecyclerAdapter<ChatData, MessageViewHolder>
             mFirebaseAdapter;
 
+    private String chatRoomUID = "";
 
 
     @Override
@@ -107,7 +108,8 @@ public class ChatRoomActivity extends AppCompatActivity
         mUsername = ANONYMOUS;
 
         TextView textChatName = findViewById(R.id.text_chat_name);
-        textChatName.setText(getIntent().getStringExtra("chatName"));
+        textChatName.setText(getIntent().getStringExtra("studyName"));
+        chatRoomUID = getIntent().getStringExtra("studyUID");
 
         mSendButton = (Button) findViewById(R.id.sendButton);
         mSendButton.setOnClickListener(new View.OnClickListener() {
@@ -118,7 +120,7 @@ public class ChatRoomActivity extends AppCompatActivity
                         mUsername,
                         mPhotoUrl,
                         null /* no image */);
-                mFirebaseDatabaseReference.child(MESSAGES_CHILD)
+                mFirebaseDatabaseReference.child(MESSAGES_CHILD).child(chatRoomUID)
                         .push().setValue(chatData);
                 mMessageEditText.setText("");
             }
@@ -192,13 +194,13 @@ public class ChatRoomActivity extends AppCompatActivity
             public ChatData parseSnapshot(DataSnapshot dataSnapshot) {
                 ChatData chatData = dataSnapshot.getValue(ChatData.class);
                 if (chatData != null) {
-                    chatData.setName(dataSnapshot.getKey());
+                    chatData.setName(dataSnapshot.child("name").getValue().toString());
                 }
                 return chatData;
             }
         };
 
-        DatabaseReference messagesRef = mFirebaseDatabaseReference.child(MESSAGES_CHILD);
+        DatabaseReference messagesRef = mFirebaseDatabaseReference.child(MESSAGES_CHILD).child(chatRoomUID);
         FirebaseRecyclerOptions<ChatData> options =
                 new FirebaseRecyclerOptions.Builder<ChatData>()
                         .setQuery(messagesRef, parser)
@@ -269,9 +271,7 @@ public class ChatRoomActivity extends AppCompatActivity
                 int chatMessageCount = mFirebaseAdapter.getItemCount();
                 int lastVisiblePosition =
                         mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
-                // If the recycler view is initially being loaded or the
-                // user is at the bottom of the list, scroll to the bottom
-                // of the list to show the newly added message.
+
                 if (lastVisiblePosition == -1 ||
                         (positionStart >= (chatMessageCount - 1) &&
                                 lastVisiblePosition == (positionStart - 1))) {
@@ -352,7 +352,7 @@ public class ChatRoomActivity extends AppCompatActivity
                                                         ChatData friendlyMessage =
                                                                 new ChatData(null, mUsername, mPhotoUrl,
                                                                         task.getResult().toString());
-                                                        mFirebaseDatabaseReference.child(MESSAGES_CHILD).child(key)
+                                                        mFirebaseDatabaseReference.child(MESSAGES_CHILD).child(chatRoomUID).child(key)
                                                                 .setValue(friendlyMessage);
                                                     }
                                                 }
@@ -379,7 +379,7 @@ public class ChatRoomActivity extends AppCompatActivity
 
                     ChatData tempMessage = new ChatData(null, mUsername, mPhotoUrl,
                             LOADING_IMAGE_URL);
-                    mFirebaseDatabaseReference.child(MESSAGES_CHILD).push()
+                    mFirebaseDatabaseReference.child(MESSAGES_CHILD).child(chatRoomUID).push()
                             .setValue(tempMessage, new DatabaseReference.CompletionListener() {
                                 @Override
                                 public void onComplete(DatabaseError databaseError,

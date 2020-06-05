@@ -2,7 +2,6 @@ package com.example.withstudy.main.chatting;
 
 // 채팅 데이터를 묶는 클래스
 public class ChatData {
-
     private String text;
     private String name;
     private String photoUrl;
