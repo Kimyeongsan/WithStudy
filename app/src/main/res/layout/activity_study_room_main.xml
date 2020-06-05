@@ -152,9 +152,25 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/studyRoom_PostRV"
         android:layout_width="340dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:scrollbars="horizontal"
         android:layout_marginBottom="20dp">
     </androidx.recyclerview.widget.RecyclerView>
- </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/studyRoom_joinBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="#7964e3"
+            android:text="모임 가입하기"
+            android:textColor="#ffffff"
+            android:textSize="18dp"/>
+    </LinearLayout>
+
+</LinearLayout>
