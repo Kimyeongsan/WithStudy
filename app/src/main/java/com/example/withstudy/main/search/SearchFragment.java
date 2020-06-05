@@ -3,10 +3,13 @@ package com.example.withstudy.main.search;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,10 +41,12 @@ import java.util.Map;
 import java.util.Set;
 
 public class SearchFragment extends Fragment implements View.OnClickListener, MapReverseGeoCoder.ReverseGeoCodingResultListener {
-    ArrayList<Button> categoryBtns;
+    private ArrayList<Button> categoryBtns;
     private RecyclerView myAroundStudyRV, popularStudyRV;
     private StudyItemRVAdapter myAroundStudyRVAdapter, popularStudyRVAdapter;
-    TextView myAddressTV;
+    private HashMap<String, StudyData> studyDatas;
+    private Set<Map.Entry<String, StudyData>> studySet;
+    private TextView myAddressTV;
     private int REQUEST_MAP = 1;
 
     @Override
@@ -54,6 +59,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ma
         View v;
         Button categoryBtn1, categoryBtn2, categoryBtn3, categoryBtn4;
         ImageView findLocationIV;
+        EditText searchStudy;
 
         v = inflater.inflate(R.layout.fragment_search, container, false);
 
@@ -88,6 +94,41 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ma
             myAddressTV.setText(ManagementData.getInstance().getUserAddress());
         }
 
+        // 검색 창
+        searchStudy = (EditText)v.findViewById(R.id.searchStudyName);
+        searchStudy.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // 입력하기 직전
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // 입력칸에 변화 발생 시
+                Iterator<Map.Entry<String, StudyData>> studyIt;
+
+                studyIt = studySet.iterator();
+
+                while(studyIt.hasNext()) {
+                    Map.Entry<String, StudyData> studyDataMap;
+                    StudyData studyData;
+
+                    studyDataMap = (Map.Entry<String, StudyData>)studyIt.next();
+                    studyData = studyDataMap.getValue();
+
+                    // 스터디 명 또는 분야랑 비교해보기(입력한 문자열이 포함되는지)
+                    if(studyData.getStudyName().contains(s) || studyData.getCategory().contains(s)) {
+                        // 포함되면 검색결과에 추가
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // 입력 후
+            }
+        });
+
         initialize();
 
         return v;
@@ -112,6 +153,13 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ma
     }
 
     private void initialize() {
+        HashMap<String, StudyData> studyDatas;
+        Set<Map.Entry<String, StudyData>> studySet;
+
+        // 데이터 초기화
+        studyDatas = ManagementData.getInstance().getStudys();
+        studySet = studyDatas.entrySet();
+
         //////////////////////////////////////////////////
         // Item 항목을 둘 RecyclerView 및 LinearLayout 설정
         initAllRecyclerView();
