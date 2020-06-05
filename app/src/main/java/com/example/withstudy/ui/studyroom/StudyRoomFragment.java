@@ -239,7 +239,7 @@ public class StudyRoomFragment extends Fragment {
                             .child(studyId)
                             .child("memberCount")
                             .setValue(studyData.getMemberCount());
-
+/*
                     // 유저 데이터에 가입한 스터디 추가
                     userRef = FirebaseDatabase.getInstance().getReference();
                     userRef.child(Constant.DB_CHILD_USER)
@@ -247,6 +247,32 @@ public class StudyRoomFragment extends Fragment {
                             .child(Constant.DB_CHILD_JOINSTUDY)
                             .child(studyId)
                             .setValue(studyData);
+*/
+                    // 유저들 데이터에도 스터디 갱신
+                    studyRoomRef.child(Constant.DB_CHILD_STUDYROOM)
+                            .child(studyId)
+                            .child("members")
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                                        UserData user;
+
+                                        user = ds.getValue(UserData.class);
+
+                                        studyRoomRef.child(Constant.DB_CHILD_USER)
+                                                .child(user.getUser_Id())
+                                                .child(Constant.DB_CHILD_JOINSTUDY)
+                                                .child(studyId)
+                                                .setValue(studyData);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
 
                     // 버튼 숨기기
                     joinBtn.setVisibility(View.INVISIBLE);
