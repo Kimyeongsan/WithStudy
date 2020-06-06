@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -38,9 +39,16 @@ public class MenuFragment extends Fragment {
 
     private void initialize() {
         Button btnLogOut, btnSignOut;
+        TextView userNameTV, joinStudyCountTV;
 
         btnLogOut = root.findViewById(R.id.btnLogOut);
         btnSignOut = root.findViewById(R.id.btnSignOut);
+
+        userNameTV = root.findViewById(R.id.menu_userNameTV);
+        joinStudyCountTV = root.findViewById(R.id.menu_joinStudyCountTV);
+
+        userNameTV.setText(ManagementData.getInstance().getUserData().getUser_Name());
+        joinStudyCountTV.setText("참여모임: " + ManagementData.getInstance().getJoinStudys().size() + "개");
 
         firebaseAuth = FirebaseAuth.getInstance();
 

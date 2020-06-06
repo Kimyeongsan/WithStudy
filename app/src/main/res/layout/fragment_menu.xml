@@ -27,7 +27,7 @@
             android:layout_height="50dp">
 
             <TextView
-                android:id="@null"
+                android:id="@+id/menu_userNameTV"
                 android:layout_width="match_parent"
                 android:layout_height="29dp"
                 android:layout_weight="1"
@@ -38,7 +38,7 @@
                 android:padding="3dp" />
 
             <TextView
-                android:id="@null"
+                android:id="@+id/menu_joinStudyCountTV"
                 android:layout_width="match_parent"
                 android:layout_height="28dp"
                 android:layout_marginTop="26dp"
