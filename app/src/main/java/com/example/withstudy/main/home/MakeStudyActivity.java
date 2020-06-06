@@ -682,7 +682,7 @@ public class MakeStudyActivity extends AppCompatActivity implements View.OnClick
             iconUri = intent.getExtras().getString("iconUri");
             category = intent.getExtras().getString("category");
 
-            address = "asdasdasd";
+            address = "경기 용인시 처인구 역북동 748";
 
             // 옵션 설정한거에 맞게 스터디 방 생성
             // 생성한 스터디 방은 즉시 데이터베이스에 추가되어야 한다.

@@ -227,10 +227,10 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ma
         categorys = ManagementData.getInstance().getCategorys().keySet();
 
         // 카테고리 텍스트 변경후 보이게 → 버튼이 겹치는것 같습니다..
-//        for(String category : categorys) {
-//            categoryBtns.get(i).setText(category);
-//            categoryBtns.get(i++).setVisibility(View.VISIBLE);
-//        }
+        for(String category : categorys) {
+            categoryBtns.get(i).setText(category);
+            categoryBtns.get(i++).setVisibility(View.VISIBLE);
+        }
 
         // 카테고리 수가 버튼 수보다 적으면 이후 버튼은 안보여야 함
         while(i < categoryBtns.size()) {
