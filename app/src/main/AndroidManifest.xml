@@ -29,6 +29,7 @@
         <activity android:name=".ui.studyroom.MapActivity" />
         <activity android:name=".ui.studyroom.PostWriteActivity" />
         <activity android:name=".ui.studyroom.StudyRoomViewPager" />
+        <activity android:name=".ui.studyroom.CalendarWriteActivity"/>
         <activity android:name=".main.home.JoinConditionActivity" />
         <activity android:name=".main.home.MakeStudyActivity" />
         <activity android:name=".main.home.InitStudyActivity" />
@@ -48,6 +49,7 @@
         <activity android:name=".SignInActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".MainActivity" />
+
         <!-- Kakao Map API 사용 -->
         <meta-data
             android:name="com.kakao.sdk.AppKey"

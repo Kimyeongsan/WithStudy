@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_date_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:background="#f5f4fd"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_date_when"
+            android:layout_width="50dp"
+            android:layout_height="53dp"
+            android:lineSpacingExtra="6sp"
+            android:gravity="center"
+            android:text="06.04"
+            android:textColor="#919090"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/tv_date_title"
+            android:layout_width="250dp"
+            android:layout_height="53dp"
+            android:layout_marginLeft="17dp"
+            android:gravity="left|center"
+            android:lineSpacingExtra="6sp"
+            android:text="첫 모임"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="24dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_date_content"
+            android:gravity="left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:lineSpacingExtra="6sp"
+            android:textColor="#000000"
+            android:text="강남 토즈"
+            android:textSize="14dp" />
+    </LinearLayout>
+</LinearLayout>

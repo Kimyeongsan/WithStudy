@@ -6,6 +6,7 @@ public interface Constant {
     // database child 설정
     String DB_CHILD_STUDYROOM    = "studyRooms";
     String DB_CHILD_POST         = "posts";
+    String DB_CHILD_CALENDAR     = "calendar";  // calendar 임시
     String DB_CHILD_USER         = "users";
     String DB_CHILD_JOINSTUDY    = "joinStudys";
     String DB_CHILD_CURRICULUM   = "curriculum";
