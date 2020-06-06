@@ -149,18 +149,20 @@
         </FrameLayout>
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/studyRoom_PostRV"
-        android:layout_width="340dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:scrollbars="horizontal"
-        android:layout_marginBottom="20dp">
-    </androidx.recyclerview.widget.RecyclerView>
-
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/studyRoom_PostRV"
+            android:layout_width="340dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            ads:layout_constraintBottom_toTopOf="@+id/studyRoom_joinBtn"
+            ads:layout_constraintEnd_toEndOf="parent"
+            ads:layout_constraintStart_toStartOf="parent"
+            ads:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/studyRoom_joinBtn"
@@ -170,7 +172,10 @@
             android:background="#7964e3"
             android:text="모임 가입하기"
             android:textColor="#ffffff"
-            android:textSize="18dp"/>
-    </LinearLayout>
+            android:textSize="18dp"
+            ads:layout_constraintBottom_toBottomOf="parent"
+            ads:layout_constraintEnd_toEndOf="parent"
+            ads:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

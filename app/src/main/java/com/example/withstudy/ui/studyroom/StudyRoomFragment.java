@@ -114,9 +114,9 @@ public class StudyRoomFragment extends Fragment {
 
                         joinStudys = ManagementData.getInstance().getJoinStudys();
 
-                        // 모임에 가입되어있으면 '모임 가입하기'버튼 숨기기
+                        // 해당 모임에 가입되어있으면 '모임 가입하기'버튼 숨기기
                         for(StudyData study : joinStudys) {
-                            if(study.getStudyName().equals(studyName)) {
+                            if(studyName.equals(study.getStudyName())) {
                                 joinBtn.setVisibility(View.INVISIBLE);
 
                                 break;

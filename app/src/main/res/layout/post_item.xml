@@ -56,34 +56,6 @@
                 android:text="We Study Together">
             </TextView>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginLeft="15dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/stroke_rectangle_round">
-
-                <EditText
-                    android:layout_width="270dp"
-                    android:layout_height="25dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@null"
-                    android:hint="댓글입력"
-                    android:textSize="10dp">
-                </EditText>
-
-                <Button
-                    android:id="@+id/writeComment"
-                    android:layout_width="30dp"
-                    android:layout_height="20dp"
-                    android:layout_marginRight="5dp"
-                    android:background="@drawable/rectangle_round"
-                    android:backgroundTint="#7964e3"
-                    android:text="등록"
-                    android:textSize="8dp"
-                    android:textColor="#FFFFFF" />
-            </LinearLayout>
         </FrameLayout>
     </LinearLayout>
 </LinearLayout>

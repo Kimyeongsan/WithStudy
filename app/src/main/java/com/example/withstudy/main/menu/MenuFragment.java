@@ -59,8 +59,9 @@ public class MenuFragment extends Fragment {
                 Intent intent = new Intent(
                         getContext(), SignInUpActivity.class);
 
-                // 데이터 초기화
+                // 데이터 초기화 및 생성
                 ManagementData.getInstance().delAllData();
+                ManagementData.getInstance().findAllStudy();
 
                 startActivity(intent);
 
@@ -73,8 +74,9 @@ public class MenuFragment extends Fragment {
                 Intent intent = new Intent(
                         getContext(), SignInUpActivity.class);
 
-                // 데이터 초기화
+                // 데이터 초기화 및 생성
                 ManagementData.getInstance().delAllData();
+                ManagementData.getInstance().findAllStudy();
 
                 startActivity(intent);
 
