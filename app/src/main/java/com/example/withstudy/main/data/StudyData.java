@@ -1,5 +1,7 @@
 package com.example.withstudy.main.data;
 
+import com.google.firebase.storage.StorageReference;
+
 // 스터디 방의 정보를 가지는 클래스
 public class StudyData {
     public  String                      studyId;        // 스터디 고유 번호(스터디 구별용)
@@ -17,6 +19,7 @@ public class StudyData {
     private double                      longitude;      // 경도
     private String                      address;        // 주소
     private String                      category;       // 스터디 분야
+    private StorageReference            ref = null;
 
     // 생성자
     public StudyData(String studyName, String president, int minMember, int limitGender, int minAge, int visible, int duration, String frequency
@@ -158,5 +161,15 @@ public class StudyData {
     // 스터디 분야 반환
     public String getCategory() {
         return category;
+    }
+
+    // storage 이미지 참조 위치 설정
+    public void setRef(StorageReference ref) {
+        this.ref = ref;
+    }
+
+    // storage 이미지 참조 위치 반환
+    public StorageReference getRef() {
+        return ref;
     }
 }
