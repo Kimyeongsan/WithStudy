@@ -32,7 +32,7 @@
                 android:layout_height="29dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:text="KimYeongSan"
+                android:text="User ID"
                 android:textSize="18dp"
                 android:textColor="#000"
                 android:padding="3dp" />
@@ -44,7 +44,7 @@
                 android:layout_marginTop="26dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:text="참여모임 : 5개"
+                android:text="참여모임 : N개"
                 android:textSize="11dp"
                 android:textColor="#000"
                 android:padding="3dp" />
@@ -71,51 +71,48 @@
                 android:text="12"/>
 
         </FrameLayout>
-
     </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:gravity="center|left"
-        android:layout_marginLeft="10dp"
-        android:text="내정보"
-        android:textStyle="bold">
-    </TextView>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
-
+        android:layout_marginTop="20dp"
         android:background="#ffffff">
 
-    </LinearLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="29dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:text="User Logout 설정"
+            android:textSize="18dp"
+            android:textColor="#000"
+            android:padding="3dp" />
 
         <Button
             android:id="@+id/btnLogOut"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="110dp"
             android:background="@drawable/btn_white_three"
             android:text="로그아웃"
-            android:gravity="center"
-            android:layout_gravity="right">
+            android:gravity="center">
         </Button>
 
         <Button
             android:id="@+id/btnSignOut"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/btn_white_three"
             android:text="회원탈퇴"
-            android:gravity="center"
-            android:layout_gravity="right">
+            android:gravity="center">
         </Button>
-    </FrameLayout>
+    </LinearLayout>
 </LinearLayout>

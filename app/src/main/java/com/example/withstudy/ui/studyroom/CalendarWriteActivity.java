@@ -137,7 +137,6 @@ public class CalendarWriteActivity extends AppCompatActivity implements View.OnC
                 calendar_post = new PostItemData();
 
                 // 작성일, 내용 설정
-//                calendar_post.setDate(dateFormat.format(date));
                 calendar_post.setCl_title(schedule_ET.getText().toString());
                 calendar_post.setCl_contnet(schedule_ET2.getText().toString());
                 calendar_post.setWhen(dateView.getText().toString());
