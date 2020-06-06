@@ -92,6 +92,7 @@ public class ManagementData {
     // 생성된 모든 스터디와 그에 해당하는 카테고리 찾기
     public void findAllStudy() {
         // 모든 스터디 목록 받아와서 띄워주기
+        System.out.println("테스트!!!");
         FirebaseDatabase.getInstance().getReference()
             .child(Constant.DB_CHILD_STUDYROOM)
                 .addValueEventListener(new ValueEventListener() {
@@ -222,7 +223,7 @@ public class ManagementData {
 
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     // Uid를 비교해서 같으면 디비에 등록X
-                    if (data.getValue(UserData.class).getUser_Id().equals(user.getUid())) {
+                    if (user.getUid().equals(data.getValue(UserData.class).getUser_Id())) {
                         return;
                     }
                 }
