@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -184,17 +185,20 @@ public class SignInUpActivity extends AppCompatActivity implements View.OnClickL
             public void onComplete(@NonNull Task<AuthResult> task) {
                 // 성공적으로 등록 했으면
                 if(task.isSuccessful()) {
-                    FirebaseUser user;
-                    ManagementData mData;   // 싱글톤 객체(앱상에서 전반적인 데이터 관리)
+                    firebaseAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+                        @Override
+                        public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
 
-                    // 현재 User 가져오기
-                    user = firebaseAuth.getCurrentUser();
+                            if (user != null) {
+                                // 디비에 등록
+                                ManagementData.registerUser(user);
 
-                    // 디비에 등록
-                    ManagementData.registerUser(user);
-
-                    // UI 업데이트(화면 넘기기)
-                    updateUI(user);
+                                // UI 업데이트(화면 넘기기)
+                                updateUI(user);
+                            }
+                        }
+                    });
                 } else {
                     // 실패시
                     updateUI(null);
