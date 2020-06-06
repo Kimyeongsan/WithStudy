@@ -231,14 +231,14 @@ public class StudyRoomFragment extends Fragment {
                     studyRoomRef = FirebaseDatabase.getInstance().getReference();
                     studyRoomRef.child(Constant.DB_CHILD_STUDYROOM)
                             .child(studyId)
-                            .child("members")
-                            .child(userData.getUser_Id())
-                            .setValue(userData);
+                            .child("memberCount")
+                            .setValue(studyData.getMemberCount());
 
                     studyRoomRef.child(Constant.DB_CHILD_STUDYROOM)
                             .child(studyId)
-                            .child("memberCount")
-                            .setValue(studyData.getMemberCount());
+                            .child("members")
+                            .child(userData.getUser_Id())
+                            .setValue(userData);
 
                     // 유저들 데이터에도 스터디 갱신
                     studyRoomRef.child(Constant.DB_CHILD_STUDYROOM)

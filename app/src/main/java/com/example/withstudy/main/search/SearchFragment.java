@@ -35,10 +35,10 @@ import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapReverseGeoCoder;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -198,7 +198,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ma
     public void onResume() {
         super.onResume();
 
-        // 생성된 스터디들이 앱 상 데이터에 추가되었을 때만
+        // 생성된 스터디들의 카테고리가 앱 상 데이터에 추가되었을 때만
         if(ManagementData.getInstance().getCategorys().size() > 0) {
             refreshCategory();
         }
@@ -210,17 +210,20 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ma
 
             refreshMyAroundStudy();
         }
+
+        // 생성된 스터디들이 앱 상 데이터에 추가되었을 때만
+        if(ManagementData.getInstance().getStudys().size() > 0) {
+            popularStudyRVAdapter.delAllItem();
+            popularStudyRVAdapter.notifyDataSetChanged();
+
+            refreshPopularStudy();
+        }
     }
 
     private void initialize() {
         //////////////////////////////////////////////////
         // Item 항목을 둘 RecyclerView 및 LinearLayout 설정
         initAllRecyclerView();
-        //////////////////////////////////////////////////
-
-        //////////////////////////////////////////////////
-        // Item 항목 설정
-        setData();
         //////////////////////////////////////////////////
     }
 
@@ -305,6 +308,79 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ma
         myAroundStudyRVAdapter.notifyDataSetChanged();
     }
 
+    // 인기 있는 스터디 새로고침
+    private void refreshPopularStudy() {
+        ManagementData mData;
+        HashMap<String, StudyData> studys;
+        Set<Map.Entry<String, StudyData>> set;
+        Iterator<Map.Entry<String, StudyData>> it;
+        ArrayList<StudyData> popularStudys;
+
+        // 초기화 작업
+        mData = ManagementData.getInstance();
+        popularStudys = new ArrayList<StudyData>();
+
+        // (스터디명, 스터디 데이터)쌍 가져오기
+        studys = mData.getStudys();
+        set = studys.entrySet();
+        it = set.iterator();
+
+        // 스터디 탐색
+        while(it.hasNext()) {
+            Map.Entry<String, StudyData> studyDataMap;
+            StudyData studyData;
+
+            studyDataMap = (Map.Entry<String, StudyData>) it.next();
+            studyData = studyDataMap.getValue();
+
+            popularStudys.add(studyData);
+        }
+
+        // 스터디가 존재할때만
+        if(popularStudys.size() > 0) {
+            StudyItemData studyItemData;
+
+            // 멤버 수로 내림차순 정렬
+            Collections.sort(popularStudys, new Comparator<StudyData>() {
+                @Override
+                public int compare(StudyData o1, StudyData o2) {
+                    if (o1.getMemberCount() > o2.getMemberCount()) {
+                        return -1;
+                    } else if (o1.getMemberCount() < o2.getMemberCount()) {
+                        return 1;
+                    }
+
+                    return 0;
+                }
+            });
+
+            // 일단 2개만
+            for(int i = 1; i >= 0; i--) {
+                studyItemData = new StudyItemData();
+
+                studyItemData.setTitle(popularStudys.get(i).getStudyName());
+                studyItemData.setAddress(popularStudys.get(i).getAddress());
+
+                // 등록된 스터디 아이콘이 존재할 때만
+                if(!popularStudys.get(i).getIconUri().equals("")) {
+                    StorageReference studyIconRef;
+
+                    studyIconRef = FirebaseStorage.getInstance().getReferenceFromUrl(popularStudys.get(i).getIconUri());
+
+                    studyItemData.setRef(studyIconRef);
+
+                    popularStudyRVAdapter.setContext(getContext());
+                }
+
+                // Adapter에 추가
+                popularStudyRVAdapter.addItem(studyItemData);
+            }
+
+            // Adapter의 값이 변경됨을 알려줌으로써 변경된 값 표시
+            popularStudyRVAdapter.notifyDataSetChanged();
+        }
+    }
+
     // 모든 RecyclerView 및 adapter 초기화, click listener 추가
     private void initAllRecyclerView() {
         myAroundStudyRVAdapter   = new StudyItemRVAdapter();
@@ -342,31 +418,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ma
                 startActivity(intent);
             }
         });
-    }
-
-    // RecyclerView의 Item 항목 설정
-    private void setData() {
-        List<String> popularStudyTitles;
-        List<String> popularStudyAddresss;
-
-        popularStudyTitles = Arrays.asList("인기있는 스터디1", "인기있는 스터디2");
-        popularStudyAddresss = Arrays.asList("인기있는 스터디 위치1", "인기있는 스터디 위치2");
-
-        // List의 값들을 StudyItemData 객체에 설정
-        for(int i = 0; i < popularStudyTitles.size(); i++) {
-            StudyItemData data;
-
-            data = new StudyItemData();
-
-            data.setTitle(popularStudyTitles.get(i));
-            data.setAddress(popularStudyAddresss.get(i));
-
-            // Adapter에 추가
-            popularStudyRVAdapter.addItem(data);
-        }
-
-        // Adapter의 값이 변경됨을 알려줌으로써 변경된 값 표시
-        popularStudyRVAdapter.notifyDataSetChanged();
     }
 
     @Override
