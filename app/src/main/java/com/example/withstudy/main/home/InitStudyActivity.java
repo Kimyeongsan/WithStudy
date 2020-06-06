@@ -27,11 +27,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 public class InitStudyActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int REQUEST_ALBUM   = 1;
@@ -113,11 +110,7 @@ public class InitStudyActivity extends AppCompatActivity implements View.OnClick
                 if(latitude == 0 && longitude == 0) {
                     Toast.makeText(getApplicationContext(), "위치를 설정해주세요", Toast.LENGTH_LONG).show();
 
-                    // 임시 코드
-                    latitude = 37.233985900878906;
-                    longitude = 127.18804931640625;
-
-                    //return;
+                    return;
                 }
 
                 checkFlag = 1;

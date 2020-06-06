@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.withstudy.R;
+import com.example.withstudy.main.data.Constant;
 import com.example.withstudy.main.data.ManagementData;
 import com.example.withstudy.main.data.StudyData;
 import com.example.withstudy.main.data.StudyItemData;
@@ -133,6 +134,11 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ma
                         studyDataMap = (Map.Entry<String, StudyData>) studyIt.next();
                         studyData = studyDataMap.getValue();
 
+                        // 비공개면 보여주면 안됨
+                        if(studyData.isVisible() == Constant.INVISIBLE) {
+                            continue;
+                        }
+
                         // 스터디 명 또는 분야랑 비교해보기(입력한 문자열이 포함되는지)
                         if (studyData.getStudyName().contains(s) || studyData.getCategory().contains(s)) {
                             StudyItemData studyItem;
@@ -226,11 +232,11 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ma
         // 스터디 카테고리들 뽑아오기
         categorys = ManagementData.getInstance().getCategorys().keySet();
 
-        // 카테고리 텍스트 변경후 보이게 → 버튼이 겹치는것 같습니다..
-//        for(String category : categorys) {
-//            categoryBtns.get(i).setText(category);
-//            categoryBtns.get(i++).setVisibility(View.VISIBLE);
-//        }
+        // 카테고리 텍스트 변경후 보이게
+        for(String category : categorys) {
+            categoryBtns.get(i).setText(category);
+            categoryBtns.get(i++).setVisibility(View.VISIBLE);
+        }
 
         // 카테고리 수가 버튼 수보다 적으면 이후 버튼은 안보여야 함
         while(i < categoryBtns.size()) {
