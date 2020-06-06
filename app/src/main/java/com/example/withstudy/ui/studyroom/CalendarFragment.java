@@ -109,7 +109,6 @@ public class CalendarFragment extends Fragment {
 
         initAllRecyclerView();
         initialize();
-
         return root;
     }
 
@@ -259,6 +258,7 @@ public class CalendarFragment extends Fragment {
 
                         // 스터디 고유 값 저장해두기
                         studyId = ds.getKey();
+                        setData();
                         studyData = ds.getValue(StudyData.class);
 
                         break;
@@ -296,38 +296,38 @@ public class CalendarFragment extends Fragment {
         });
     }
 
-    // RecyclerView의 Item 항목 설정
+    // 가입한 스터디 목록 생성
     private void setData() {
         // 해당 스터디방의 게시글 가져와서 띄우기
         FirebaseDatabase.getInstance().getReference()
-                .child(Constant.DB_CHILD_STUDYROOM)
-                .child(studyId)
-                .child(Constant.DB_CHILD_CALENDAR)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for(DataSnapshot data : dataSnapshot.getChildren()) {
-                            PostItemData postItemData;
+            .child(Constant.DB_CHILD_STUDYROOM)
+            .child(studyId)
+            .child(Constant.DB_CHILD_CALENDAR)
+            .addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for(DataSnapshot data : dataSnapshot.getChildren()) {
+                        PostItemData postItemData;
 
-                            postItemData = data.getValue(PostItemData.class);
+                        postItemData = data.getValue(PostItemData.class);
 
-                            postItemData.setCl_title(postItemData.getCl_title());
-                            postItemData.setCl_contnet(postItemData.getCl_contnet());
-                            postItemData.setWhen(postItemData.getWhen());
+                        postItemData.setCl_title(postItemData.getCl_title());
+                        postItemData.setCl_contnet(postItemData.getCl_contnet());
+                        postItemData.setWhen(postItemData.getWhen());
 
-                            // Adapter에 추가
-                            calendarAdapter.addItem(postItemData);
-                        }
-
-                        // 변경된 값 표시
-                        calendarAdapter.notifyDataSetChanged();
+                        // Adapter에 추가
+                        calendarAdapter.addItem(postItemData);
                     }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                    // 변경된 값 표시
+                    calendarAdapter.notifyDataSetChanged();
+                }
 
-                    }
-                });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
     }
 
 }

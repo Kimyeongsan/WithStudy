@@ -75,11 +75,11 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ItemVi
         final StudyData finalData = data;
 
         // 등록한 이미지가 존재할 때만
-//        if (data.getIconUri() != null) {
-//            GlideApp.with(context)
-//                    .load(data.getIconUri())
-//                    .into(holder.imageView);
-//        }
+        if (data.getRef() != null) {
+            GlideApp.with(holder.view)
+                    .load(data.getRef())
+                    .into(holder.imageView);
+        }
 
 
         holder.view.setOnClickListener(new View.OnClickListener() {

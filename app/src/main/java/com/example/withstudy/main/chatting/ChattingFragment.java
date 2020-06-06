@@ -102,9 +102,7 @@ public class ChattingFragment extends Fragment {
 
                                 if(!studyData.getIconUri().equals("")) {
                                     studyIconRef = FirebaseStorage.getInstance().getReferenceFromUrl(studyData.getIconUri());
-                                    studyItemData.setRef(studyIconRef);
-
-//                                    chatRoomAdapter.setContext(getContext());
+                                    studyData.setRef(studyIconRef);
                                 }
 
                                 // 리싸이클러 뷰에 추가
