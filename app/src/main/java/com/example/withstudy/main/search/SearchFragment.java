@@ -47,6 +47,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ma
     private RecyclerView myAroundStudyRV, popularStudyRV, resultSearchRV;
     private StudyItemRVAdapter myAroundStudyRVAdapter, popularStudyRVAdapter, resultSearchRVAdapter;
     private TextView myAddressTV;
+    private EditText searchStudy;
     private int REQUEST_MAP = 1;
 
     @Override
@@ -59,7 +60,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ma
         View v;
         Button categoryBtn1, categoryBtn2, categoryBtn3, categoryBtn4;
         ImageView findLocationIV;
-        EditText searchStudy;
 
         v = inflater.inflate(R.layout.fragment_search, container, false);
 
@@ -374,12 +374,20 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ma
         switch(v.getId()) {
             // 카테고리 버튼
             case R.id.search_categoryBtn1:
-            case R.id.search_categoryBtn2:
-            case R.id.search_categoryBtn3:
-            case R.id.search_categoryBtn4:
-                ManagementData mData;
+                searchStudy.setText(categoryBtns.get(0).getText());
 
-                mData = ManagementData.getInstance();
+                break;
+
+            case R.id.search_categoryBtn2:
+                searchStudy.setText(categoryBtns.get(1).getText());
+
+                break;
+            case R.id.search_categoryBtn3:
+                searchStudy.setText(categoryBtns.get(2).getText());
+
+                break;
+            case R.id.search_categoryBtn4:
+                searchStudy.setText(categoryBtns.get(3).getText());
 
                 break;
 
