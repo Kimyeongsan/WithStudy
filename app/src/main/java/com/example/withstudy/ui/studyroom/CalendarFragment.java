@@ -172,7 +172,6 @@ public class CalendarFragment extends Fragment {
         // 수정 준비
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-
             ViewHolder holder = null;
 
             if (convertView == null) {
