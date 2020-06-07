@@ -354,13 +354,13 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ma
                 }
             });
 
-            // 일단 2개만
+            // 2개가 안되면 1번만 하도록
             for(int i = 1; i >= 0; i--) {
                 studyItemData = new StudyItemData();
 
                 // 2개도 안되면 1개
                 if(popularStudys.size() < 2) {
-                    i = 1;
+                    i = 0;
                 }
 
                 studyItemData.setTitle(popularStudys.get(i).getStudyName());
