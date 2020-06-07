@@ -358,6 +358,11 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ma
             for(int i = 1; i >= 0; i--) {
                 studyItemData = new StudyItemData();
 
+                // 2개도 안되면 1개
+                if(popularStudys.size() < 2) {
+                    i = 1;
+                }
+
                 studyItemData.setTitle(popularStudys.get(i).getStudyName());
                 studyItemData.setAddress(popularStudys.get(i).getAddress());
 
