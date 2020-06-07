@@ -176,6 +176,20 @@
             ads:layout_constraintBottom_toBottomOf="parent"
             ads:layout_constraintEnd_toEndOf="parent"
             ads:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/studyRoom_signOutBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="#ff0000"
+            android:text="모임 탈퇴하기"
+            android:textColor="#ffffff"
+            android:textSize="18dp"
+            android:visibility="invisible"
+            ads:layout_constraintBottom_toBottomOf="parent"
+            ads:layout_constraintEnd_toEndOf="parent"
+            ads:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

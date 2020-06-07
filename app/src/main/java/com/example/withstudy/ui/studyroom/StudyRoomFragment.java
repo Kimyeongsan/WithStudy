@@ -68,7 +68,7 @@ public class StudyRoomFragment extends Fragment {
         DatabaseReference db;
         Intent intent;
         TextView studyNameTV, visibleTV, memberCountTV, ruleWriterTV;
-        Button writePostBtn, curriculumBtn, joinBtn;
+        Button writePostBtn, curriculumBtn, joinBtn, signOutBtn;
         ImageButton backFromStudyRoomMainBtn;
 
         //////////////////////////////////////////////////
@@ -90,6 +90,7 @@ public class StudyRoomFragment extends Fragment {
         curriculumBtn = (Button)root.findViewById(R.id.studyRoom_curriculumBtn);
         backFromStudyRoomMainBtn = (ImageButton)root.findViewById(R.id.backFromStudyRoomMain);
         joinBtn = (Button)root.findViewById(R.id.studyRoom_joinBtn);
+        signOutBtn = (Button)root.findViewById(R.id.studyRoom_signOutBtn);
         ///////////////////////////////////
 
         intent = getActivity().getIntent();
@@ -114,10 +115,11 @@ public class StudyRoomFragment extends Fragment {
 
                         joinStudys = ManagementData.getInstance().getJoinStudys();
 
-                        // 해당 모임에 가입되어있으면 '모임 가입하기'버튼 숨기기
+                        // 해당 모임에 가입되어있으면 '모임 가입하기'버튼 숨기고 '모임 탈퇴하기'버튼 보이기
                         for(StudyData study : joinStudys) {
                             if(studyName.equals(study.getStudyName())) {
                                 joinBtn.setVisibility(View.INVISIBLE);
+                                signOutBtn.setVisibility(View.VISIBLE);
 
                                 break;
                             }
@@ -266,13 +268,85 @@ public class StudyRoomFragment extends Fragment {
                                 }
                             });
 
-                    // 버튼 숨기기
+                    // '모임 가입하기' 버튼 숨기고 '모임 탈퇴하기' 버튼 보여주기
                     joinBtn.setVisibility(View.INVISIBLE);
+                    signOutBtn.setVisibility(View.VISIBLE);
 
                     // 앱상 전반적인 데이터에 해당 스터디 추가
                     ManagementData.getInstance().addJoinStudy(studyData);
 
                     Toast.makeText(getActivity().getApplicationContext(), "가입되었습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        signOutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(studyData != null) {
+                    UserData userData;
+                    DatabaseReference studyRoomRef, userRef;
+
+                    userData = ManagementData.getInstance().getUserData();
+
+                    // 인원 수 감소
+                    studyData.setMemberCount(studyData.getMemberCount() - 1);
+                    memberCountTV.setText("멤버 " + Integer.toString(studyData.getMemberCount()));
+
+                    // 데이터베이스 해당 스터디방에 멤버 삭제 및 인원 갱신
+                    studyRoomRef = FirebaseDatabase.getInstance().getReference();
+                    studyRoomRef.child(Constant.DB_CHILD_STUDYROOM)
+                            .child(studyId)
+                            .child("memberCount")
+                            .setValue(studyData.getMemberCount());
+
+                    studyRoomRef.child(Constant.DB_CHILD_STUDYROOM)
+                            .child(studyId)
+                            .child("members")
+                            .child(userData.getUser_Id())
+                            .setValue(null);
+
+                    // 탈퇴한 유저한테 해당 스터디 데이터 삭제
+                    studyRoomRef.child(Constant.DB_CHILD_USER)
+                            .child(userData.getUser_Id())
+                            .child(Constant.DB_CHILD_JOINSTUDY)
+                            .child(studyId)
+                            .setValue(null);
+
+                    // 유저들 데이터에도 스터디 갱신
+                    studyRoomRef.child(Constant.DB_CHILD_STUDYROOM)
+                            .child(studyId)
+                            .child("members")
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                                        UserData user;
+
+                                        user = ds.getValue(UserData.class);
+
+                                        studyRoomRef.child(Constant.DB_CHILD_USER)
+                                                .child(user.getUser_Id())
+                                                .child(Constant.DB_CHILD_JOINSTUDY)
+                                                .child(studyId)
+                                                .setValue(studyData);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+                    // '모임 탈퇴하기' 버튼 숨기고 '모임 가입하기' 버튼 보여주기
+                    signOutBtn.setVisibility(View.INVISIBLE);
+                    joinBtn.setVisibility(View.VISIBLE);
+
+                    // 앱상 전반적인 데이터에 해당 스터디 삭제
+                    ManagementData.getInstance().delJoinStudy(studyData);
+
+                    Toast.makeText(getActivity().getApplicationContext(), "탈퇴하였습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
         });

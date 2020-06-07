@@ -84,6 +84,13 @@ public class ManagementData {
         joinStudys.add(studyData);
     }
 
+    // 유저가 가입한 스터디에서 특정 스터디 삭제
+    public void delJoinStudy(StudyData studyData) {
+        if(joinStudys.contains(studyData)) {
+            joinStudys.remove(studyData);
+        }
+    }
+
     // 유저가 가입한 스터디 목록 반환
     public ArrayList<StudyData> getJoinStudys() {
         return joinStudys;
